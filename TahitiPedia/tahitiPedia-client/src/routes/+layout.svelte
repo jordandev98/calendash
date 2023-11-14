@@ -1,25 +1,29 @@
 <script>
     import "../app.postcss";
     import {arrow, autoUpdate, computePosition, flip, offset, shift} from '@floating-ui/dom';
-    import {storePopup} from '@skeletonlabs/skeleton';
+    import {storePopup, Toast , toastStore  } from '@skeletonlabs/skeleton';
     import NavBar from "../components/NavBar.svelte";
     import {onMount} from 'svelte';
     import {updateUserFromCookie} from "../stores/userStore.js";
 
-
     storePopup.set({computePosition, autoUpdate, offset, shift, flip, arrow});
-
     onMount(async () => {
-        await updateUserFromCookie()
+        try {
+            await updateUserFromCookie()
+        } catch (e) {
+            toastStore.trigger({message : e.message, background: 'variant-ghost-error'})
+        }
+
     });
 </script>
 
-<div class="mainContainer flex flex-col w-full h-full">
+<div class="mainContainer flex flex-col min-h-screen pb-12">
     <NavBar/>
 
     <slot></slot>
-</div>
 
+    <Toast/>
+</div>
 
 
 <style>
