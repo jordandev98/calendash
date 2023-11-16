@@ -1,36 +1,40 @@
-import {collection, getFirestore, onSnapshot, query, where} from "firebase/firestore";
-import {initFirebase} from "../firebase/firebase.js"
+import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
+import {getAuth} from "firebase/auth";
+import {FirebaseApp} from "firebase/app";
 
-export const handlePayment = async (userId: string) => {
 
-}
-const getPaymentStatus = async (userId: string): Promise<number> => {
-    const app = initFirebase()
+export const getPremiumStatus = async (app: FirebaseApp) => {
+    const auth = getAuth(app);
+    const userId = auth.currentUser?.uid;
     if (!userId) throw new Error("User not logged in");
 
     const db = getFirestore(app);
-    const paymentRef = collection(db, "customers", userId, "payments");
+    const subscriptionsRef = collection(db, "customers", userId, "subscriptions");
     const q = query(
-        paymentRef,
-        where("status", "in", ["succeeded"])
+        subscriptionsRef,
+        where("status", "in", ["trialing", "active"])
     );
 
 
-    return new Promise<number>((resolve, reject) => {
-        const unsubscribe = onSnapshot(
-            q,
-            (snapshot) => {
-                if (snapshot.docs.length === 0) {
-                    resolve(-1);
-                } else {
+    try {
+        const snapshot = await getDocs(q);
 
-                    const paymentDoc = snapshot.docs[0];
-                    const paymentData = paymentDoc.data();
-                    resolve(paymentData.amount);
-                }
-                unsubscribe();
-            },
-            reject
-        );
-    });
+        if (snapshot.empty) {
+            return null;
+        }
+        const subscriptionData = snapshot.docs[0].data();
+        const planId = subscriptionData.items ? subscriptionData.items[0].plan.id : null;
+        return {
+            renewDate : subscriptionData.current_period_end,
+            autoRenew :  subscriptionData.cancel_at_period_end,
+            planId : planId,
+            status : subscriptionData.status
+
+        }
+
+
+
+    } catch (error) {
+        return null;
+    }
 };

@@ -21,15 +21,15 @@
 </script>
 
 <div class="flex justify-center">
-    <div class="flex justify-between self-center p-4 w-11/12 items-center">
+    <div class="flex justify-between self-center py-4 w-11/12 items-center">
         <div class="flex items-center justify-center flex-2 gap-4">
             <button class="flex md:hidden" on:click={handleDrawerOpen}>
                 <Icon icon="iconamoon:menu-burger-horizontal-duotone" width="28"/>
             </button>
 
-            <a href="/" class="flex items-center gap-2 justify-center items-center">
+            <a href="/" class="flex items-center gap-2 justify-center">
                 <img src="/logo.png" alt="logo.png" class=" aspect-square w-12">
-                <p class="text-3xl font-extrabold hidden md:block">Calendash</p>
+                <p class="text-3xl font-extrabold hidden lg:block">Calendash</p>
             </a>
         </div>
         <div class="font-bold text-lg items-center justify-center flex-1 gap-8 hidden md:flex ">
