@@ -7,8 +7,6 @@
     import {RadioGroup, RadioItem} from "@skeletonlabs/skeleton";
     import {getPremiumStatus} from "../../service/stripe/getPaymentStatus.ts";
 
-    const plans = products;
-
     let isBilledMonthly = false;
     const checkout = async (productId) => {
         let url = "/login"
