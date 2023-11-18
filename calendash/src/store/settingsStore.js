@@ -3,7 +3,6 @@ import { writable } from 'svelte/store';
 // Initialize your store with the initial calendar settings
 export const settingsStore = writable({
     url: "",
-    hoursFormat: 24,
     calendars: [
         {
             availability: {
@@ -16,6 +15,7 @@ export const settingsStore = writable({
                 "Sunday": [],
             },
             timezone: "Pacific/Honolulu",
+            isValid: true,
         },
     ]
 });
@@ -54,7 +54,6 @@ export const deleteHours = (day , i , calendarNumber)=> {
             dayArray.splice(i, 1);
             return {...settings, calendars: updatedCalendars};
         } else {
-            console.log("Invalid index for the specified day's array.");
             return settings;
         }
     });

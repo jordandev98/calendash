@@ -1,5 +1,5 @@
 <script>
-    import {RadioGroup, RadioItem, Step, Stepper} from "@skeletonlabs/skeleton";
+    import {Step, Stepper} from "@skeletonlabs/skeleton";
     import Schedule from "$lib/settings/Schedule.svelte";
     import {settingsStore} from "../../../store/settingsStore.js";
 
@@ -18,7 +18,7 @@
 <div class="w-11/12 max-w-lg self-center">
 
     <Stepper on:complete={handleComplete}>
-        <Step>
+        <Step locked={!calendarSettings.url}>
             <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
             <div class="flex flex-col gap-8">
                 <p>Let's walk through the configuration together, ensuring your preferences and needs are seamlessly
@@ -28,25 +28,17 @@
                     <p>Pick a URL that's easy for your clients to remember and share for booking appointments. Make it
                         short, descriptive, and memorable!</p>
                     <div class="flex justify-center items-center">
-                        <p class="font-bold">calendash.com/</p><input class="input rounded-sm "
+                        <p class="font-bold">calendash.com/</p><input class={"input rounded-sm "}
                                                                       bind:value={calendarSettings.url}/>
                     </div>
 
                 </div>
-
-                <div class="flex items-center gap-4">
-                    <p> Hours format :</p>
-                    <RadioGroup active="variant-filled-primary" hover="hover:variant-soft-primary"
-                                background="bg-primary-100" border="border-none">
-                        <RadioItem bind:group={calendarSettings.hoursFormat} value={12}>12 hours</RadioItem>
-                        <RadioItem bind:group={calendarSettings.hoursFormat} value={24}>24 hours</RadioItem>
-                    </RadioGroup>
-                </div>
             </div>
 
         </Step>
-        <Step locked="true">
+        <Step locked={!calendarSettings.calendars[0].isValid}>
             <svelte:fragment slot="header">Set you availability</svelte:fragment>
+            {calendarSettings.calendars[0].isValid}
             <Schedule/>
         </Step>
         <!-- ... -->

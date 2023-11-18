@@ -3,23 +3,59 @@ export const validateTimeFormat = (time) => {
     return timeFormat.test(time);
 }
 
-export const checkOverlap = (startTime, endTime, hoursArray, currentIndex) => {
-    const newStartTime = new Date(`2000-01-01T${startTime}`);
-    const newEndTime = new Date(`2000-01-01T${endTime}`);
-    console.log(hoursArray)
-    for (let i = 0; i < hoursArray.length; i++) {
-        if (i !== currentIndex) {
-            const existingStartTime = new Date(`2000-01-01T${hoursArray[i].start}`);
-            const existingEndTime = new Date(`2000-01-01T${hoursArray[i].end}`);
-            console.log(existingStartTime)
-            console.log(existingEndTime)
-            return (
-                (newStartTime <= existingEndTime && existingStartTime <= newEndTime)
-            )
+export const checkOverlap = (hours) =>  {
+    // Sort slots by start time
+    hours.sort((a, b) => {
+        return a.start.localeCompare(b.start);
+    });
+
+    for (let i = 0; i < hours.length - 1; i++) {
+        const currentEndTime = hours[i].end;
+        const nextStartTime = hours[i + 1].start;
+
+        if (currentEndTime > nextStartTime) {
+            return true; // Overlapping slots found
         }
     }
-    return false; // No overlap detected
+
+    return false; // No overlapping slots
 }
+
+export const isStartEndHoursInOrder = (hours) => {
+    return hours.start < hours.end
+}
+
+export const checkIsCalendarValid = (calendar) => {
+    console.log('Checking calendar')
+    for (const [day, hours] of Object.entries(calendar.availability)) {
+        // Check if time format is valid for each slot
+        const invalidTimeFormat = hours.some(slot => !validateTimeFormat(slot.start) || !validateTimeFormat(slot.end));
+        const invalidOrder = hours.some(slot => !isStartEndHoursInOrder(slot));
+
+        if (invalidOrder) {
+            console.log(hours)
+            console.log(`Invalid time f`);
+            return false
+        }
+
+        if (invalidTimeFormat) {
+            console.log(`Invalid time format found for ${day}`);
+            return false; // Time format is invalid
+        }
+
+        // Check for overlapping time slots for each day
+        const overlapping = checkOverlap(hours);
+        if (overlapping) {
+            console.log(`Overlapping time slots found for ${day}`);
+            return false; // Overlapping slots found
+        }
+
+        // Additional conditions can be added here if needed
+        // e.g., checking for maximum slots, empty slots, etc.
+    }
+
+    return true; // Calendar is valid with no issues
+};
 
 export const timeOptions = [
     { value: '00:00', label: '00:00', keywords: '0000, 0' },
