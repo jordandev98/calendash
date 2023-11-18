@@ -7,12 +7,12 @@ export const settingsStore = writable({
     calendars: [
         {
             availability: {
-                "Monday": [{start: "9:00", end: "17:00"}],
-                "Tuesday": [{start: "9:00", end: "17:00"}],
-                "Wednesday": [{start: "9:00", end: "17:00"}],
-                "Thursday": [{start: "9:00", end: "17:00"}],
-                "Friday": [{start: "9:00", end: "17:00"}],
-                "Saturday": [{start: "9:00", end: "17:00"}],
+                "Monday": [{start: "09:00", end: "17:00"}],
+                "Tuesday": [{start: "09:00", end: "17:00"}],
+                "Wednesday": [{start: "09:00", end: "17:00"}],
+                "Thursday": [{start: "09:00", end: "17:00"}],
+                "Friday": [{start: "09:00", end: "17:00"}],
+                "Saturday": [{start: "09:00", end: "17:00"}],
                 "Sunday": [],
             },
             timezone: "Pacific/Honolulu",

@@ -1,31 +1,23 @@
 <script>
     import {RadioGroup, RadioItem, Step, Stepper} from "@skeletonlabs/skeleton";
     import Schedule from "$lib/settings/Schedule.svelte";
+    import {settingsStore} from "../../../store/settingsStore.js";
 
 
-    let calendarSettings = {
-        url: "",
-        hoursFormat: 24,
-        calendars: [
-            {
-                availability: {
-                    "Monday": [{start: "9:00", end: "17:00"}],
-                    "Tuesday": [{start: "9:00", end: "17:00"}],
-                    "Wednesday": [{start: "9:00", end: "17:00"}],
-                    "Thursday": [{start: "9:00", end: "17:00"}],
-                    "Friday": [{start: "9:00", end: "17:00"}],
-                    "Saturday": [{start: "9:00", end: "17:00"}],
-                    "Sunday": [],
-                },
-                timezone: "Pacific/Honolulu",
-            },
-        ]
+    let calendarSettings;
+
+    settingsStore.subscribe(value => {
+
+        calendarSettings = value;
+    })
+    const handleComplete = () => {
+        console.log(calendarSettings)
     }
 </script>
 
 <div class="w-11/12 max-w-lg self-center">
 
-    <Stepper>
+    <Stepper on:complete={handleComplete}>
         <Step>
             <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
             <div class="flex flex-col gap-8">
@@ -37,7 +29,7 @@
                         short, descriptive, and memorable!</p>
                     <div class="flex justify-center items-center">
                         <p class="font-bold">calendash.com/</p><input class="input rounded-sm "
-                                                                      on:bind={calendarSettings.url}/>
+                                                                      bind:value={calendarSettings.url}/>
                     </div>
 
                 </div>
@@ -53,7 +45,7 @@
             </div>
 
         </Step>
-        <Step>
+        <Step locked="true">
             <svelte:fragment slot="header">Set you availability</svelte:fragment>
             <Schedule/>
         </Step>
