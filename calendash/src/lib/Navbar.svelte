@@ -3,6 +3,7 @@
     import {Drawer, getDrawerStore} from "@skeletonlabs/skeleton";
     import AvatarMenu from "$lib/AvatarMenu.svelte";
     import {authStore} from "../store/store.js";
+    import {settingsStore} from "../store/settingsStore.js";
 
     const drawerSettings = {
         id: 'example-3',
@@ -20,7 +21,7 @@
 
 </script>
 
-<div class="flex justify-center">
+<div class="flex justify-center shadow-md">
     <div class="flex justify-between self-center py-4 w-11/12 items-center">
         <div class="flex items-center justify-center flex-2 gap-4">
             <button class="flex md:hidden" on:click={handleDrawerOpen}>
@@ -33,10 +34,9 @@
             </a>
         </div>
         <div class="font-bold text-lg items-center justify-center flex-1 gap-8 hidden md:flex ">
-            <a href="/" class="hover:text-surface-500">Home</a>
             <a href="/product" class="hover:text-surface-500">Product</a>
-            <a href="/ressource" class="hover:text-surface-500">Ressource</a>
             <a href="/pricing" class="hover:text-surface-500">Pricing</a>
+            <a href="/calendar" class="hover:text-surface-500">My calendar</a>
         </div>
 
         <div class=" items-center justify-end gap-4">

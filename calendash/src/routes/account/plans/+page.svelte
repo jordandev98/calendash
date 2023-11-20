@@ -25,7 +25,7 @@
     }
 
 </script>
-<div class="flex flex-col w-11/12 self-center gap-8 pt-8">
+<div class="flex flex-col w-11/12 gap-8 pt-8">
     <ol class="breadcrumb">
         <li class="crumb"><a class="anchor" href="/elements/breadcrumbs">My account</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>

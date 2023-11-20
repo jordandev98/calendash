@@ -16,6 +16,7 @@ export const settingsStore = writable({
             },
             timezone: "Pacific/Honolulu",
             isValid: true,
+            events : []
         },
     ]
 });

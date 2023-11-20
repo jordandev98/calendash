@@ -6,6 +6,8 @@
     import {onMount} from "svelte";
     import {auth} from "../service/firebase/firebase.js";
     import {authStore} from "../store/store.js";
+    import {settingsStore} from "../store/settingsStore.js";
+    import {fetchSettings} from "../service/firebase/settings.js";
 
     initializeStores();
     storePopup.set({computePosition, autoUpdate, offset, shift, flip, arrow});
@@ -22,13 +24,20 @@
             if (!user) {
                 return;
             }
-            console.log(user)
+
 
             authStore.set({
                 user: auth.currentUser,
                 isLoading: false
             })
-
+            const settings = await fetchSettings(user.uid)
+            console.log(settings)
+            if (!settings) {
+                return
+            }
+            settingsStore.set(
+                settings
+            )
         })
 
 
@@ -39,7 +48,7 @@
 
 
 <main class="mainContainer flex flex-col w-full">
-    <div class="flex flex-col w-full min-h-screen bg-gradient-to-br from-primary-100 via-surface-100 to-secondary-100">
+    <div class="flex flex-col w-full min-h-screen bg-gray-50">
         <Navbar/>
         <slot/>
     </div>

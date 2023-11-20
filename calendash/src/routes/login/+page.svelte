@@ -6,8 +6,7 @@
 
     const handleGoogleLogin = async () => {
         try {
-            await authHandler.signInWithProvider();
-            goto("/")
+            authHandler.signInWithProvider();
         } catch (err) {
 
         }

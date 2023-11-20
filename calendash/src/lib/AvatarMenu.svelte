@@ -45,12 +45,18 @@
                 background="bg-primary-600" fill="fill-token"/>
     </button>
 
-    <div class="hidden card p-4 w-72 shadow-xl gap-4 rounded" data-popup="popupAvatar">
+    <div class="hidden card w-72 shadow-xl rounded" data-popup="popupAvatar">
+        <div class="flex flex-col gap-4 p-4">
+            <div class="flex flex-col gap-4">
+                <p class="font-semibold">Account settings</p>
+                <a href="/account">My account</a>
+            </div>
 
-        <div class="flex flex-col gap-4">
-            <a href="/account">My account</a>
 
-            <button on:click={handleDisconnect}>Sign out</button>
+            <div class="flex items-center justify-center">
+                <button class="btn variant-filled w-full" on:click={handleDisconnect}>Sign out</button>
+            </div>
+
         </div>
     </div>
 
