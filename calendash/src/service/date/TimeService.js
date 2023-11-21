@@ -57,6 +57,21 @@ export const checkIsCalendarValid = (calendar) => {
     return true; // Calendar is valid with no issues
 };
 
+export const formatDuration = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = remainingMinutes < 10 ? `0${remainingMinutes}` : remainingMinutes;
+
+    if (hours > 0) {
+        return `${formattedHours}h ${formattedMinutes} min`;
+    }
+
+    return `${formattedMinutes} min`;
+
+}
+
 export const timeOptions = [
     { value: '00:00', label: '00:00', keywords: '0000, 0' },
     { value: '00:15', label: '00:15', keywords: '0015, 15, 015' },

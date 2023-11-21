@@ -33,8 +33,8 @@
     </ol>
     <p class="text-2xl font-bold">Plans & Billing</p>
     {#if subscription}
-        <div class="card flex items-center p-8 gap-12">
-            <div class="flex flex-1 gap-8 justify-between">
+        <div class="bg-primary-100 rounded-md flex flex-col lg:flex-row w-fit items-center p-8 gap-12">
+            <div class="flex flex-1 gap-8 justify-between w-full flex-col lg:flex-row">
                 <div>
                     <p>Current plan</p>
                     <p class="text-xl font-bold">{getProductById(subscription.planId).name}</p>
