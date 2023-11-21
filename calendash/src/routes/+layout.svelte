@@ -47,7 +47,7 @@
 </script>
 
 
-<main class="mainContainer flex flex-col w-full">
+<main class="mainContainer flex flex-col ">
     <div class="flex flex-col w-full min-h-screen bg-gray-50">
         <Navbar/>
         <slot/>
