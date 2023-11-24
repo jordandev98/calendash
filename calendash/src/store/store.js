@@ -1,16 +1,20 @@
 import {writable} from "svelte/store";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth"
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    signInWithCustomToken,
+    GoogleAuthProvider
+} from "firebase/auth"
 
 import {goto} from "$app/navigation";
-import {auth, provider} from "../service/firebase/firebase.js";
-
+import {auth} from "../service/firebase/firebase.js";
 
 export const authStore = writable({
     user: null,
     loading: true,
 
 })
-
 
 export const authHandler = {
     signup: async (/** @type {string} */ email, /** @type {string} */ password) => {
@@ -28,9 +32,11 @@ export const authHandler = {
     logout: async () => {
         await signOut(auth)
     },
-    signInWithProvider: () => {
-        signInWithPopup(auth, provider).then()
+    signInWithProvider: async (token) => {
+        const credential = GoogleAuthProvider.credential(token);
+        await signInWithCustomToken(auth , token)
         goto("/")
     }
+
 
 }

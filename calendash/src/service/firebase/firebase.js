@@ -16,7 +16,9 @@ const firebaseConfig = {
     storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_MESSENGER_SENDER_ID,
     appId: import.meta.env.VITE_APP_ID,
-    measurementId: import.meta.env.VITE_MEASUREMENT_ID
+    measurementId: import.meta.env.VITE_MEASUREMENT_ID,
+    scopes: ['email', 'profile', 'https://www.googleapis.com/auth/calendar'],
+    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
 };
 
 

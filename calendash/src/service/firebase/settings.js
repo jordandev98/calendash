@@ -8,10 +8,10 @@ export const saveSettings = async (settings) => {
     const userId = auth.currentUser?.uid;
     if (!userId) throw new Error("User not logged in");
 
-    const userRef = doc(db, 'users', userId);
+    const settingsRef = doc(db, 'settings', userId);
 
     try {
-        await setDoc(userRef, {
+        await setDoc(settingsRef, {
             settings : settings
             // Add other user-related data here
         });
@@ -22,14 +22,13 @@ export const saveSettings = async (settings) => {
 
 
 export const fetchSettings = async (userId) => {
-    const userRef = doc(db, 'users', userId);
+    const userRef = doc(db, 'settings', userId);
 
     try {
         const docSnapshot = await getDoc(userRef);
         if (docSnapshot.exists()) {
             const userData = docSnapshot.data();
             if (userData.settings) {
-                console.log(userData.settings)
                 return userData.settings;
             } else {
                 console.log('Settings not found for this user');

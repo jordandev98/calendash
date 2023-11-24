@@ -8,10 +8,11 @@
     import {authStore} from "../store/store.js";
     import {settingsStore} from "../store/settingsStore.js";
     import {fetchSettings} from "../service/firebase/settings.js";
-    
+
     initializeStores();
     storePopup.set({computePosition, autoUpdate, offset, shift, flip, arrow});
     const authRoutes = ["/account"]
+
     onMount(() => {
 
         const unsubscribe = auth.onAuthStateChanged(async user => {
@@ -25,13 +26,11 @@
                 return;
             }
 
-
             authStore.set({
                 user: auth.currentUser,
                 isLoading: false
             })
             const settings = await fetchSettings(user.uid)
-            console.log(settings)
             if (!settings) {
                 return
             }
