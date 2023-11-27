@@ -1,6 +1,6 @@
 <script>
 
-import {insertEvent} from "../../service/calendar/calendar.js";
+    import {insertEvent} from "../../service/calendar/calendar.js";
 </script>
 
 

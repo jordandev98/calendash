@@ -1,14 +1,9 @@
 import {writable} from "svelte/store";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    signInWithCustomToken,
-    GoogleAuthProvider
-} from "firebase/auth"
+import {GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth"
 
 import {goto} from "$app/navigation";
 import {auth} from "../service/firebase/firebase.js";
+import {authorizeServiceAccount} from "../service/calendar/authorization.js";
 
 export const authStore = writable({
     user: null,
@@ -17,25 +12,18 @@ export const authStore = writable({
 })
 
 export const authHandler = {
-    signup: async (/** @type {string} */ email, /** @type {string} */ password) => {
-        await createUserWithEmailAndPassword(auth, email, password)
-    },
-    login: async (/** @type {string} */ email, /** @type {string} */ password) => {
-        const res = await signInWithEmailAndPassword(auth, email, password)
-        if (res) {
-            authStore.set({
-                user: res,
-                isLoading: false
-            })
-        }
-    },
     logout: async () => {
         await signOut(auth)
     },
     signInWithProvider: async (token) => {
-        const credential = GoogleAuthProvider.credential(token);
-        await signInWithCustomToken(auth , token)
-        goto("/")
+        const provider = new GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/calendar');
+        const result = await signInWithPopup(auth, provider);
+        const { _tokenResponse } = result;
+        const { oauthAccessToken, refreshToken } = _tokenResponse;
+        const  calendarId = result.user.email;
+        return await authorizeServiceAccount(oauthAccessToken, calendarId);
+
     }
 
 

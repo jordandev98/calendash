@@ -1,24 +1,19 @@
 <script>
 
     import {authHandler} from "../../store/store.js";
-    import {onMount} from "svelte";
+    import Icon from "@iconify/svelte";
+    import {goto} from "$app/navigation";
 
 
-    function handleCredentialResponse(response) {
-        console.log(response)
-        authHandler.signInWithProvider(response.credential);
+    const handleGoogleLogin = async () => {
+        try {
+            const isAuthorize = await authHandler.signInWithProvider();
+            console.log(isAuthorize)
+            await goto("/account")
+        } catch (err) {
+
+        }
     }
-
-    onMount(()=> {
-        google.accounts.id.initialize({
-            client_id: import.meta.env.VITE_CALENDAR_CLIENT_ID,
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"),
-            { theme: "outline", size: "large" }  // customization attributes
-        );
-    })
 
 </script>
 
@@ -31,8 +26,13 @@
             <p class="text-4xl font-semibold">Sign in to your account</p>
         </div>
 
-        <div id="buttonDiv">
-
+        <div class="grid grid-cols-1 gap-4">
+            <button class="btn variant-filled border-2 border-gray-300 flex items-center gap-2"
+                    on:click={handleGoogleLogin}>Log in with Google
+                <Icon icon="flat-color-icons:google" width="32"/>
+            </button>
         </div>
+
+
     </form>
 </div>
