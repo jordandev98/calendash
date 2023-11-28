@@ -14,7 +14,7 @@ export const settingsStore = writable({
                 "Saturday": [{start: "09:00", end: "17:00"}],
                 "Sunday": [],
             },
-            timezone: "Pacific/Honolulu",
+            timezone: "Pacific/Tahiti",
             isValid: true,
             events : []
         },
