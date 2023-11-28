@@ -1,52 +1,72 @@
-// Helper function to convert time to minutes
-const timeToMinutes = time => time.split(':').reduce((acc, time) => (60 * acc) + +time);
+export const getFreeTime = (busyTimes, workingHours, timeZone) => {
+    const startOfWeek = new Date();
+    startOfWeek.setHours(0, 0, 0, 0); // Set to the beginning of the week
 
-// Helper function to convert date to minutes
-const dateToMinutes = date => new Date(date).getHours() * 60 + new Date(date).getMinutes();
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6); // Set to the end of the week
 
-// Function to convert working hours to minutes
-const convertWorkingHoursToMinutes = workingHours => {
-    const workingHoursInMinutes = {};
-    for (const day in workingHours) {
-        workingHoursInMinutes[day] = workingHours[day].map(timeSlot => ({
-            startTime: timeToMinutes(timeSlot.startTime),
-            endTime: timeToMinutes(timeSlot.endTime)
-        }));
-    }
-    return workingHoursInMinutes;
-};
+    const availableSlots = {};
 
-// Function to convert busy times to minutes
-const convertBusyTimesToMinutes = busyTimes => busyTimes.map(timeSlot => ({
-    start: dateToMinutes(timeSlot.start),
-    end: dateToMinutes(timeSlot.end)
-}));
+    // Helper function to convert time to Pacific/Tahiti timezone
+    const convertToTahitiTime = (date) => {
+        return date.toLocaleString('en-US', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(',', '');
+    };
 
-// Main function to get free time
-export const getFreeTime = (busyTimes, workingHours) => {
-    const freeTimes = [];
-    const workingHoursInMinutes = convertWorkingHoursToMinutes(workingHours);
-    const busyTimesInMinutes = convertBusyTimesToMinutes(busyTimes);
+    // Iterate through each day of the week
+    for (let date = new Date(startOfWeek); date <= endOfWeek; date.setDate(date.getDate() + 1)) {
+        const dateString = date.toISOString().split('T')[0]; // Extract date in 'YYYY-MM-DD' format
 
-    for (const day in workingHoursInMinutes) {
-        for (const timeSlot of workingHoursInMinutes[day]) {
-            let slotStart = timeSlot.startTime;
+        const day = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get the day name
 
-            for (const busyTime of busyTimesInMinutes) {
-                if (busyTime.start <= slotStart && busyTime.end >= slotStart) {
-                    slotStart = busyTime.end;
+        if (workingHours.hasOwnProperty(day) && Array.isArray(workingHours[day]) && workingHours[day].length > 0) {
+            const dayWorkingHours = workingHours[day];
+
+            const dayStart = new Date(date);
+            const dayEnd = new Date(date);
+
+            // Set the day's working hours
+            dayStart.setHours(parseInt(dayWorkingHours[0].start.slice(0, 2)), parseInt(dayWorkingHours[0].start.slice(3)), 0, 0);
+            dayEnd.setHours(parseInt(dayWorkingHours[dayWorkingHours.length - 1].end.slice(0, 2)), parseInt(dayWorkingHours[dayWorkingHours.length - 1].end.slice(3)), 0, 0);
+
+            const todaySlots = [];
+
+            let startSlot = dayStart.getTime();
+            let endSlot = dayEnd.getTime();
+
+            busyTimes.forEach(busyTime => {
+                const busyStart = new Date(busyTime.start).getTime();
+                const busyEnd = new Date(busyTime.end).getTime();
+
+                if (busyEnd <= startSlot || busyStart >= endSlot) {
+                    return;
                 }
-            }
 
-            if (slotStart < timeSlot.endTime) {
-                freeTimes.push({
-                    day: day,
-                    startTime: `${Math.floor(slotStart / 60)}:${("0" + slotStart % 60).slice(-2)}`,
-                    endTime: `${Math.floor(timeSlot.endTime / 60)}:${("0" + timeSlot.endTime % 60).slice(-2)}`
+                if (busyStart > startSlot) {
+                    todaySlots.push({
+                        start: convertToTahitiTime(new Date(startSlot)),
+                        end: convertToTahitiTime(new Date(busyStart)),
+                        timeZone: timeZone
+                    });
+                }
+
+                startSlot = Math.max(startSlot, busyEnd);
+            });
+
+            if (startSlot < endSlot) {
+                todaySlots.push({
+                    start: convertToTahitiTime(new Date(startSlot)),
+                    end: convertToTahitiTime(new Date(endSlot)),
+                    timeZone: timeZone
                 });
             }
+
+            availableSlots[dateString] = todaySlots;
+        } else {
+            // If working hours are not defined or empty for the day, set an empty array for available slots
+            availableSlots[dateString] = [];
         }
     }
 
-    return freeTimes;
+    return availableSlots;
 };
+

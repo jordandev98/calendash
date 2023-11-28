@@ -1,6 +1,5 @@
 import {google} from "googleapis";
 import {JWT} from 'google-auth-library';
-import fetch from "node-fetch";
 import {getFreeTime} from "./CalendarScheduleUtils.js";
 
 const createJwt = async () => {
@@ -46,36 +45,22 @@ export const getEvents = async (req, res) => {
 
 export const insertEvent = async (req, res) => {
     try {
-        const serviceAccountCredential = JSON.parse(process.env.SERVICE_ACCOUNT_CREDENTIAL);
-        const calendarId = "oo.jordanlee@gmail.com"
-        const accessToken = "ya29.a0AfB_byCfcvdtQHLAj-y4pntz0g0o5Bv-jcEMoLLZrE_QM0Tp6WU0aay9TvtT5tCJz86x5J4iVK8UaKU9nNiOdJECu5TfjWaJH8rBDSutNaYAxM_rdhx1s7gjsMkU76Lsr5FbcwpidMmVaHoG8QpMIiiS8eQ6zWmkFoAaCgYKAYISARMSFQHGX2MiPNIradLr-qHnunNVaxU6cA0170"
-        const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/acl`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                role: 'writer', // Set appropriate access level (writer, reader, etc.)
-                scope: {
-                    type: 'user',
-                    value: serviceAccountCredential.client_email, // Service account's email
-                },
-            }),
+        const calendar = await getCalendar()
+        const calendarId = req.params.calendarId; // Replace with your calendar ID
+        const event = req.body; // Event details from the request body
+
+        // Insert the event
+        const response = await calendar.events.insert({
+            calendarId,
+            requestBody: event,
         });
 
-        if (response.ok) {
-            console.log('Calendar shared successfully!');
-            // Handle success
-        } else {
-            console.error('Failed to share calendar:', response.statusText);
-            // Handle error
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        // Handle error
+        res.json(response.data);
+    } catch (err) {
+        res.status(500).json({error: err});
     }
 }
+
 
 export const setUpWorkingHours = async (req, res) => {
     try {
@@ -106,7 +91,7 @@ export const getFreeTimes = async (req, res) => {
     const query = {
         timeMin: start,
         timeMax: end,
-        timeZone: 'Tahiti/Pacific',
+        timeZone: workingSchedule.timeZone,
         items: [{id: calendarId}],
     };
 
@@ -119,7 +104,7 @@ export const getFreeTimes = async (req, res) => {
 
         const busyTimes = response.data.calendars[calendarId].busy;
         console.log(busyTimes)
-        const freeTime = getFreeTime(busyTimes, workingSchedule.workingHours)
+        const freeTime = getFreeTime(busyTimes, workingSchedule.workingHours , workingSchedule.timeZone)
         res.json(freeTime)
     });
 }

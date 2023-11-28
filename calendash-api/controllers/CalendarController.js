@@ -7,6 +7,6 @@ const calendarController = express.Router();
 calendarController.get("/event/:calendarId", getEvents)
 calendarController.post("/event/:calendarId", insertEvent)
 calendarController.put("/workingHours/:calendarId", setUpWorkingHours)
-calendarController.get("/event/free/:calendarId", getFreeTimes)
+calendarController.post("/event/timeslots/:calendarId", getFreeTimes)
 
 export default calendarController

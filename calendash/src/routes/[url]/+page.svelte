@@ -2,6 +2,7 @@
     import {formatDuration} from "../../service/date/TimeService.js";
     import Icon from "@iconify/svelte";
     import {onMount} from "svelte";
+    import Calendar from "$lib/Calendar.svelte";
 
     export let data;
 
@@ -35,6 +36,10 @@
         }
     }
 
+    const setSelectedEvent = (event) => {
+        selectedEvent = event
+    }
+
     onMount(async () => {
         // Fetch the busy times and working hours from your API
         freeTimes = await fetchFreeTimes();
@@ -47,7 +52,8 @@
     <p>1- Select an appointement type</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {#each calendars.calendars[calendarNumber].events as event}
-            <button class="btn flex flex-col items-start bg-gray-50 p-4 gap-2 rounded bg-">
+            <button class="btn flex flex-col items-start bg-gray-50 p-4 gap-2 rounded bg-"
+                    on:click={()=> setSelectedEvent(event)}>
                 <span class="text-xl font-semibold">{event.name}</span>
                 {#if event.duration}
                     <span class="flex items-center gap-1"><Icon icon="mdi:clock-outline"
@@ -61,5 +67,13 @@
             </button>
         {/each}
     </div>
+
+    {#if selectedEvent && freeTimes}
+        <p>{selectedEvent.duration}</p>
+        <Calendar/>
+        {#each Object.keys(freeTimes) as timeSlot}
+            <p>{timeSlot}</p>
+        {/each}
+    {/if}
 
 </div>
