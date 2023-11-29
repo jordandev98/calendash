@@ -48,9 +48,9 @@
 </script>
 
 
-<div class="flex flex-col w-11/12 self-center gap-4 pt-12">
+<div class="flex flex-col w-11/12 self-center gap-8 py-12">
     <p>1- Select an appointement type</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {#each calendars.calendars[calendarNumber].events as event}
             <button class="btn flex flex-col items-start bg-gray-50 p-4 gap-2 rounded bg-"
                     on:click={()=> setSelectedEvent(event)}>
@@ -67,13 +67,11 @@
             </button>
         {/each}
     </div>
+    <div>
+        {#if selectedEvent && freeTimes}
+            <Calendar {freeTimes} {selectedEvent}/>
+        {/if}
+    </div>
 
-    {#if selectedEvent && freeTimes}
-        <p>{selectedEvent.duration}</p>
-        <Calendar/>
-        {#each Object.keys(freeTimes) as timeSlot}
-            <p>{timeSlot}</p>
-        {/each}
-    {/if}
 
 </div>
