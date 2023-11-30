@@ -13,11 +13,17 @@
         startOfToday,
     } from 'date-fns';
     import Icon from "@iconify/svelte";
+    import {eventStore} from "../store/eventStore.js";
 
     export let freeTimes;
-    export let selectedEvent;
 
-    let selectedTime;
+    let currentEvent;
+
+    eventStore.subscribe(value => {
+        currentEvent = value;
+        console.log(currentEvent)
+    })
+
 
     let colStartClasses = [
         '',
@@ -59,7 +65,7 @@
 
     function generateTimeSlots(slot) {
         const timeSlots = [];
-        const roundedDuration = roundDurationToNearest15(selectedEvent.duration);
+        const roundedDuration = roundDurationToNearest15(currentEvent.duration);
 
         let currentTime = new Date(slot.start);
         let currentEndDate = new Date(slot.end);
@@ -84,11 +90,28 @@
         return classes.filter(Boolean).join(' ');
     }
 
+    const handleSelectSlot = (slot) => {
+        let eventStartTime = slot.start;
+        let newEventStore = {
+            ...currentEvent,
+            payload: {
+                ...currentEvent.payload,
+                start: {
+                    dateTime: eventStartTime
+                },
+                end: {
+                    dateTime: addMinutes(eventStartTime, currentEvent.duration)
+                }
+            }
+        };
+        eventStore.set(newEventStore);
+    }
+
     updateDays();
 </script>
 
 <div class="bg-gray-50 p-8 w-full ">
-
+    {#if freeTimes}
         <div class="grid md:grid-cols-2 md:divide-x md:divide-gray-200 gap-4">
             <div class="max-w-lg ">
                 <div class="flex items-center">
@@ -137,8 +160,9 @@
                                         {format(day, 'd')}
                                     </time>
                                 </button>
-                                {:else}
-                                <button class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-gray-400" disabled>
+                            {:else}
+                                <button class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-gray-400"
+                                        disabled>
                                     <time datetime={format(day, 'yyyy-MM-dd')}>
                                         {format(day, 'd')}
                                     </time>
@@ -151,7 +175,7 @@
             </div>
 
 
-            <div class="flex flex-col justify-between md:pl-8 w-full">
+            <div class="flex flex-col justify-between md:pl-8 w-full gap-8">
                 <div class="grid grid-cols-1 gap-4">
                     <h2 class="font-semibold text-gray-900">
                         <time datetime={format(selectedDay, 'yyyy-MM-dd')}>{format(selectedDay, 'MMM dd, yyyy')}</time>
@@ -159,16 +183,20 @@
                     <div class="flex gap-4 flex-wrap">
                         {#each freeTimes[format(selectedDay, 'yyyy-MM-dd')] as timeSlot}
                             {#each generateTimeSlots(timeSlot) as slots}
-                                <button class="btn variant-glass-surface rounded" on:click={() => selectedTime = slots}>{format(slots.start, 'HH:mm')}</button>
+                                {#if isEqual(currentEvent.payload.start.dateTime, slots.start) }
+                                    <button class="btn variant-filled-surface rounded">{format(slots.start, 'HH:mm')}</button>
+                                {:else}
+                                    <button class="btn variant-glass-surface rounded"
+                                            on:click={() => handleSelectSlot(slots)}>{format(slots.start, 'HH:mm')}</button>
+                                {/if}
                             {/each}
                         {/each}
                     </div>
 
                 </div>
-                {#if selectedTime}
-                    <button class="btn variant-filled">Next</button>
-                {/if}
             </div>
 
         </div>
+    {/if}
 </div>
+
