@@ -1,6 +1,6 @@
 <script>
 
-    import {settingsStore} from "../../../store/settingsStore.js";
+    import {settingsStore} from "../../../store/settingsStore.ts";
     import EventList from "$lib/settings/EventList.svelte";
 
     let settings

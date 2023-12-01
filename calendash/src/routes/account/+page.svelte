@@ -1,5 +1,5 @@
 <script>
-    import {settingsStore} from "../../store/settingsStore.js";
+    import {settingsStore} from "../../store/settingsStore.ts";
     import {clipboard} from "@skeletonlabs/skeleton";
 
     const calendarNumber = 0;

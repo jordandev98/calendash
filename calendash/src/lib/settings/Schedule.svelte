@@ -1,41 +1,53 @@
-<script>
+<script lang="ts">
     import Icon from "@iconify/svelte";
-    import {addHours, deleteHours, settingsStore} from "../../store/settingsStore.js";
     import {checkIsCalendarValid, checkOverlap, timeOptions} from "../../service/date/TimeService.js";
+    import type {UserCalendar} from "../../data/userCalendar"
+    import {WeekDays} from "../../data/userCalendar"
+    import {addHours, deleteHours, settingsStore} from "../../store/settingsStore.ts";
 
-    let calendarNumber = 0;
-    let calendarSettings;
+    export let pageNumber:number;
 
+    let currentCalendar: UserCalendar;
+    const calendarNumber = 0
 
     settingsStore.subscribe(value => {
-        calendarSettings = value;
+        currentCalendar = value[0]
+        console.log(currentCalendar)
     })
 
-
-    function handleDeleteHoursByIndex(day, i) {
-        deleteHours(day, i, calendarNumber)
+    function handleDeleteHoursByIndex(day: string, i: number): void {
+        const weekday = toWeekDay(day)
+        deleteHours(weekday, i, calendarNumber, pageNumber)
     }
 
-    function handleAddHour(day) {
-        console.log(calendarSettings)
-        addHours(day, calendarNumber)
+    function handleAddHour(day: string): void {
+        const weekday = toWeekDay(day)
+        addHours(weekday, calendarNumber, pageNumber)
     }
 
     function handleCalendar() {
-        const isValid = checkIsCalendarValid(calendarSettings.calendars[calendarNumber]);
+        const isValid: boolean = checkIsCalendarValid(currentCalendar.calendars[pageNumber]);
 
-        let newCalendars = [...calendarSettings.calendars]; // Copy the calendars array
+        let newCalendars = [...currentCalendar.calendars]; // Copy the calendars array
 
         // Update the isValid property of the specific calendar
-        newCalendars[calendarNumber] = {
-            ...newCalendars[calendarNumber],
+        newCalendars[pageNumber] = {
+            ...newCalendars[pageNumber],
             isValid: isValid,
         };
 
         settingsStore.set({
-            ...calendarSettings,
+            ...currentCalendar,
             calendars: newCalendars,
         });
+
+    }
+
+    function toWeekDay(dayString: string): WeekDays | undefined {
+        if (Object.values(WeekDays).includes(dayString as WeekDays)) {
+            return dayString as WeekDays;
+        }
+        return undefined;
 
     }
 
@@ -44,9 +56,9 @@
 <div>
 
     <p>Create your schedule</p>
-    {#if calendarSettings}
+    {#if currentCalendar}
         <div class="flex flex-col gap-1">
-            {#each Object.entries(calendarSettings.calendars[calendarNumber].availability) as [day, hours]}
+            {#each Object.entries(currentCalendar.calendars[calendarNumber].schedule) as [day, hours]}
                 <span class="font-semibold">{day}</span>
                 <div class="flex justify-between">
 

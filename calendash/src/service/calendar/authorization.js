@@ -1,7 +1,6 @@
 export const authorizeServiceAccount = async( accessToken , calendarId) => {
     try {
         const serviceAccountCredential = JSON.parse(import.meta.env.VITE_SERVICE_ACCOUNT_CREDENTIAL);
-        console.log(serviceAccountCredential)
         const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/acl`, {
             method: 'POST',
             headers: {

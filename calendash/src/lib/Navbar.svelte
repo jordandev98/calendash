@@ -3,7 +3,6 @@
     import {Drawer, getDrawerStore} from "@skeletonlabs/skeleton";
     import AvatarMenu from "$lib/AvatarMenu.svelte";
     import {authStore} from "../store/store.js";
-    import {settingsStore} from "../store/settingsStore.js";
 
     const drawerSettings = {
         id: 'example-3',

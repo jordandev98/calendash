@@ -6,7 +6,7 @@
     import {onMount} from "svelte";
     import {auth} from "../service/firebase/firebase.js";
     import {authStore} from "../store/store.js";
-    import {settingsStore} from "../store/settingsStore.js";
+    import {settingsStore} from "../store/settingsStore.ts";
     import {fetchSettings} from "../service/firebase/settings.js";
 
     initializeStores();
@@ -30,13 +30,13 @@
                 user: auth.currentUser,
                 isLoading: false
             })
-            const settings = await fetchSettings(user.uid)
-            if (!settings) {
-                return
-            }
-            settingsStore.set(
-                settings
-            )
+            // const settings = await fetchSettings(user.uid)
+            // if (!settings) {
+            //     return
+            // }
+            // settingsStore.set(
+            //     settings
+            // )
         })
 
 

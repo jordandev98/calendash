@@ -1,6 +1,6 @@
 <script>
     import Icon from "@iconify/svelte";
-    import {settingsStore} from "../../store/settingsStore.js";
+    import {settingsStore} from "../../store/settingsStore.ts";
     import {getToastStore, popup, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
     import {formatDuration} from "../../service/date/TimeService.js";
     import {saveSettings} from "../../service/firebase/settings.js";

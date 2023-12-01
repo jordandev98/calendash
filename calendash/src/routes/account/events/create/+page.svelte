@@ -1,5 +1,5 @@
 <script>
-    import {settingsStore} from "../../../../store/settingsStore.js";
+    import {settingsStore} from "../../../../store/settingsStore.ts";
     import {goto} from "$app/navigation";
     import Icon from "@iconify/svelte";
     import {formatDuration} from "../../../../service/date/TimeService.js";
@@ -11,7 +11,8 @@
     let event = {
         name: "",
         duration: 30,
-        location: ""
+        location: "",
+        imageUrl: ""
     }
 
     settingsStore.subscribe(value => {
