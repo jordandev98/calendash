@@ -1,5 +1,5 @@
 <script>
-    import {formatDuration} from "../../service/date/TimeService.js";
+    import {formatDuration} from "../../service/date/TimeService.ts";
     import Icon from "@iconify/svelte";
     import {onMount} from "svelte";
     import Calendar from "$lib/Calendar.svelte";

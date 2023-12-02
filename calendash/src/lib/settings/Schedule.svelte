@@ -3,43 +3,31 @@
     import {checkIsCalendarValid, checkOverlap, timeOptions} from "../../service/date/TimeService.js";
     import type {UserCalendar} from "../../data/userCalendar"
     import {WeekDays} from "../../data/userCalendar"
-    import {addHours, deleteHours, settingsStore} from "../../store/settingsStore.ts";
-
-    export let pageNumber:number;
+    import {addHours, deleteHours, settingsStore, updateIsValid} from "../../store/settingsStore";
 
     let currentCalendar: UserCalendar;
     const calendarNumber = 0
 
     settingsStore.subscribe(value => {
-        currentCalendar = value[0]
-        console.log(currentCalendar)
+        currentCalendar = value
     })
 
     function handleDeleteHoursByIndex(day: string, i: number): void {
         const weekday = toWeekDay(day)
-        deleteHours(weekday, i, calendarNumber, pageNumber)
+        deleteHours(weekday, i, calendarNumber)
+        handleCalendar()
     }
 
     function handleAddHour(day: string): void {
         const weekday = toWeekDay(day)
-        addHours(weekday, calendarNumber, pageNumber)
+        addHours(weekday, calendarNumber)
+        handleCalendar()
     }
 
     function handleCalendar() {
-        const isValid: boolean = checkIsCalendarValid(currentCalendar.calendars[pageNumber]);
+        const isValid: boolean = checkIsCalendarValid(currentCalendar.calendars[calendarNumber]);
 
-        let newCalendars = [...currentCalendar.calendars]; // Copy the calendars array
-
-        // Update the isValid property of the specific calendar
-        newCalendars[pageNumber] = {
-            ...newCalendars[pageNumber],
-            isValid: isValid,
-        };
-
-        settingsStore.set({
-            ...currentCalendar,
-            calendars: newCalendars,
-        });
+        updateIsValid(calendarNumber , isValid)
 
     }
 

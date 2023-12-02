@@ -2,8 +2,8 @@
     import Icon from "@iconify/svelte";
     import {settingsStore} from "../../store/settingsStore.ts";
     import {getToastStore, popup, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
-    import {formatDuration} from "../../service/date/TimeService.js";
-    import {saveSettings} from "../../service/firebase/settings.js";
+    import {formatDuration} from "../../service/date/TimeService.ts";
+    import {saveUserCalendar} from "../../service/firebase/settings.ts";
 
     let settings
     let calendarNumber = 0
@@ -28,7 +28,7 @@
         let bg = "variant-filled"
         isLoading = true;
         try {
-            await saveSettings(settings);
+            await saveUserCalendar(settings);
         } catch (err) {
             message = err?.message;
             message = message ? message : "Your changed could not be saved"

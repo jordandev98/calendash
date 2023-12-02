@@ -1,15 +1,30 @@
 <script lang="ts">
     import {Step, Stepper} from "@skeletonlabs/skeleton";
-    import {initialUserData, settingsStore} from "../../../../../store/settingsStore";
-    import {saveSettings} from "../../../../../service/firebase/settings.js"
+    import {settingsStore, updateCalendarId} from "../../../../../store/settingsStore";
+    import {saveUserCalendar} from "../../../../../service/firebase/settings.ts"
     import Schedule from "$lib/settings/Schedule.svelte";
+    import type {UserCalendar} from "../../../../../data/userCalendar";
+    import {auth} from "../../../../../service/firebase/firebase";
 
-    let currentCalendar = initialUserData
+    let currentCalendar: UserCalendar;
 
-    const pageNumber: number = $settingsStore.length -1
+    settingsStore.subscribe(value => {
+        currentCalendar = value
+    })
 
-    const handleComplete = () => {
-        saveSettings(currentCalendar)
+
+    const calendarNumber: number = $settingsStore.calendars.length - 1
+
+    const updateDefaultCalendar = async() => {
+        const calendarId = auth.currentUser.email
+        updateCalendarId(calendarNumber , calendarId)
+
+    }
+
+    const handleComplete = async() => {
+
+        await updateDefaultCalendar()
+        await saveUserCalendar($settingsStore)
     }
 </script>
 
@@ -35,10 +50,9 @@
                 </div>
 
             </Step>
-            <Step locked={!currentCalendar.calendars[0].isValid}>
-                <svelte:fragment slot="header">Set you availability</svelte:fragment>
-                {currentCalendar.calendars[0].isValid}
-                <Schedule {pageNumber} />
+            <Step locked={!currentCalendar.calendars[calendarNumber].isValid}>
+                <svelte:fragment slot="header">Create you schedule</svelte:fragment>
+                <Schedule/>
             </Step>
             <!-- ... -->
         </Stepper>

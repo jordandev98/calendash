@@ -2,8 +2,8 @@
     import {settingsStore} from "../../../../store/settingsStore.ts";
     import {goto} from "$app/navigation";
     import Icon from "@iconify/svelte";
-    import {formatDuration} from "../../../../service/date/TimeService.js";
-    import {saveSettings} from "../../../../service/firebase/settings.js";
+    import {formatDuration} from "../../../../service/date/TimeService.ts";
+    import {saveUserCalendar} from "../../../../service/firebase/settings.ts";
     import {ProgressRadial} from "@skeletonlabs/skeleton";
 
     let calendarSettings;
@@ -24,7 +24,7 @@
         const calendarIndex = 0; // Assuming you're working with the first calendar in the array
         calendarSettings.calendars[calendarIndex].events.push(event); // Push the new event to the events array
         settingsStore.set(calendarSettings); // Update the store
-        await saveSettings(calendarSettings)
+        await saveUserCalendar(calendarSettings)
         isLoading = false
         goto("/account/events")
     }

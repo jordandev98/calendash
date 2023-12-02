@@ -6,8 +6,8 @@
     import {onMount} from "svelte";
     import {auth} from "../service/firebase/firebase.js";
     import {authStore} from "../store/store.js";
-    import {settingsStore} from "../store/settingsStore.ts";
-    import {fetchSettings} from "../service/firebase/settings.js";
+    import {fetchSettings} from "../service/firebase/settings.ts";
+    import {calendarStore} from "../store/calendarStore.js";
 
     initializeStores();
     storePopup.set({computePosition, autoUpdate, offset, shift, flip, arrow});
@@ -30,13 +30,13 @@
                 user: auth.currentUser,
                 isLoading: false
             })
-            // const settings = await fetchSettings(user.uid)
-            // if (!settings) {
-            //     return
-            // }
-            // settingsStore.set(
-            //     settings
-            // )
+            const userCalendar = await fetchSettings()
+            if (!userCalendar) {
+                return
+            }
+            calendarStore.set(
+                userCalendar
+            )
         })
 
 

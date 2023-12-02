@@ -18,12 +18,10 @@
 <div class="flex flex-col w-11/12 py-12">
     <button class="btn variant-filled-primary" on:click={handleAddNewCalendar}>Add new appointement page</button>
     {#if calendarSettings}
-        {#each calendarSettings as calendar}
-            <div>
-                <p>{calendar.url}</p>
-                <p>{calendar.calendars.length}</p>
-            </div>
-        {/each}
+        <div>
+            <p>{calendarSettings.url}</p>
+            <p>{calendarSettings.calendars.length}</p>
+        </div>
 
     {/if}
 </div>

@@ -19,7 +19,7 @@
 </script>
 
 <div class="flex flex-col self-center w-11/12 min-h-screen">
-    <div class="flex flex-col gap-4 items-center justify-center h-[35vh] gap-8">
+    <div class="flex flex-col items-center justify-center h-[35vh] gap-8">
         <div class="flex flex-col justify-center  gap-2">
             <div>
                 <p class="text-4xl font-bold text-center">The smart and simple way </p>

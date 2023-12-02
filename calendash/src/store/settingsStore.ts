@@ -1,5 +1,5 @@
 import {writable} from 'svelte/store';
-import {ScheduleEntry, UserCalendar, WeekDays} from "../data/userCalendar.ts";
+import type {ScheduleEntry, UserCalendar, WeekDays} from "../data/userCalendar.ts";
 
 
 export const initialUserData: UserCalendar =
@@ -7,6 +7,7 @@ export const initialUserData: UserCalendar =
         url: '',
         calendars: [
             {
+                id: "",
                 schedule: {
                     Monday: [{start: '09:00', end: '17:00'}],
                     Tuesday: [{start: '09:00', end: '17:00'}],
@@ -18,36 +19,27 @@ export const initialUserData: UserCalendar =
                 },
                 timezone: 'Pacific/Tahiti',
                 isValid: true,
-                events: [
-                    {
-                        id: undefined,
-                        name: '',
-                        duration: 30,
-                        location: '',
-                        imageUrl: '',
-                    },
-                ],
-                email: '',
+                events: [],
             },
         ],
     };
 
 // Initialize your store with the initial calendar settings
-export const settingsStore = writable<UserCalendar[]>([initialUserData])
+export const settingsStore = writable<UserCalendar>(initialUserData)
 
-export const addHours = (day: WeekDays, calendarNumber: number, pageNumber: number) => {
+export const addHours = (day: WeekDays, calendarNumber: number) => {
     settingsStore.update((settings) => {
-        const updatedUserCalendars = [...settings];
+        const updatedUserCalendars = {...settings};
         const dayArray =
-            updatedUserCalendars[pageNumber].calendars[calendarNumber].schedule[day]; // Assuming it's always the first calendar
+            updatedUserCalendars.calendars[calendarNumber].schedule[day]; // Assuming it's always the first calendar
 
         const updatedSchedule = updateSchedule(dayArray);
         console.log(updatedSchedule);
 
         if (!dayArray || dayArray.length === 0) {
-            updatedUserCalendars[pageNumber].calendars[calendarNumber].schedule[day] = updatedSchedule;
+            updatedUserCalendars.calendars[calendarNumber].schedule[day] = updatedSchedule;
         } else {
-            updatedUserCalendars[pageNumber].calendars[calendarNumber].schedule[day].push(...updatedSchedule);
+            updatedUserCalendars.calendars[calendarNumber].schedule[day].push(...updatedSchedule);
         }
 
         return updatedUserCalendars;
@@ -72,12 +64,12 @@ const updateSchedule = (dayArray: ScheduleEntry[]) => {
     return [{start: `${defaultHour}:${defaultMinute}`, end: newEnd}];
 };
 
-export const deleteHours = (day: WeekDays, i: number, calendarNumber: number, pageNumber: number) => {
+export const deleteHours = (day: WeekDays, i: number, calendarNumber: number) => {
     settingsStore.update((settings) => {
         const updatedSettings = JSON.parse(JSON.stringify(settings)); // Deep clone settings
 
         // Assuming it's always the first calendar
-        const calendar = updatedSettings[pageNumber]?.calendars[calendarNumber];
+        const calendar = updatedSettings.calendars[calendarNumber];
 
         if (calendar) {
             const dayArray = calendar.schedule[day];
@@ -91,3 +83,27 @@ export const deleteHours = (day: WeekDays, i: number, calendarNumber: number, pa
         return updatedSettings;
     });
 };
+
+
+export const updateIsValid = (calendarNumber: number, isValid: boolean) => {
+    settingsStore.update((settings) => {
+        const updatedSettings = {...settings}; // Clone the settings array
+
+        if (updatedSettings.calendars && updatedSettings.calendars[calendarNumber]
+        ) {
+            const calendar = updatedSettings.calendars[calendarNumber];
+            // Update isValid if the calendar is found
+            calendar.isValid = isValid;
+        }
+
+        return updatedSettings; // Return the updated settings
+    });
+};
+
+export function updateCalendarId(calendarIndex: number, newId: string): void {
+    settingsStore.update((calendar) => {
+        const updatedCalendars = {...calendar};
+        updatedCalendars.calendars[calendarIndex].id = newId;
+        return updatedCalendars;
+    });
+}

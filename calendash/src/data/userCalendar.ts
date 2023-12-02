@@ -4,6 +4,7 @@ export interface Event {
     duration: number;
     location: string;
     imageUrl: string;
+    price: number;
 }
 export enum WeekDays {
     Monday = 'Monday',
@@ -21,11 +22,11 @@ export interface ScheduleEntry {
 }
 
 export interface CalendarEntry {
+    id: string;
     schedule: Record<WeekDays, ScheduleEntry[]>;
     timezone: string;
     isValid: boolean;
     events: Event[];
-    email: string;
 }
 
 export interface UserCalendar {

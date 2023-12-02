@@ -1,9 +1,12 @@
-export const validateTimeFormat = (time) => {
+import type {ScheduleEntry} from "../../data/userCalendar";
+import type {CalendarEntry} from "../../data/userCalendar";
+
+export const validateTimeFormat = (time:string):boolean => {
     const timeFormat = /^(0[0-9]|1[0-9]|2[0-3]):(00|15|30|45)$/;
     return timeFormat.test(time);
 }
 
-export const checkOverlap = (hours) =>  {
+export const checkOverlap = (hours:ScheduleEntry[]):boolean =>  {
     // Sort slots by start time
     hours.sort((a, b) => {
         return a.start.localeCompare(b.start);
@@ -21,43 +24,36 @@ export const checkOverlap = (hours) =>  {
     return false; // No overlapping slots
 }
 
-export const isStartEndHoursInOrder = (hours) => {
+export const isStartEndHoursInOrder = (hours:ScheduleEntry) => {
     return hours.start < hours.end
 }
 
-export const checkIsCalendarValid = (calendar) => {
-    console.log('Checking calendar')
-    for (const [day, hours] of Object.entries(calendar.availability)) {
+export const checkIsCalendarValid = (calendar:CalendarEntry) => {
+    for (const [day, hours] of Object.entries(calendar.schedule)) {
         // Check if time format is valid for each slot
         const invalidTimeFormat = hours.some(slot => !validateTimeFormat(slot.start) || !validateTimeFormat(slot.end));
         const invalidOrder = hours.some(slot => !isStartEndHoursInOrder(slot));
 
         if (invalidOrder) {
-            console.log(hours)
-            console.log(`Invalid time f`);
             return false
         }
 
         if (invalidTimeFormat) {
-            console.log(`Invalid time format found for ${day}`);
             return false; // Time format is invalid
         }
 
         // Check for overlapping time slots for each day
         const overlapping = checkOverlap(hours);
         if (overlapping) {
-            console.log(`Overlapping time slots found for ${day}`);
             return false; // Overlapping slots found
         }
 
-        // Additional conditions can be added here if needed
-        // e.g., checking for maximum slots, empty slots, etc.
     }
 
-    return true; // Calendar is valid with no issues
+    return true;
 };
 
-export const formatDuration = (minutes) => {
+export const formatDuration = (minutes:number):string => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
 
