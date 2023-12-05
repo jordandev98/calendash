@@ -23,6 +23,7 @@ export interface ScheduleEntry {
 
 export interface CalendarEntry {
     id: string;
+    name : string;
     schedule: Record<WeekDays, ScheduleEntry[]>;
     timezone: string;
     isValid: boolean;

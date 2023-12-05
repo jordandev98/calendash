@@ -16,14 +16,14 @@
 
         <div class="flex flex-col gap-2 p-4 bg-gray-50">
             <p class="text-lg font-semibold">My calendars pages</p>
-                            <div>
-                                <a class="text-blue-600 dark:text-blue-500 hover:underline"
-                                   href={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>{calendarSettings.url ? import.meta.env.VITE_BASE_URL + "/" + calendarSettings.url : "" }</a>
-                                <button class="btn variant-filled-primary"
-                                        use:clipboard={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>
-                                    Copy
-                                </button>
-                            </div>
+            <div>
+                <a class="text-blue-600 dark:text-blue-500 hover:underline"
+                   href={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>{calendarSettings.url ? import.meta.env.VITE_BASE_URL + "/" + calendarSettings.url : "" }</a>
+                <button class="btn variant-filled-primary"
+                        use:clipboard={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>
+                    Copy
+                </button>
+            </div>
 
         </div>
     {:else}

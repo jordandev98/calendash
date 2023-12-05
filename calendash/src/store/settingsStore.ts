@@ -8,6 +8,7 @@ export const initialUserData: UserCalendar =
         calendars: [
             {
                 id: "",
+                name: "",
                 schedule: {
                     Monday: [{start: '09:00', end: '17:00'}],
                     Tuesday: [{start: '09:00', end: '17:00'}],

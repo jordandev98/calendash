@@ -30,7 +30,7 @@
                 },
                 body: JSON.stringify({
                     timeZone: calendarBody.timezone,
-                    workingHours: calendarBody.availability
+                    workingHours: calendarBody.schedule
                 })
             });
             if (!res.ok) { // res.ok checks if the HTTP response status is 200-299

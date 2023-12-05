@@ -15,13 +15,13 @@
 
     const calendarNumber: number = $settingsStore.calendars.length - 1
 
-    const updateDefaultCalendar = async() => {
+    const updateDefaultCalendar = async () => {
         const calendarId = auth.currentUser.email
-        updateCalendarId(calendarNumber , calendarId)
+        updateCalendarId(calendarNumber, calendarId)
 
     }
 
-    const handleComplete = async() => {
+    const handleComplete = async () => {
 
         await updateDefaultCalendar()
         await saveUserCalendar($settingsStore)
@@ -46,6 +46,17 @@
                                                                           bind:value={currentCalendar.url}/>
                         </div>
 
+                    </div>
+                </div>
+
+            </Step>
+            <Step locked={!currentCalendar.calendars[calendarNumber].name}>
+                <svelte:fragment slot="header"><p>Choose a name!</p></svelte:fragment>
+                <div class="flex flex-col gap-8">
+                    <p>This is the name your clients will see when selecting a calendar.</p>
+                    <div class="flex flex-col ">
+                        <span class="font-semibold">Calendar name</span>
+                        <input class={"input rounded-sm "} bind:value={currentCalendar.calendars[calendarNumber].name}/>
                     </div>
                 </div>
 
