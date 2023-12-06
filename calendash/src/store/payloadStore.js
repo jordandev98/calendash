@@ -1,6 +1,6 @@
 import {writable} from "svelte/store";
 
-export const eventStore = writable({
+export const payloadStore = writable({
     "payload" : {
         "summary": "",
         "location": "",

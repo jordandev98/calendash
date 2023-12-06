@@ -1,17 +1,31 @@
 <script>
 
-    import {authHandler} from "../../store/store.js";
+    import {authHandler, authStore} from "../../store/store.js";
     import Icon from "@iconify/svelte";
     import {goto} from "$app/navigation";
+    import {getToastStore, Toast} from "@skeletonlabs/skeleton";
 
+    const handleAuthorizationError = () => {
+        toastStore.trigger({message: "Your account has not authorized to access your calendar! Please retry"})
+        authStore.set({
+            user: null,
+            loading: false,
+        })
+    }
 
+    const toastStore = getToastStore();
     const handleGoogleLogin = async () => {
         try {
-            const isAuthorize = await authHandler.signInWithProvider();
-            console.log(isAuthorize)
-            await goto("/account")
-        } catch (err) {
+            const res = await authHandler.signInWithProvider();
+            console.log(res)
+            if (res.status < 300) {
+                await goto("/account")
+                return;
+            }
 
+            handleAuthorizationError()
+        } catch (err) {
+            handleAuthorizationError()
         }
     }
 
@@ -32,7 +46,6 @@
                 <Icon icon="flat-color-icons:google" width="32"/>
             </button>
         </div>
-
-
     </form>
+    <Toast/>
 </div>

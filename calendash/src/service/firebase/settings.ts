@@ -22,27 +22,18 @@ export const saveUserCalendar = async (userCalendar: UserCalendar) => {
     }
 };
 
-export const fetchSettings = async () => {
+export const fetchUser = async () => {
     const auth = getAuth();
     const { uid } = auth.currentUser || {};
     if (!uid) throw new Error('User not logged in');
 
-    const userRef = doc(db, 'userCalendars', uid);
-
     try {
-        const docSnapshot = await getDoc(userRef);
-        if (docSnapshot.exists()) {
-            const userData = docSnapshot.data();
-            if (userData.userCalendar) {
-                return userData.userCalendar; // Return the userCalendar data
-            } else {
-                console.log('UserCalendar not found for this user');
-                return null; // Return null if userCalendar not found
-            }
-        } else {
-            console.log('User document does not exist');
-            return null; // Return null if user document doesn't exist
-        }
+        return await fetch(`${import.meta.env.VITE_API_URL}/user/${uid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
     } catch (error) {
         console.error('Error fetching userCalendar:', error);
         return null; // Return null on error

@@ -5,26 +5,27 @@
     import {formatDuration} from "../../../../service/date/TimeService.ts";
     import {saveUserCalendar} from "../../../../service/firebase/settings.ts";
     import {ProgressRadial} from "@skeletonlabs/skeleton";
+    import {eventStore} from "../../../../store/eventStore.ts";
+    import {calendarStore} from "../../../../store/calendarStore.js";
 
     let calendarSettings;
     let isLoading = false;
-    let event = {
-        name: "",
-        duration: 30,
-        location: "",
-        imageUrl: ""
-    }
 
-    settingsStore.subscribe(value => {
-        calendarSettings = value
+    let currentEvent;
+
+    calendarStore.subscribe(value => {
+        calendarSettings = value;
+    })
+
+    eventStore.subscribe(value => {
+        currentEvent = value
     })
 
     const addEvent = async () => {
         isLoading = true
         const calendarIndex = 0; // Assuming you're working with the first calendar in the array
-        calendarSettings.calendars[calendarIndex].events.push(event); // Push the new event to the events array
+        calendarSettings.calendars[calendarIndex].events.push(currentEvent); // Push the new event to the events array
         settingsStore.set(calendarSettings); // Update the store
-        await saveUserCalendar(calendarSettings)
         isLoading = false
         goto("/account/events")
     }
@@ -35,7 +36,7 @@
 
 <div class="flex flex-col justify-start  w-11/12 pt-8 gap-8">
     <ol class="breadcrumb">
-
+        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li class="crumb"><a class="anchor" href="/account/events">Events</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
@@ -46,15 +47,15 @@
         <p class="text-xl font-bold">New event type</p>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Event name</span>
-            <input class="rounded bg-surface-50" bind:value={event.name}/>
+            <input class="rounded bg-surface-50" bind:value={currentEvent.name}/>
         </label>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Duration</span>
-            <input class=" rounded bg-surface-50" type="number" bind:value={event.duration}/>
+            <input class=" rounded bg-surface-50" type="number" bind:value={currentEvent.duration}/>
         </label>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Location</span>
-            <input class=" rounded bg-surface-50" bind:value={event.location}/>
+            <input class=" rounded bg-surface-50" bind:value={currentEvent.location}/>
         </label>
         {#if isLoading}
             <button class="btn variant-filled-primary">
@@ -67,14 +68,14 @@
 
     <div class="flex flex-col border p-4 gap-2">
         <p class="text-2xl font-bold">My event preview</p>
-        <p class="text-xl font-bold">{event.name ? event.name : "My event name"}</p>
+        <p class="text-xl font-bold">{currentEvent.name ? currentEvent.name : "My event name"}</p>
         <div class="flex flex-row items-center gap-2">
             <Icon icon="mdi:clock-outline" width="20"/>
-            <span>{formatDuration(event.duration)}</span>
+            <span>{formatDuration(currentEvent.duration)}</span>
         </div>
         <div class="flex flex-row items-center gap-2">
             <Icon icon="mdi:map-marker-outline" width="20"/>
-            <span>{event.location ? event.location : "My event location"}</span>
+            <span>{currentEvent.location ? currentEvent.location : "My event location"}</span>
         </div>
 
     </div>

@@ -1,10 +1,10 @@
 export interface Event {
     id: string | number;
+    userId : string;
     name: string;
     duration: number;
     location: string;
     imageUrl: string;
-    price: number;
 }
 export enum WeekDays {
     Monday = 'Monday',

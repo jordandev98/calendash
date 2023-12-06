@@ -6,7 +6,7 @@
     import {onMount} from "svelte";
     import {auth} from "../service/firebase/firebase.js";
     import {authStore} from "../store/store.js";
-    import {fetchSettings} from "../service/firebase/settings.ts";
+    import {fetchUser} from "../service/firebase/settings.ts";
     import {calendarStore} from "../store/calendarStore.js";
 
     initializeStores();
@@ -30,7 +30,8 @@
                 user: auth.currentUser,
                 isLoading: false
             })
-            const userCalendar = await fetchSettings()
+            const userCalendar = await fetchUser()
+            console.log(userCalendar)
             if (!userCalendar) {
                 return
             }

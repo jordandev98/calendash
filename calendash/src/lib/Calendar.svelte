@@ -13,13 +13,13 @@
         startOfToday,
     } from 'date-fns';
     import Icon from "@iconify/svelte";
-    import {eventStore} from "../store/eventStore.js";
+    import {payloadStore} from "../store/payloadStore.js";
 
     export let freeTimes;
 
     let currentEvent;
 
-    eventStore.subscribe(value => {
+    payloadStore.subscribe(value => {
         currentEvent = value;
         console.log(currentEvent)
     })
@@ -104,7 +104,7 @@
                 }
             }
         };
-        eventStore.set(newEventStore);
+        payloadStore.set(newEventStore);
     }
 
     updateDays();

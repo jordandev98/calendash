@@ -3,7 +3,7 @@
     import Icon from "@iconify/svelte";
     import {onMount} from "svelte";
     import Calendar from "$lib/Calendar.svelte";
-    import {eventStore} from "../../store/eventStore.js";
+    import {payloadStore} from "../../store/payloadStore.js";
     import {Step, Stepper} from "@skeletonlabs/skeleton";
 
     export let data;
@@ -15,7 +15,7 @@
 
     let currentEvent
 
-    eventStore.subscribe(value => {
+    payloadStore.subscribe(value => {
         currentEvent = value;
     })
 
