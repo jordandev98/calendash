@@ -15,7 +15,6 @@
             description: "increase in booked appointments"
         },
     ]
-
 </script>
 
 <div class="flex flex-col self-center w-11/12 min-h-screen">

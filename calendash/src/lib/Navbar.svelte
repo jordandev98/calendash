@@ -16,7 +16,7 @@
     const handleDrawerOpen = () => {
         drawerStore.open(drawerSettings)
     }
-
+    console.log($authStore)
 
 </script>
 
