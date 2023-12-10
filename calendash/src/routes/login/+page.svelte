@@ -1,8 +1,7 @@
 <script>
 
-    import {authHandler, authStore} from "../../store/store.js";
+    import {authStore} from "../../store/store.js";
     import Icon from "@iconify/svelte";
-    import {goto} from "$app/navigation";
     import {getToastStore, Toast} from "@skeletonlabs/skeleton";
 
     const handleAuthorizationError = () => {

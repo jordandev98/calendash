@@ -18,7 +18,11 @@
     })
 
     const handleDisconnect = () => {
+        authStore.set({user : null , loading: false});
+        document.cookie = "token_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
+
 </script>
 
 <div class="flex flex-row-reverse md:flex-row items-center justify-between gap-6 ">

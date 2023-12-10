@@ -4,23 +4,27 @@
     import {initializeStores, storePopup} from '@skeletonlabs/skeleton';
     import {arrow, autoUpdate, computePosition, flip, offset, shift} from '@floating-ui/dom';
     import {authStore} from "../store/store.js";
+    import {onMount} from "svelte";
 
     export let data;
+    if (data?.user?.user?._id) {
+        document.cookie = `email=${data.user.user.email}; max-age=2592000; path=/;`;
+        authStore.set({user: data.user.user, loading: false})
+    }
 
-    authStore.set({user: data.user.user, loading: false})
 
     initializeStores();
     storePopup.set({computePosition, autoUpdate, offset, shift, flip, arrow});
 
 
-    // onMount(async () => {
-    //     const authRoutes = ["/account"]
-    //     // const currentPath = window.location.pathname;
-    //     // if (!user && authRoutes.includes(currentPath)) {
-    //     //     window.location.href = "/";
-    //     // }
-    //
-    // })
+    onMount(async () => {
+        const authRoutes = ["/account"]
+        const currentPath = window.location.pathname;
+        if (!$authStore.user && authRoutes.includes(currentPath)) {
+            window.location.href = "/";
+        }
+
+    })
 </script>
 
 
