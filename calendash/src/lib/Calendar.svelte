@@ -14,16 +14,39 @@
     } from 'date-fns';
     import Icon from "@iconify/svelte";
     import {payloadStore} from "../store/payloadStore.js";
+    import {onMount} from "svelte";
 
-    export let freeTimes;
-
+    export let user
+    let freeTimes;
     let currentEvent;
+    let isLoading = false;
 
     payloadStore.subscribe(value => {
         currentEvent = value;
-        console.log(currentEvent)
     })
 
+    const fetchFreeTimes = async () => {
+        try {
+            const calendarBody = user.calendars.find(calendar => calendar.calendarId === currentEvent.calendarId)
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/calendar/event/timeslots/${currentEvent.calendarId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    timeZone: calendarBody.timezone,
+                    workingHours: calendarBody.schedule
+                })
+            });
+            if (!res.ok) { // res.ok checks if the HTTP response status is 200-299
+                return
+            }
+            // This line parses the response as JSON
+            return await res.json();
+        } catch (error) {
+            console.error(`There was a problem with the fetch operation: ${error.message}`);
+        }
+    }
 
     let colStartClasses = [
         '',
@@ -108,6 +131,13 @@
     }
 
     updateDays();
+
+    onMount(async () => {
+        isLoading = true;
+        freeTimes = await fetchFreeTimes()
+        console.log(freeTimes)
+        isLoading = false;
+    })
 </script>
 
 <div class="bg-gray-50 p-8 w-full ">
@@ -174,7 +204,7 @@
 
             </div>
 
-
+            {#if freeTimes}
             <div class="flex flex-col justify-between md:pl-8 w-full gap-8">
                 <div class="grid grid-cols-1 gap-4">
                     <h2 class="font-semibold text-gray-900">
@@ -195,7 +225,7 @@
 
                 </div>
             </div>
-
+            {/if}
         </div>
     {/if}
 </div>

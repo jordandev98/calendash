@@ -1,6 +1,7 @@
 import {writable} from "svelte/store";
 
 export const payloadStore = writable({
+    "calendarId" : undefined,
     "payload" : {
         "summary": "",
         "location": "",

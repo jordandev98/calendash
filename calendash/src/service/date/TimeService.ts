@@ -53,7 +53,7 @@ export const checkIsCalendarValid = (calendar:CalendarEntry) => {
     return true;
 };
 
-export const formatDuration = (minutes:number):string => {
+export const formatEventDuration = (minutes:number):string => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
 
