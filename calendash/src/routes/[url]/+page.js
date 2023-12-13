@@ -3,7 +3,6 @@ import {db} from "../../service/firebase/firebase.js";
 
 export async function load({params}) {
     const fetchCalendarByUrl = async (url) => {
-        console.log(url)
 
         const settingsCollection = collection(db, "settings");
 

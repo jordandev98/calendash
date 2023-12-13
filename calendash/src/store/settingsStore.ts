@@ -1,60 +1,50 @@
 import {writable} from 'svelte/store';
-import type {ScheduleEntry, UserCalendar, WeekDays} from "../data/userCalendar.ts";
+import type {ScheduleEntry, WeekDays} from "../data/userCalendar.ts";
+import {CalendarEntry} from "../data/userCalendar.ts";
 
 
-export const initialUserData: UserCalendar =
-    {
-        url: '',
-        calendars: [
-            {
-                id: "",
-                name: "",
-                schedule: {
-                    Monday: [{start: '09:00', end: '17:00'}],
-                    Tuesday: [{start: '09:00', end: '17:00'}],
-                    Wednesday: [{start: '09:00', end: '17:00'}],
-                    Thursday: [{start: '09:00', end: '17:00'}],
-                    Friday: [{start: '09:00', end: '17:00'}],
-                    Saturday: [{start: '09:00', end: '17:00'}],
-                    Sunday: [],
-                },
-                timezone: 'Pacific/Tahiti',
-                isValid: true,
-                events: [],
-            },
-        ],
-    };
+export const initialUserData: CalendarEntry = {
+    _id: "",
+    name: "",
+    schedule: {
+        Monday: [{start: '09:00', end: '17:00'}],
+        Tuesday: [{start: '09:00', end: '17:00'}],
+        Wednesday: [{start: '09:00', end: '17:00'}],
+        Thursday: [{start: '09:00', end: '17:00'}],
+        Friday: [{start: '09:00', end: '17:00'}],
+        Saturday: [{start: '09:00', end: '17:00'}],
+        Sunday: [],
+    },
+    timezone: 'Pacific/Tahiti',
+    isValid: true,
+    events: [],
+};
 
-// Initialize your store with the initial calendar settings
-export const settingsStore = writable<UserCalendar>(initialUserData)
+export const settingsStore = writable<CalendarEntry>(initialUserData);
 
-export const addHours = (day: WeekDays, calendarNumber: number) => {
+export const addHours = (day: WeekDays) => {
     settingsStore.update((settings) => {
-        const updatedUserCalendars = {...settings};
-        const dayArray =
-            updatedUserCalendars.calendars[calendarNumber].schedule[day]; // Assuming it's always the first calendar
-
+        const calendar = {...settings};
+        const dayArray = calendar.schedule[day];
         const updatedSchedule = updateSchedule(dayArray);
         console.log(updatedSchedule);
 
         if (!dayArray || dayArray.length === 0) {
-            updatedUserCalendars.calendars[calendarNumber].schedule[day] = updatedSchedule;
+            calendar.schedule[day] = updatedSchedule;
         } else {
-            updatedUserCalendars.calendars[calendarNumber].schedule[day].push(...updatedSchedule);
+            calendar.schedule[day].push(...updatedSchedule);
         }
 
-        return updatedUserCalendars;
+        return calendar;
     });
 };
 
 const updateSchedule = (dayArray: ScheduleEntry[]) => {
     if (!dayArray || dayArray.length === 0) {
-        return [
-            {
-                start: '09:00', // You might set a default time here
-                end: '17:00', // You might set a default time here
-            },
-        ];
+        return [{
+            start: '09:00', // You might set a default time here
+            end: '17:00', // You might set a default time here
+        }];
     }
 
     const endValue = dayArray[dayArray.length - 1].end;
@@ -65,12 +55,9 @@ const updateSchedule = (dayArray: ScheduleEntry[]) => {
     return [{start: `${defaultHour}:${defaultMinute}`, end: newEnd}];
 };
 
-export const deleteHours = (day: WeekDays, i: number, calendarNumber: number) => {
-    settingsStore.update((settings) => {
-        const updatedSettings = JSON.parse(JSON.stringify(settings)); // Deep clone settings
+export const deleteHours = (day: WeekDays, i: number) => {
+    settingsStore.update((calendar) => {
 
-        // Assuming it's always the first calendar
-        const calendar = updatedSettings.calendars[calendarNumber];
 
         if (calendar) {
             const dayArray = calendar.schedule[day];
@@ -81,30 +68,19 @@ export const deleteHours = (day: WeekDays, i: number, calendarNumber: number) =>
         }
 
         // Finally, return the updated cloned settings
-        return updatedSettings;
+        return calendar;
     });
 };
 
 
-export const updateIsValid = (calendarNumber: number, isValid: boolean) => {
+export const updateIsValid = (isValid: boolean) => {
     settingsStore.update((settings) => {
-        const updatedSettings = {...settings}; // Clone the settings array
+        const calendar = {...settings}; // Clone the settings array
 
-        if (updatedSettings.calendars && updatedSettings.calendars[calendarNumber]
-        ) {
-            const calendar = updatedSettings.calendars[calendarNumber];
-            // Update isValid if the calendar is found
+        if (calendar) {
             calendar.isValid = isValid;
         }
 
-        return updatedSettings; // Return the updated settings
+        return calendar; // Return the updated settings
     });
 };
-
-export function updateCalendarId(calendarIndex: number, newId: string): void {
-    settingsStore.update((calendar) => {
-        const updatedCalendars = {...calendar};
-        updatedCalendars.calendars[calendarIndex].id = newId;
-        return updatedCalendars;
-    });
-}

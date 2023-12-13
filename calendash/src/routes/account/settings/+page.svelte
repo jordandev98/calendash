@@ -1,13 +1,12 @@
 <script>
     import {goto} from "$app/navigation";
-    import {calendarStore} from "../../../store/calendarStore.js";
     import {Accordion, AccordionItem, clipboard} from "@skeletonlabs/skeleton";
+    import {authStore} from "../../../store/store.js";
 
     let calendarSettings;
 
-    calendarStore.subscribe(value => {
-        calendarSettings = value;
-        console.log(value)
+    authStore.subscribe(value => {
+        calendarSettings = value.user;
     })
 
 
@@ -27,14 +26,12 @@
             "Sunday": 7
         };
 
-        const sortedSchedule = Object.entries(scheduleObj)
+        return Object.entries(scheduleObj)
             .sort(([dayA], [dayB]) => dayOrder[dayA] - dayOrder[dayB])
             .reduce((obj, [key, value]) => {
                 obj[key] = value;
                 return obj;
             }, {});
-        console.log(sortedSchedule)
-        return sortedSchedule;
     }
 </script>
 
@@ -60,7 +57,8 @@
             <Accordion>
                 {#each calendarSettings.calendars as calendar , i}
                     <AccordionItem open={i ===0}>
-                        <svelte:fragment slot="summary"><p class="text-lg font-semibold">{calendar.name}</p></svelte:fragment>
+                        <svelte:fragment slot="summary"><p class="text-lg font-semibold">{calendar.name}</p>
+                        </svelte:fragment>
                         <svelte:fragment slot="content">
                             <div class="flex flex-col gap-2">
                                 {#each Object.keys(sortScheduleByDay(calendar.schedule)) as day }

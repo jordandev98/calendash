@@ -22,7 +22,8 @@ export interface ScheduleEntry {
 }
 
 export interface CalendarEntry {
-    id: string;
+    _id: string;
+    calendarId : string;
     name : string;
     schedule: Record<WeekDays, ScheduleEntry[]>;
     timezone: string;
@@ -31,6 +32,5 @@ export interface CalendarEntry {
 }
 
 export interface UserCalendar {
-    url: string;
     calendars: CalendarEntry[];
 }

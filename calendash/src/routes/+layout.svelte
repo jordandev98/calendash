@@ -8,7 +8,6 @@
 
     export let data;
     if (data?.user?.user?._id) {
-        document.cookie = `email=${data.user.user.email}; max-age=2592000; path=/;`;
         authStore.set({user: data.user.user, loading: false})
     }
 

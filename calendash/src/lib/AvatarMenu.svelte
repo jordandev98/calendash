@@ -1,5 +1,5 @@
 <script>
-    import {Avatar, popup} from "@skeletonlabs/skeleton";
+    import {Avatar, LightSwitch, popup} from "@skeletonlabs/skeleton";
     import {authStore} from "../store/store.js";
 
 
@@ -38,7 +38,6 @@
                 <p class="font-semibold">Account settings</p>
                 <a href="/account">My account</a>
             </div>
-
 
             <div class="flex items-center justify-center">
                 <button class="btn variant-filled w-full" on:click={handleDisconnect}>Sign out</button>

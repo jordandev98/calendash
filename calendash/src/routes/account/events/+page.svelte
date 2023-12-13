@@ -2,11 +2,12 @@
 
     import {settingsStore} from "../../../store/settingsStore.ts";
     import EventList from "$lib/settings/EventList.svelte";
+    import {authStore} from "../../../store/store.js";
 
-    let settings
+    let calendar
 
-    settingsStore.subscribe(value => {
-        settings = value
+    authStore.subscribe(value => {
+        calendar = value.user
     })
 </script>
 
@@ -19,7 +20,7 @@
     </div>
 
 
-    {#if settings}
+    {#if calendar}
         <div class="flex flex-col gap-8">
 
 

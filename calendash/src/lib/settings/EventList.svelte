@@ -1,26 +1,26 @@
 <script>
     import Icon from "@iconify/svelte";
-    import {settingsStore} from "../../store/settingsStore.ts";
     import {getToastStore, popup, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
     import {formatDuration} from "../../service/date/TimeService.ts";
     import {saveUserCalendar} from "../../service/firebase/settings.ts";
+    import {authStore} from "../../store/store.js";
 
-    let settings
+    let calendarSetting
     let calendarNumber = 0
     let isLoading = false;
     const toastStore = getToastStore();
 
-    settingsStore.subscribe(value => {
-        settings = value
+    authStore.subscribe(value => {
+        calendarSetting = value.user
     })
 
     const handleRemoveEvent = (eventIndex) => {
-        settingsStore.update(settings => {
-            if (settings.calendars[calendarNumber] && settings.calendars[calendarNumber].events.length > eventIndex) {
-                settings.calendars[calendarNumber].events.splice(eventIndex, 1);
-            }
-            return settings;
-        });
+        // authStore.update(settings => {
+        //     if (settings.calendars[calendarNumber] && settings.calendars[calendarNumber].events.length > eventIndex) {
+        //         settings.calendars[calendarNumber].events.splice(eventIndex, 1);
+        //     }
+        //     return settings;
+        // });
     }
 
     const handleSaveSettings = async () => {
@@ -28,7 +28,7 @@
         let bg = "variant-filled"
         isLoading = true;
         try {
-            await saveUserCalendar(settings);
+            await saveUserCalendar(calendarSetting);
         } catch (err) {
             message = err?.message;
             message = message ? message : "Your changed could not be saved"
@@ -38,15 +38,15 @@
             message: message,
             hideDismiss: true,
             timeout: 2000,
-            background : bg
+            background: bg
         });
         isLoading = false;
     }
 
 </script>
 
-{#if settings.calendars[calendarNumber].events.length > 0}
-    {#each settings.calendars[calendarNumber].events as event , i}
+{#if calendarSetting.calendars[calendarNumber].events.length > 0}
+    {#each calendarSetting.calendars[calendarNumber].events as event , i}
         <div class="flex flex-col p-4 border gap-2 bg-gray-100">
             <div class="flex items-center justify-between">
                 <p class="text-xl font-bold">{event.name}</p>
@@ -83,7 +83,9 @@
         </div>
     {/each}
     {#if isLoading}
-        <button class="btn variant-filled-primary"><ProgressRadial width="w-6"/></button>
+        <button class="btn variant-filled-primary">
+            <ProgressRadial width="w-6"/>
+        </button>
     {:else}
         <button class="btn variant-filled-primary" on:click={()=> handleSaveSettings()}>Save 💾</button>
 

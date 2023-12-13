@@ -12,8 +12,14 @@ export async function load({cookies, localStorage}) {
             const resTokens = await renewAccessToken(cookies.get('email'))
             if (resTokens.status === 200) {
                 const tokens = await resTokens.json();
-                console.log(tokens);
-                cookies.set('token_id', tokens.access_token);
+                cookies.set(
+                    'token_id', tokens.id_token,
+                    {
+                        path: '/',
+                        maxAge: 60 * 60 * 24 * 365,
+                        httpOnly: false, // <-- if you want to read it in the browser
+                    },
+                );
                 const res = await fetchCurrentUser(tokens.id_token);
                 const user = await res.json();
                 return {user}

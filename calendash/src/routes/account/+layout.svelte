@@ -12,6 +12,11 @@
             name: "Account"
         },
         {
+            href: "/account/page",
+            icon: "uil:bill",
+            name: "My page"
+        },
+        {
             href: "/account/events",
             icon: "mdi:calendar-multiple",
             name: "My events"
@@ -26,11 +31,12 @@
             icon: "uil:bill",
             name: "Plans & billings"
         },
+
     ]
 </script>
 
 <div class="flex flex-1">
-    <AppRail height="h-auto" background="bg-gray-50" class="shadow-md">
+    <AppRail height="h-auto" background="bg-gray-100" class="shadow-md">
 
         {#each accountNavItems as navItem , i}
             <AppRailAnchor href={navItem.href} bind:group={currentTile} name="myCalendars" value={i}
