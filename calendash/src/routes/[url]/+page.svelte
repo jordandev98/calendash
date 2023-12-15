@@ -4,6 +4,7 @@
     import Icon from "@iconify/svelte";
     import {formatEventDuration} from "../../service/date/TimeService.ts";
     import Calendar from "$lib/Calendar.svelte";
+    import {goto} from "$app/navigation";
 
     export let data;
 
@@ -12,6 +13,7 @@
 
     let currentEvent
 
+
     payloadStore.subscribe(value => {
         currentEvent = value;
     })
@@ -19,6 +21,8 @@
 
 
     const setSelectedEvent = (eventSelected) => {
+        console.log(eventSelected)
+        currentEvent.payload._id = eventSelected._id
         currentEvent.duration = eventSelected.duration
         currentEvent.payload.summary = eventSelected.name
         currentEvent.payload.description = eventSelected.description
@@ -27,27 +31,22 @@
     const handleComplete = async () => {
         try {
             const eventBody = currentEvent.payload
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/calendar/event/${currentEvent.calendarId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/appointment/${currentEvent.calendarId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(eventBody)
             });
-            if (!res.ok) { // res.ok checks if the HTTP response status is 200-299
+            if (!res.ok) {
                 return
             }
             // This line parses the response as JSON
-            return await res.json();
+            await res.json();
         } catch (error) {
             console.error(`There was a problem with the fetch operation: ${error.message}`);
         }
     }
-    //
-    // onMount(async () => {
-    //     // Fetch the busy times and working hours from your API
-    //     freeTimes = await fetchFreeTimes();
-    // });
 </script>
 
 
@@ -69,7 +68,8 @@
             <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {#each user.calendars.find(calendar => calendar.calendarId === currentEvent.calendarId).events as event , i}
-                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col items-start bg-surface-50 p-4 gap-2 rounded" : " flex flex-col items-start bg-gray-50 p-4 gap-2 rounded hover:bg-surface-50" }
+                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col items-start bg-surface-50 p-4 gap-2 rounded"
+                    : " flex flex-col items-start bg-gray-50 p-4 gap-2 rounded hover:bg-surface-50" }
                             on:click={()=> setSelectedEvent(event)}>
                         <span class="text-xl font-semibold">{event.name}</span>
                         {#if event.duration}
@@ -93,58 +93,58 @@
             </div>
         </Step>
         <Step locked={!currentEvent.payload.organizer.email || !currentEvent.payload.organizer.displayName}>
-            <!--            <div class="flex justify-center w-full">-->
-            <!--                <div class="grid grid-cols-1 md:grid-cols-2 max-w-5xl w-full">-->
-            <!--                    <form class="flex flex-col gap-6 p-8 bg-gray-50 w-full">-->
-            <!--                        <p class="text-lg font-semibold">Please fill your contact information</p>-->
-            <!--                        <label class="flex flex-col">-->
-            <!--                            <span class="text-sm font-semibold">Email*</span>-->
-            <!--                            <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"-->
-            <!--                                   type="text" bind:value={currentEvent.payload.organizer.email}/>-->
-            <!--                        </label>-->
-            <!--                        <label class="flex flex-col">-->
-            <!--                            <span class="text-sm font-semibold">Name *</span>-->
-            <!--                            <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"-->
-            <!--                                   type="text" bind:value={currentEvent.payload.organizer.displayName}/>-->
-            <!--                        </label>-->
-            <!--                        <label class="flex flex-col">-->
-            <!--                            <span class="text-sm font-semibold">Complementary informations for the meeting</span>-->
-            <!--                            <textarea-->
-            <!--                                    class="textarea bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"-->
-            <!--                                    type="text" bind:value={currentEvent.payload.description}/>-->
-            <!--                        </label>-->
-            <!--                    </form>-->
-            <!--                    <div class="flex flex-col py-8 px-16  gap-2 bg-gray-50 ">-->
-            <!--                        <div class="flex items-center justify-between">-->
-            <!--                            <p class="text-xl font-bold">{currentEvent.payload.summary}</p>-->
-            <!--                        </div>-->
+                        <div class="flex justify-center w-full">
+                            <div class="grid grid-cols-1 md:grid-cols-2 max-w-5xl w-full">
+                                <form class="flex flex-col gap-6 p-8 bg-gray-50 w-full">
+                                    <p class="text-lg font-semibold">Please fill your contact information</p>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-semibold">Email*</span>
+                                        <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
+                                               type="text" bind:value={currentEvent.payload.organizer.email}/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-semibold">Name *</span>
+                                        <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
+                                               type="text" bind:value={currentEvent.payload.organizer.displayName}/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-semibold">Complementary informations for the meeting</span>
+                                        <textarea
+                                                class="textarea bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
+                                                type="text" bind:value={currentEvent.payload.description}/>
+                                    </label>
+                                </form>
+                                <div class="flex flex-col py-8 px-16  gap-2 bg-gray-50 ">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-xl font-bold">{currentEvent.payload.summary}</p>
+                                    </div>
 
-            <!--                        <div class="flex flex-row items-center gap-2">-->
-            <!--                            <Icon icon="mdi:clock-outline" width="20"/>-->
-            <!--                            <span>{formatDuration(currentEvent.duration)}</span>-->
-            <!--                        </div>-->
-            <!--                        <div class="flex flex-row items-center gap-2">-->
-            <!--                            <Icon icon="mdi:map-marker-outline" width="20"/>-->
-            <!--                            <span>{currentEvent.payload.location ? currentEvent.payload.location : "No location"}</span>-->
-            <!--                        </div>-->
-            <!--                        <p class="font-semibold">My contact</p>-->
-            <!--                        <div class="flex flex-col gap-2 ">-->
-            <!--                            <div class="flex flex-row items-center gap-2">-->
-            <!--                                <Icon icon="ic:outline-email" width="20"/>-->
-            <!--                                <p>{currentEvent.payload.organizer.email ? currentEvent.payload.organizer.email : "Please enter email"}</p>-->
-            <!--                            </div>-->
-            <!--                            <div class="flex flex-row items-center gap-2">-->
-            <!--                                <Icon icon="mdi:account-circle-outline" width="20"/>-->
-            <!--                                <p>{currentEvent.payload.organizer.displayName ? currentEvent.payload.organizer.displayName : "Please enter your name"}</p>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
+                                    <div class="flex flex-row items-center gap-2">
+                                        <Icon icon="mdi:clock-outline" width="20"/>
+                                        <span>{formatEventDuration(currentEvent.duration)}</span>
+                                    </div>
+                                    <div class="flex flex-row items-center gap-2">
+                                        <Icon icon="mdi:map-marker-outline" width="20"/>
+                                        <span>{currentEvent.payload.location ? currentEvent.payload.location : "No location"}</span>
+                                    </div>
+                                    <p class="font-semibold">My contact</p>
+                                    <div class="flex flex-col gap-2 ">
+                                        <div class="flex flex-row items-center gap-2">
+                                            <Icon icon="ic:outline-email" width="20"/>
+                                            <p>{currentEvent.payload.organizer.email ? currentEvent.payload.organizer.email : "Please enter email"}</p>
+                                        </div>
+                                        <div class="flex flex-row items-center gap-2">
+                                            <Icon icon="mdi:account-circle-outline" width="20"/>
+                                            <p>{currentEvent.payload.organizer.displayName ? currentEvent.payload.organizer.displayName : "Please enter your name"}</p>
+                                        </div>
+                                    </div>
 
-            <!--                        <div class="flex flex-row items-center gap-2 text-gray-500">-->
-            <!--                            <span>{currentEvent.payload.description ? currentEvent.payload.description : ""}</span>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
+                                    <div class="flex flex-row items-center gap-2 text-gray-500">
+                                        <span>{currentEvent.payload.description ? currentEvent.payload.description : ""}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
         </Step>
 
 

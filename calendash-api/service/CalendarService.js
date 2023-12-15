@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import {createUserIfNotExists, findUserByUid} from "./User/UserService.js";
 import UserModel from "../model/UserModel.js";
 import CalendarModel from "../model/CalendarModel.js";
+import AppointmentModel from "../model/AppointmentModel.js";
 
 const createJwt = async () => {
     const serviceAccountCredential = JSON.parse(process.env.SERVICE_ACCOUNT_CREDENTIAL);
@@ -80,23 +81,6 @@ export const getEvents = async (req, res) => {
     }
 }
 
-export const insertEvent = async (req, res) => {
-    try {
-        const calendar = await getCalendar()
-        const calendarId = req.params.calendarId; // Replace with your calendar ID
-        const event = req.body; // Event details from the request body
-
-        // Insert the event
-        const response = await calendar.events.insert({
-            calendarId,
-            requestBody: event,
-        });
-
-        res.json(response.data);
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
-}
 
 
 export const setUpWorkingHours = async (req, res) => {
@@ -122,8 +106,10 @@ export const getFreeTimes = async (req, res) => {
     const calendarId = req.params.calendarId;
     const workingSchedule = req.body;
     const calendar = await getCalendar();
-    const start = new Date().toISOString();
-    const end = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const now = new Date();
+    const start = now.toISOString();
+    now.setMonth(now.getMonth() + 3);
+    const end = now.toISOString();
 
     const query = {
         timeMin: start,
@@ -148,10 +134,10 @@ export const getFreeTimes = async (req, res) => {
 
 export const addCalendarToUser = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { email } = req.decodedUser;
         const { calendarId, name, img, schedule, timezone } = req.body;
 
-        const user = await findUserByUid(userId);
+        const user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -189,4 +175,16 @@ const addUserCalendar = async (user, calendarId) => {
     }
 };
 
+
+export const updateCalendarById = async( req, res) => {
+    const {_id} = req.body
+
+    try {
+        const newCalendar = await CalendarModel.findByIdAndUpdate(_id , req.body , {new : true})
+        res.json({message : "Calendar saved successfully" , newCalendar})
+    }
+    catch(error) {
+        res.status(500).json({message : error})
+    }
+}
 
