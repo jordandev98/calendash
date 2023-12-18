@@ -18,7 +18,7 @@ export const customModernTheme = {
         "--on-error": "255 255 255",
         "--on-surface": "0 0 0",
         // =~= Theme Colors  =~=
-        // primary | #29da18
+        // primary | #EC4899
         "--color-primary-50": "223 249 220", // #dff9dc
         "--color-primary-100": "212 248 209", // #d4f8d1
         "--color-primary-200": "202 246 197", // #caf6c5

@@ -5,11 +5,11 @@
     import {formatEventDuration} from "../../service/date/TimeService.ts";
     import Calendar from "$lib/Calendar.svelte";
     import {goto} from "$app/navigation";
+    import {format} from "date-fns";
 
     export let data;
 
     const user = data.calendars.user
-
 
     let currentEvent
 
@@ -42,7 +42,8 @@
                 return
             }
             // This line parses the response as JSON
-            await res.json();
+            const data = await res.json();
+            await goto(`/appointment/success/${data._id}`)
         } catch (error) {
             console.error(`There was a problem with the fetch operation: ${error.message}`);
         }
@@ -118,7 +119,10 @@
                                     <div class="flex items-center justify-between">
                                         <p class="text-xl font-bold">{currentEvent.payload.summary}</p>
                                     </div>
-
+                                    <div class="flex flex-row items-center gap-2">
+                                        <Icon icon="mdi:calendar-outline" width="20"/>
+                                        <span>{format(currentEvent.payload.start.dateTime, "EEE. MMM do yyyy HH:mm")}</span>
+                                    </div>
                                     <div class="flex flex-row items-center gap-2">
                                         <Icon icon="mdi:clock-outline" width="20"/>
                                         <span>{formatEventDuration(currentEvent.duration)}</span>

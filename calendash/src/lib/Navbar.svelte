@@ -35,7 +35,6 @@
         <div class="font-bold text-lg items-center justify-center flex-1 gap-8 hidden md:flex ">
             <a href="/product" class="hover:text-surface-500">Product</a>
             <a href="/pricing" class="hover:text-surface-500">Pricing</a>
-            <a href="/calendar" class="hover:text-surface-500">My calendar</a>
         </div>
 
         <div class=" items-center justify-end gap-4">
