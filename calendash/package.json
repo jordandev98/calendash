@@ -30,6 +30,7 @@
     "date-fns": "^2.30.0",
     "firebase": "^10.6.0",
     "google-auth-library": "^9.4.1",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "stripe": "^14.9.0"
   }
 }

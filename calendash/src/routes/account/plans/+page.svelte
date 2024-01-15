@@ -1,28 +1,25 @@
 <script>
 
 
-    import {authStore} from "../../../store/store.js";
     import {getPortalUrl} from "../../../service/stripe/stripePayment.ts";
     import {goto} from "$app/navigation";
     import {getProductById} from "../../../data/products.ts";
 
     let subscription;
 
-    authStore.subscribe(async value => {
-        subscription = value?.user?.subscription;
-        if (subscription) {
+    export let data;
+    const subscriptions = data.subscriptions
+    console.log(subscriptions)
 
-        }
-    })
-
-    const handleSubscription = async () => {
+    const handleSubscription = async (customerId) => {
         let url = "/login"
-        if ($authStore.user) {
-            url = await getPortalUrl(app)
+        if (customerId) {
+            url = await getPortalUrl(customerId)
         }
 
         await goto(url)
     }
+
 
 </script>
 <div class="flex flex-col w-11/12 gap-8 pt-8">
@@ -31,28 +28,25 @@
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li class="crumb"><a class="anchor" href="/elements/breadcrumbs">Plans & billing</a></li>
     </ol>
+
     <p class="text-2xl font-bold">Plans & Billing</p>
-    {#if subscription}
-        <div class="bg-primary-100 rounded-md flex flex-col lg:flex-row w-fit items-center p-8 gap-12">
-            <div class="flex flex-1 gap-8 justify-between w-full flex-col lg:flex-row">
-                <div>
-                    <p>Current plan</p>
-                    <p class="text-xl font-bold">{getProductById(subscription.planId).name}</p>
-                </div>
-                <div>
-                    <p>Plan will end on</p>
-                    <p class="text-xl font-bold">{new Date(subscription.renewDate.seconds * 1000).toDateString()}</p>
-                </div>
-                {#if subscription.autoRenew}
+    {#if subscriptions}
+        {#each subscriptions as subscription}
+            <div class="bg-gray-50 rounded-md flex flex-col p-8 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-between w-full ">
                     <div>
-                        <p>Plan will renew on</p>
-                        <p class="text-xl font-bold">{new Date(subscription.renewDate.seconds * 1000).toDateString()}</p>
+                        <p>Current plan</p>
+                        <p class="text-xl font-bold">{getProductById(subscription.planId).name}</p>
                     </div>
-                {/if}
+                    <div>
+                        <p>Plan will end on</p>
+                        <p class="text-xl font-bold">{new Date(subscription.currentPeriodEnd).toDateString()}</p>
+                    </div>
+                </div>
+
             </div>
 
-            <button class="btn variant-filled-primary" on:click={handleSubscription}>Manage subscriptions</button>
-        </div>
-
+        {/each}
+        <button class="btn variant-filled-primary" on:click={()=>handleSubscription(subscription.customerId)}>Manage subscriptions</button>
     {/if}
 </div>

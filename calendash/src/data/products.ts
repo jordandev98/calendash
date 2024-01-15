@@ -48,7 +48,6 @@ export const products: ProductType[] = [
     },
 ]
 
-export const getProductById = (id)=> {
-    console.log(id)
+export const getProductById = (id: string): ProductType=> {
     return products.find(product => product.id === id)
 }

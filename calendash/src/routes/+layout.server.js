@@ -1,10 +1,13 @@
-export async function load({cookies, localStorage}) {
+export async function load({cookies}) {
     const token_id = cookies.get('token_id')
     if (token_id) {
 
         const res = await fetchCurrentUser(token_id);
         if (res.status === 200) {
             const user = await res.json()
+            if (user.user.email) {
+                cookies.set("email", user.user.email)
+            }
             return {user}
         }
 

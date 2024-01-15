@@ -9,6 +9,8 @@ import userController from "./controllers/UserController.js";
 import eventController from "./controllers/EventController.js";
 import authController from "./controllers/AuthController.js";
 import appointmentController from "./controllers/AppointmentController.js";
+import subscriptionController from "./controllers/SubscriptionController.js";
+import stripeController from "./controllers/StripeController.js";
 
 const app = express();
 dotenv.config();
@@ -32,6 +34,10 @@ app.use("/api/v1/user", userController);
 app.use("/api/v1/event", eventController);
 app.use("/api/v1/auth", authController);
 app.use("/api/v1/appointment", appointmentController);
+app.use("/api/v1/subscription", subscriptionController);
+app.use("/api/v1/stripe", stripeController);
+
+
 
 const PORT = process.env.PORT || 9000
 

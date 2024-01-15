@@ -3,20 +3,20 @@
     import {goto} from "$app/navigation";
     import {getCheckoutUrl} from "../../service/stripe/stripePayment.ts";
     import {authStore} from "../../store/store.js";
-    import {app, auth} from "../../service/firebase/firebase.js";
     import {RadioGroup, RadioItem} from "@skeletonlabs/skeleton";
-    import {getPremiumStatus} from "../../service/stripe/getPaymentStatus.ts";
 
     let isBilledMonthly = false;
+    console.log(products)
     const checkout = async (productId) => {
         let url = "/login"
         if ($authStore.user && productId) {
-            if (await getPremiumStatus(app)) {
-                url = "/account/plans"
-            }
-            else {
-                url = await getCheckoutUrl(app, auth.currentUser.uid, productId)
-            }
+            console.log($authStore.user)
+            // if (await getPremiumStatus(app)) {
+            //     url = "/account/plans"
+            // }
+            // else {
+            url = await getCheckoutUrl($authStore.user._id, productId)
+            //}
 
         }
 
