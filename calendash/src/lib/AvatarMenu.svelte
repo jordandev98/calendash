@@ -1,5 +1,5 @@
 <script>
-    import {Avatar, LightSwitch, popup} from "@skeletonlabs/skeleton";
+    import {Avatar, popup} from "@skeletonlabs/skeleton";
     import {authStore} from "../store/store.js";
 
 
@@ -18,7 +18,7 @@
     })
 
     const handleDisconnect = () => {
-        authStore.set({user : null , loading: false});
+        authStore.set({user: null, loading: false});
         document.cookie = "token_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }

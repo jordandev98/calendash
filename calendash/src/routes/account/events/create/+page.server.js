@@ -1,3 +1,5 @@
+import { goto } from "$app/navigation";
+
 export const actions = {
     default : async ({request , cookies}) =>  {
         const data = await request.formData();
@@ -9,7 +11,6 @@ export const actions = {
             eventBody[key] = value;
         }
 
-        console.log(eventBody)
         const token_id = cookies.get('token_id');
 
         const res =await fetch(`${import.meta.env.VITE_API_URL}/event`, {
@@ -20,7 +21,7 @@ export const actions = {
             },
             body : JSON.stringify(eventBody)
         });
-
+        goto("/account")
         return await res.json()
 
     }

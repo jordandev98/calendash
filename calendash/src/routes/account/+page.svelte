@@ -1,13 +1,21 @@
 <script>
-    import {Accordion, AccordionItem, clipboard} from "@skeletonlabs/skeleton";
+    import {Accordion, AccordionItem, clipboard, Toast} from "@skeletonlabs/skeleton";
     import {goto} from "$app/navigation";
     import {authStore} from "../../store/store.js";
+    import Icon from "@iconify/svelte";
+    import AccountEvents from "$lib/settings/AccountEvents.svelte";
 
     let calendarSettings;
 
     authStore.subscribe(value => {
         calendarSettings = value.user
     })
+
+    let copyState = false;
+
+    export let data;
+    console.log(data)
+
     function sortScheduleByDay(scheduleObj) {
         const dayOrder = {
             "Monday": 1,
@@ -37,21 +45,41 @@
             <div class="flex items-center justify-between">
                 <a class="text-blue-600 dark:text-blue-500 hover:underline"
                    href={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>{calendarSettings.url ? import.meta.env.VITE_BASE_URL + "/" + calendarSettings.url : "" }</a>
+
                 <button class="btn variant-filled-primary"
-                        use:clipboard={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>
-                    Copy
+                        use:clipboard={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}
+                        on:click={()=> {
+                           copyState = true;
+                           setTimeout(()=> {
+                               copyState = false;
+                           } , 1000 )
+                }}>
+                    {#if copyState}
+                        <Icon icon="noto:thumbs-up"/>
+                    {:else }
+                        <Icon icon="mdi:content-copy" />
+                    {/if}
+
                 </button>
             </div>
         </div>
         <div>
             <div class="flex flex-col p-8 bg-gray-50 gap-4">
-                <p class="text-xl font-semibold">My calendars</p>
+                <div class="flex justify-between items-center">
+                    <p class="text-xl font-semibold">My calendars</p>
+                    <button class="btn variant-filled-primary"><Icon icon="material-symbols:calendar-add-on-outline"/></button>
+                </div>
+
                 <div class="flex flex-col justify-between gap-4">
                     {#if calendarSettings.calendars && calendarSettings.calendars[0].name}
                         <Accordion>
-                            {#each calendarSettings.calendars as calendar , i}
+                            {#each calendarSettings.calendars as calendar}
                                 <AccordionItem>
-                                    <svelte:fragment slot="summary"><p class="text-lg font-semibold">{calendar.name}</p>
+                                    <svelte:fragment slot="summary">
+                                        <div>
+                                            <p class="text-lg font-semibold">{calendar.name}</p>
+                                        </div>
+
                                     </svelte:fragment>
                                     <svelte:fragment slot="content">
                                         <div class="flex flex-col gap-2">
@@ -83,6 +111,7 @@
 
             </div>
         </div>
+        <AccountEvents events={data.events}/>
     {:else}
         <div class="flex flex-col p-4 bg-gray-100 items-center  gap-4">
             <div class="flex flex-col justify-center items-center w-11/12">
@@ -95,4 +124,5 @@
             </button>
         </div>
     {/if}
+    <Toast/>
 </div>

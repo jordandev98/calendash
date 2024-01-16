@@ -1,8 +1,10 @@
 <script>
     import Icon from "@iconify/svelte";
-    import {formatDuration} from "../../../../service/date/TimeService.ts";
     import {ProgressRadial} from "@skeletonlabs/skeleton";
     import {eventStore} from "../../../../store/eventStore.ts";
+    import {formatEventDuration} from "../../../../service/date/TimeService.ts";
+    import { enhance , applyAction} from "$app/forms";
+    import {goto} from "$app/navigation";
 
     let isLoading = false;
 
@@ -24,26 +26,32 @@
         <li>Create</li>
     </ol>
 
-    <form class="flex border rounded-md flex-col p-4 gap-6" method="post" on:submit={e => e.preventDefault}>
+    <form class="flex rounded-md flex-col p-8 gap-6 bg-gray-50" method="post" use:enhance={() => {
+        return async ({result}) => {
+            if (result.type === "success") {
+                await goto("/account")
+            }
+        }
+    }}>
         <p class="h4 font-semibold">New event type</p>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Event name *</span>
-            <input class="rounded bg-surface-50" name="name" placeholder="Man haircut" bind:value={currentEvent.name}/>
+            <input class="rounded " required name="name" placeholder="Men's haircut" bind:value={currentEvent.name}/>
         </label>
         <div class="flex flex-col gap-2">
             <span class="font-semibold">Duration in minutes *</span>
 
-            <input class=" rounded bg-surface-50" name="duration" type="number" bind:value={currentEvent.duration}/>
+            <input class=" rounded" required name="duration" type="number" bind:value={currentEvent.duration}/>
 
 
         </div>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Location (Optional)</span>
-            <input class=" rounded bg-surface-50" name="location" placeholder="20 Queen street" bind:value={currentEvent.location}/>
+            <input class=" rounded" name="location" placeholder="20 Queen street" bind:value={currentEvent.location}/>
         </label>
         <label class="flex flex-col gap-2">
             <span class="font-semibold">Price (Optional)</span>
-            <input class=" rounded bg-surface-50" name="price" placeholder="$20" bind:value={currentEvent.price}/>
+            <input class=" rounded" name="price" placeholder="$20" bind:value={currentEvent.price}/>
         </label>
         {#if isLoading}
             <button class="btn variant-filled-primary">
@@ -54,19 +62,19 @@
         {/if}
     </form>
 
-    <div class="flex flex-col border p-4 gap-4">
+    <div class="flex flex-col border p-4 gap-4 bg-gray-50">
         <div class="flex justify-between items-center">
             <p class="h3 font-bold">{currentEvent.name ? currentEvent.name : "My event name"}</p>
             {#if currentEvent.price}
                 <div class="flex flex-row items-center gap-2">
-                    <p class="h4">{currentEvent.price}</p>
+                    <p class="h3">{currentEvent.price}</p>
                 </div>
             {/if}
         </div>
 
         <div class="flex flex-row items-center gap-2">
             <Icon icon="mdi:clock-outline" width="20"/>
-            <span>{formatDuration(currentEvent.duration)}</span>
+            <span>{formatEventDuration(currentEvent.duration)}</span>
         </div>
         <div class="flex flex-row items-center gap-2">
             <Icon icon="mdi:map-marker-outline" width="20"/>

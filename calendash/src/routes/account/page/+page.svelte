@@ -21,7 +21,7 @@
                 short, descriptive, and memorable!</p>
             <div class="flex justify-center items-center">
                 <p class="font-bold">calendash.com/</p>
-                <input class={"input rounded-sm bg-transparent"} name="url" bind:value={user.url}/>
+                <input class="w-full rounded px-1" name="url" bind:value={user.url}/>
             </div>
 
         </div>

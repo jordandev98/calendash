@@ -1,6 +1,5 @@
 <script>
 
-    import {settingsStore} from "../../../store/settingsStore.ts";
     import EventList from "$lib/settings/EventList.svelte";
     import {authStore} from "../../../store/store.js";
 
@@ -33,9 +32,9 @@
                         appointments, dental check-ups, medical consultations, tattoo sessions, and more.</p>
                 </div>
                 <div class="flex justify-end">
-                    <img src="/illustrations/event.png" alt="create multiples types of event to help your client book the correct duration">
+                    <img src="/illustrations/event.png"
+                         alt="create multiples types of event to help your client book the correct duration">
                 </div>
-
 
 
             </div>

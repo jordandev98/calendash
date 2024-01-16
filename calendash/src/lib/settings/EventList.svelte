@@ -1,9 +1,10 @@
 <script>
     import Icon from "@iconify/svelte";
     import {getToastStore, popup, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
-    import {formatDuration} from "../../service/date/TimeService.ts";
+    import {formatEventDuration} from "../../service/date/TimeService.ts";
     import {saveUserCalendar} from "../../service/firebase/settings.ts";
     import {authStore} from "../../store/store.js";
+    import {enhance} from "$app/forms";
 
     let calendarSetting
     let calendarNumber = 0
@@ -13,15 +14,6 @@
     authStore.subscribe(value => {
         calendarSetting = value.user
     })
-
-    const handleRemoveEvent = (eventIndex) => {
-        // authStore.update(settings => {
-        //     if (settings.calendars[calendarNumber] && settings.calendars[calendarNumber].events.length > eventIndex) {
-        //         settings.calendars[calendarNumber].events.splice(eventIndex, 1);
-        //     }
-        //     return settings;
-        // });
-    }
 
     const handleSaveSettings = async () => {
         let message = "Change saved"
@@ -59,7 +51,7 @@
 
             <div class="flex flex-row items-center gap-2">
                 <Icon icon="mdi:clock-outline" width="20"/>
-                <span>{formatDuration(event.duration)}</span>
+                <span>{formatEventDuration(event.duration)}</span>
             </div>
             <div class="flex flex-row items-center gap-2">
                 <Icon icon="mdi:map-marker-outline" width="20"/>
@@ -74,10 +66,27 @@
                     <Icon icon="material-symbols:edit-outline" width="20"/>
                     Edit
                 </button>
-                <button class="btn flex gap-2" on:click={() => handleRemoveEvent(i)}>
-                    <Icon icon="material-symbols:delete-outline" width="20"/>
-                    Delete
-                </button>
+                <form method="post" action="?/deleteEvent" use:enhance={() => {
+                    return async ({result}) => {
+                        if (result.type === "success") {
+                            const events = calendarSetting.calendars[calendarNumber].events;
+                            const index = events.findIndex(eventCalendar => eventCalendar._id === event._id);
+
+                            if (index !== -1) {
+                              events.splice(index, 1);
+                            }
+                            calendarSetting.calendars[calendarNumber].events = events
+                            toastStore.trigger({message : "Event deleted successfully !" , background : "bg-success-500"})
+                        }
+                    }}}
+                >
+                    <input type="hidden" name="event_id" value={event._id}>
+                    <button class="btn flex gap-2" type="submit">
+                        <Icon icon="material-symbols:delete-outline" width="20"/>
+                        Delete
+                    </button>
+                </form>
+
             </div>
 
         </div>
