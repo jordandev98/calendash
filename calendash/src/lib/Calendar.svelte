@@ -18,7 +18,8 @@
     import {onMount} from "svelte";
     import {ProgressRadial} from "@skeletonlabs/skeleton";
 
-    export let user
+    export let calendars
+
     let freeTimes;
     let currentEvent;
     let isLoading = true;
@@ -29,7 +30,7 @@
 
     const fetchFreeTimes = async () => {
         try {
-            const calendarBody = user.calendars.find(calendar => calendar.calendarId === currentEvent.calendarId)
+            const calendarBody = calendars.find(calendar => calendar.calendarId === currentEvent.calendarId)
             const res = await fetch(`${import.meta.env.VITE_API_URL}/calendar/event/timeslots/${currentEvent.calendarId}`, {
                 method: 'POST',
                 headers: {

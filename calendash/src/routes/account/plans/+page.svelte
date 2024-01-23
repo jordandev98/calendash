@@ -22,7 +22,7 @@
 
 
 </script>
-<div class="flex flex-col w-11/12 gap-8 pt-8">
+<div class="flex flex-col w-11/12 gap-4 pt-8">
     <ol class="breadcrumb">
         <li class="crumb"><a class="anchor" href="/elements/breadcrumbs">My account</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
@@ -32,7 +32,7 @@
     <p class="text-2xl font-bold">Plans & Billing</p>
     {#if subscriptions}
         {#each subscriptions as subscription}
-            <div class="bg-gray-50 rounded-md flex flex-col p-8 gap-6">
+            <div class="bg-gray-50 rounded-md flex flex-col p-4 gap-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-between w-full ">
                     <div>
                         <p>Current plan</p>

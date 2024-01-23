@@ -17,16 +17,18 @@
 </script>
 
 
-<div class="flex w-full h-full items-center justify-center ">
+<div class="flex w-full h-2/3 items-center justify-center ">
 
-    <form class="flex items-center w-2/3 xl:w-1/3 flex-col gap-8 p-4" method="post" action="?/OAuth2">
+    <form class="flex items-center  flex-col gap-8 px-16 py-8 border bg-gray-50 rounded-xl" method="post" action="?/OAuth2">
         <!-- Separator between social media sign in and email/password sign in -->
-        <div class="flex flex-col gap-4">
-            <p class="text-4xl font-semibold">Sign in to your account</p>
+        <img src="/logo.png" alt="logo.png" class=" aspect-square w-20">
+        <div class="flex flex-col items-center gap-8">
+            <p class="text-2xl font-semibold">Welcome to Calendash !</p>
+            <p>Join us for free ! You are only 5 minutes away of starting taking online bookings</p>
         </div>
 
         <div class="grid grid-cols-1 gap-4">
-            <button class="btn border-2 border-gray-300 flex items-center gap-2">Log in with Google
+            <button class="btn rounded-xl font-semibold border-2 flex items-center gap-2">Continue with Google
                 <Icon icon="flat-color-icons:google" width="32"/>
             </button>
         </div>

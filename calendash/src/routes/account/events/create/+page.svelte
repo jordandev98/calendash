@@ -26,7 +26,7 @@
         <li>Create</li>
     </ol>
 
-    <form class="flex rounded-md flex-col p-8 gap-6 bg-gray-50" method="post" use:enhance={() => {
+    <form class="flex rounded-md flex-col p-8 gap-6 bg-gray-50" method="post" action="?/createEvent" use:enhance={() => {
         return async ({result}) => {
             if (result.type === "success") {
                 await goto("/account")

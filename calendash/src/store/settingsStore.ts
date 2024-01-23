@@ -3,9 +3,9 @@ import type {ScheduleEntry, WeekDays} from "../data/userCalendar.ts";
 import {CalendarEntry} from "../data/userCalendar.ts";
 
 
-export const initialUserData: CalendarEntry = {
-    _id: "",
+export const initialUserData = {
     name: "",
+    calendarId : "",
     schedule: {
         Monday: [{start: '09:00', end: '17:00'}],
         Tuesday: [{start: '09:00', end: '17:00'}],
@@ -20,7 +20,7 @@ export const initialUserData: CalendarEntry = {
     events: [],
 };
 
-export const settingsStore = writable<CalendarEntry>(initialUserData);
+export const settingsStore = writable(initialUserData);
 
 export const addHours = (day: WeekDays) => {
     settingsStore.update((settings) => {

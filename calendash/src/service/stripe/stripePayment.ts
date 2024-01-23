@@ -10,6 +10,7 @@ export const getCheckoutUrl = async (userId: string, priceId: string): Promise<s
         line_items: [{
             price: priceId,
             quantity: 1,
+
         }],
         mode: 'subscription',
         success_url: `${import.meta.env.VITE_BASE_URL}/account/plans`,

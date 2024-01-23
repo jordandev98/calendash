@@ -28,7 +28,7 @@
 
 
 <main class="mainContainer flex flex-col w-full">
-    <div class="flex flex-col min-h-screen bg-gray-100">
+    <div class="flex flex-col h-screen bg-gray-100">
         <Navbar/>
         <slot/>
     </div>

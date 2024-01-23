@@ -18,13 +18,13 @@
         },
         {
             href: "/account/events",
-            icon: "mdi:calendar-multiple",
+            icon: "mdi:calendar-star",
             name: "My events"
         },
         {
             href: "/account/settings",
-            icon: "mdi:clock-outline",
-            name: "My schedule"
+            icon: "mdi:calendar-multiple",
+            name: "My calendars"
         },
         {
             href: "/account/plans",
@@ -39,7 +39,7 @@
     <AppRail height="h-auto" background="bg-gray-100" class="shadow-md">
 
         {#each accountNavItems as navItem , i}
-            <AppRailAnchor href={navItem.href} bind:group={currentTile} name="myCalendars" value={i}
+            <AppRailAnchor class="py-2" href={navItem.href} bind:group={currentTile} name="myCalendars" value={i}
                            title="myCalendars">
                 <svelte:fragment slot="lead">
                     <div class="flex items-center justify-center">
@@ -49,9 +49,6 @@
                 <span>{navItem.name}</span>
             </AppRailAnchor>
         {/each}
-        <svelte:fragment slot="trail">
-            <AppRailAnchor href="/" target="_blank" title="Account">(icon)</AppRailAnchor>
-        </svelte:fragment>
     </AppRail>
     <div class="flex flex-1 justify-center">
         <slot></slot>

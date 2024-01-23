@@ -3,16 +3,21 @@
     import {Accordion, AccordionItem, clipboard} from "@skeletonlabs/skeleton";
     import {authStore} from "../../../store/store.js";
 
-    let calendarSettings;
+    export let data;
 
-    authStore.subscribe(value => {
-        calendarSettings = value.user;
-    })
-
+    const page = data.page;
 
     const handleAddNewCalendar = () => {
-        goto("/account/settings/calendar/create")
+        if (page.calendars.length === 0) {
+            goto("/account/settings/calendar/create")
+        }
+
     }
+
+    if (!page)
+        handleAddNewCalendar()
+
+
 
     // Sort the keys of the schedule object based on the week order
     function sortScheduleByDay(scheduleObj) {
@@ -37,25 +42,18 @@
 
 
 <div class="flex flex-col w-11/12 py-12 gap-8">
-    <button class="btn variant-filled-primary" on:click={handleAddNewCalendar}>Add calendar</button>
+    <a href="/account/settings/calendar/create">
+        <button class="btn variant-filled-primary" on:click={handleAddNewCalendar}>Add calendar</button>
+    </a>
 
-    {#if calendarSettings}
-        <h2 class="text-xl font-semibold">My page</h2>
-        <div class="flex items-center justify-between bg-gray-50 p-4 ">
-            <a class="text-surface-500 dark:text-blue-500 hover:underline"
-               href={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>{calendarSettings.url ? import.meta.env.VITE_BASE_URL + "/" + calendarSettings.url : "" }</a>
-            <button class="btn variant-filled-primary"
-                    use:clipboard={`${import.meta.env.VITE_BASE_URL}/${calendarSettings.url}`}>
-                Copy
-            </button>
-        </div>
 
+    {#if page}
 
         <h2 class="text-xl font-semibold">My calendars</h2>
 
         <div class="bg-gray-50 p-4">
             <Accordion>
-                {#each calendarSettings.calendars as calendar , i}
+                {#each page.calendars as calendar , i}
                     <AccordionItem open={i ===0}>
                         <svelte:fragment slot="summary"><p class="text-lg font-semibold">{calendar.name}</p>
                         </svelte:fragment>

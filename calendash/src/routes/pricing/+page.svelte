@@ -6,18 +6,10 @@
     import {RadioGroup, RadioItem} from "@skeletonlabs/skeleton";
 
     let isBilledMonthly = false;
-    console.log(products)
     const checkout = async (productId) => {
         let url = "/login"
         if ($authStore.user && productId) {
-            console.log($authStore.user)
-            // if (await getPremiumStatus(app)) {
-            //     url = "/account/plans"
-            // }
-            // else {
             url = await getCheckoutUrl($authStore.user._id, productId)
-            //}
-
         }
 
 
@@ -25,33 +17,37 @@
     }
 </script>
 
-<div class="flex justify-center flex-col w-11/12 self-center">
-    <div class="flex items-center justify-center min-w-sm">
-        <RadioGroup active="variant-filled-primary" hover="hover:variant-soft-primary" background="bg-transparent"
-                    border="border-none">
-            <RadioItem bind:group={isBilledMonthly} value={true}>Billed monthly</RadioItem>
-            <RadioItem bind:group={isBilledMonthly} value={false}>Billed annually (save 20%)</RadioItem>
-
+<div class="flex justify-center flex-col w-11/12 self-center mt-8">
+    <div class="max-w-md self-center w-full">
+        <RadioGroup active="variant-filled" hover="hover:variant-soft" border="border-none" display="flex" padding="py-1">
+            <RadioItem bind:group={isBilledMonthly} name="captype" value={true}><span>Bill monthly</span></RadioItem>
+            <RadioItem bind:group={isBilledMonthly} name="captype" value={false}><span>Bill monthly <span class="badge">Save 20%</span></span>
+            </RadioItem>
         </RadioGroup>
 
-
     </div>
+
+
     <div class="grid grid-cols-1 py-8 gap-4 lg:grid-cols-3">
 
 
         {#each products as product}
-            <div class="card flex flex-col p-8 gap-4 justify-between">
+            <div class="flex flex-col p-8 justify-between border gap-2 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md">
                 <div class="flex flex-col items-center gap-4">
                     <p class="text-2xl font-bold">{product.name}</p>
                     <p class="text-3xl font-extrabold">
-                        {product.price}
+                        {isBilledMonthly ? product.price : product.annualPrice}
                         {#if product.id}
-                            <span class="text-lg font-normal">seat/mo</span>
+                            {#if product.name.includes("Teams")}
+                                <span class="text-surface-500 text-xl">/seat/mo</span>
+                                {:else}
+                                <span class="text-surface-500 text-xl">/mo</span>
+                            {/if}
                         {/if}
+
                     </p>
 
                     <div class="flex flex-col w-full gap-4">
-                        <p>Features :</p>
                         {#each product.features as feature}
                             <p><span class="text-secondary-500 font-bold text-lg">✓</span> {feature}</p>
                         {/each}
@@ -60,9 +56,7 @@
 
                 </div>
                 <div class="flex flex-col gap-4">
-
-
-                    <button class="btn variant-filled" on:click={()=> checkout(product.id)}>GET STARTED</button>
+                    <button class="btn variant-filled" on:click={()=> checkout(isBilledMonthly ? product.id : product.annualId)}>GET STARTED</button>
                 </div>
 
             </div>

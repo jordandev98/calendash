@@ -1,28 +1,29 @@
-import { goto } from "$app/navigation";
-
 export const actions = {
-    default : async ({request , cookies}) =>  {
-        const data = await request.formData();
-        console.log(data)
 
+    createEvent: async ({request, cookies}) => {
+        const data = await request.formData();
         const eventBody = {};
+
 
         for (const [key, value] of data.entries()) {
             eventBody[key] = value;
         }
+        console.log(eventBody)
 
         const token_id = cookies.get('token_id');
 
-        const res =await fetch(`${import.meta.env.VITE_API_URL}/event`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/event`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token_id}`
             },
-            body : JSON.stringify(eventBody)
+            body: JSON.stringify(eventBody)
         });
-        goto("/account")
         return await res.json()
 
     }
 }
+
+
+

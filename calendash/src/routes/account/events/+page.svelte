@@ -1,13 +1,11 @@
 <script>
 
     import EventList from "$lib/settings/EventList.svelte";
-    import {authStore} from "../../../store/store.js";
 
-    let calendar
+    export let data;
 
-    authStore.subscribe(value => {
-        calendar = value.user
-    })
+    const events = data.events;
+
 </script>
 
 <div class="flex flex-col gap-4  w-11/12 pt-8">
@@ -19,10 +17,8 @@
     </div>
 
 
-    {#if calendar}
+    {#if events}
         <div class="flex flex-col gap-8">
-
-
             <EventList></EventList>
             <div class="grid grid-cols-1 lg:grid-cols-2 w-full md:w-2/3 self-center justify-center items-center ">
 
@@ -39,6 +35,16 @@
 
             </div>
         </div>
+        {:else}
+        <div class="flex flex-col gap-4 items-center pt-8">
+            <h3 class="text-xl font-semibold">Create your first event type</h3>
+            <p class="text-center">The types of events they serve as a convenient tool for clients to book appointments with precise durations, streamlining the scheduling process for greater efficiency.</p>
 
+            <a href="/account/events/create">
+                <button class="btn variant-filled-primary">Create a new event</button>
+            </a>
+        </div>
     {/if}
+
+
 </div>

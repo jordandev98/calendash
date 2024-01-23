@@ -21,11 +21,10 @@
     <div class="flex flex-col items-center justify-center h-[35vh] gap-8">
         <div class="flex flex-col justify-center  gap-2">
             <div>
-                <p class="text-4xl font-bold text-center">The smart and simple way </p>
-                <p class="text-4xl font-bold text-center">to manage your schedule</p>
+                <p class="text-5xl font-bold text-center break-words">The easy solution manage appointments </p>
             </div>
-            <p class="text-2xl text-surface-800 text-center">Don’t just manage your schedule, master it!</p>
-
+            <p class="text-2xl text-surface-800 text-center">You are 5 minutes away to start taking online appointements !</p>
+            <button class="button">Connect to your Google Calendar app & get started</button>
 
         </div>
         <div class="flex flex-col gap-2 items-center">
