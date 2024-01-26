@@ -20,7 +20,7 @@
 
 </script>
 
-<div class="flex justify-center shadow-md">
+<div class="flex justify-center border">
     <div class="flex justify-between self-center py-4 w-11/12 items-center">
         <div class="flex items-center justify-center flex-2 gap-4">
             <button class="flex md:hidden" on:click={handleDrawerOpen}>

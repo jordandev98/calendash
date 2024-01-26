@@ -5,6 +5,7 @@
     import {arrow, autoUpdate, computePosition, flip, offset, shift} from '@floating-ui/dom';
     import {authStore} from "../store/store.js";
     import {onMount} from "svelte";
+    import {page} from '$app/stores'
 
     export let data;
     if (data?.user?.user?._id) {
@@ -27,9 +28,11 @@
 </script>
 
 
-<main class="mainContainer flex flex-col w-full">
-    <div class="flex flex-col h-screen bg-gray-100">
-        <Navbar/>
+<main class="mainContainer flex flex-col w-full h-full min-h-screen">
+    <div class="flex flex-col flex-1 h-full bg-gray-100">
+        {#if !$page.url.pathname.includes("/account") }
+            <Navbar/>
+        {/if}
         <slot/>
     </div>
 </main>

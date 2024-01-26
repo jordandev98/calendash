@@ -1,6 +1,6 @@
 <script>
     import {payloadStore} from "../../store/payloadStore.js";
-    import {Step, Stepper} from "@skeletonlabs/skeleton";
+    import {Avatar, Step, Stepper} from "@skeletonlabs/skeleton";
     import Icon from "@iconify/svelte";
     import {formatEventDuration} from "../../service/date/TimeService.ts";
     import Calendar from "$lib/Calendar.svelte";
@@ -53,25 +53,28 @@
 <div class="flex flex-col w-11/12 self-center gap-8 py-12">
     <Stepper on:complete={handleComplete}>
         <Step locked={!currentEvent.calendarId}>
-            <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <svelte:fragment slot="header"><p>Choose a booking option!</p></svelte:fragment>
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
-                    <button class={calendar.calendarId === currentEvent.calendarId ? "bg-surface-50 shadow p-8 border rounded-xl"
-                    : "flex flex-col p-8 items-center border gap-2 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
+                    <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center justify-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
+                    : "flex items-center justify-center p-8 border gap-8 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
                             on:click={()=> currentEvent.calendarId = calendar.calendarId}>
-                        <span class="h3 font-semibold">{calendar.name}</span>
+                        <Avatar width="w-20" src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}/>
+                            <span class="text-2xl font-semibold">{calendar.name}</span>
+
                     </button>
                 {/each}
             </div>
         </Step>
         <Step locked={!currentEvent.payload.summary}>
             <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.events as event , i}
-                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col items-start bg-surface-50 p-4 gap-2 rounded"
-                    : " flex flex-col items-start bg-gray-50 p-4 gap-2 rounded hover:bg-surface-50" }
+                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-4 shadow-md -translate-y-0.5 p-8 border rounded-xl"
+                    : "flex flex-col p-8 border gap-4 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md" }
                             on:click={()=> setSelectedEvent(event)}>
                         <span class="text-xl font-semibold">{event.name}</span>
+
                         {#if event.duration}
                                 <span class="flex items-center gap-1">
                                     <Icon icon="mdi:clock-outline" width="20"/>

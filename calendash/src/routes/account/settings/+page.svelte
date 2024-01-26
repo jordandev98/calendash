@@ -1,7 +1,7 @@
 <script>
     import {goto} from "$app/navigation";
-    import {Accordion, AccordionItem, clipboard} from "@skeletonlabs/skeleton";
     import {authStore} from "../../../store/store.js";
+    import {Avatar} from "@skeletonlabs/skeleton";
 
     export let data;
 
@@ -16,7 +16,6 @@
 
     if (!page)
         handleAddNewCalendar()
-
 
 
     // Sort the keys of the schedule object based on the week order
@@ -42,25 +41,30 @@
 
 
 <div class="flex flex-col w-11/12 py-12 gap-8">
-    <a href="/account/settings/calendar/create">
-        <button class="btn variant-filled-primary" on:click={handleAddNewCalendar}>Add calendar</button>
-    </a>
 
+    {#if $authStore.user.subscriptions.length >= page.calendars.length }
+        <a href="/account/settings/calendar/create">
+            <button class="btn variant-filled-primary" on:click={handleAddNewCalendar}>Add calendar</button>
+        </a>
+    {/if}
+    <h2 class="text-2xl font-semibold">My calendars</h2>
 
     {#if page}
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 
-        <h2 class="text-xl font-semibold">My calendars</h2>
 
-        <div class="bg-gray-50 p-4">
-            <Accordion>
+            <div class="bg-gray-50 p-8 rounded-xl border hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md">
                 {#each page.calendars as calendar , i}
-                    <AccordionItem open={i ===0}>
-                        <svelte:fragment slot="summary"><p class="text-lg font-semibold">{calendar.name}</p>
-                        </svelte:fragment>
-                        <svelte:fragment slot="content">
-                            <div class="flex flex-col gap-2">
+                    <a href={`/account/settings/calendar/edit/${calendar._id}`}>
+                        <div class="flex flex-col gap-4 ">
+                            <div class="flex items-center justify-between pb-4 border-b">
+                                <p class="text-xl font-semibold">{calendar.name}</p>
+                                <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}></Avatar>
+                            </div>
+
+                            <div class="flex flex-col gap-2 ">
                                 {#each Object.keys(sortScheduleByDay(calendar.schedule)) as day }
-                                    <div>
+                                    <div class="flex justify-between">
                                         <p class="font-semibold">{day}</p>
                                         {#each calendar.schedule[day] as timeEntry}
                                             <div class="flex gap-1">
@@ -74,11 +78,12 @@
                                     </div>
                                 {/each}
                             </div>
-                        </svelte:fragment>
-                    </AccordionItem>
-                {/each}
-            </Accordion>
-        </div>
+                            <!--                        <button class="btn variant-glass-surface">Share with calendash user</button>-->
+                        </div>
 
+                    </a>
+                {/each}
+            </div>
+        </div>
     {/if}
 </div>

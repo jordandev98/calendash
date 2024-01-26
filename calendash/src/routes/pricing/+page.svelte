@@ -17,9 +17,11 @@
     }
 </script>
 
+
 <div class="flex justify-center flex-col w-11/12 self-center mt-8">
     <div class="max-w-md self-center w-full">
-        <RadioGroup active="variant-filled" hover="hover:variant-soft" border="border-none" display="flex" padding="py-1">
+        <RadioGroup active="variant-filled" hover="hover:variant-soft" border="border-none" display="flex"
+                    padding="py-1">
             <RadioItem bind:group={isBilledMonthly} name="captype" value={true}><span>Bill monthly</span></RadioItem>
             <RadioItem bind:group={isBilledMonthly} name="captype" value={false}><span>Bill monthly <span class="badge">Save 20%</span></span>
             </RadioItem>
@@ -40,7 +42,7 @@
                         {#if product.id}
                             {#if product.name.includes("Teams")}
                                 <span class="text-surface-500 text-xl">/seat/mo</span>
-                                {:else}
+                            {:else}
                                 <span class="text-surface-500 text-xl">/mo</span>
                             {/if}
                         {/if}
@@ -56,7 +58,9 @@
 
                 </div>
                 <div class="flex flex-col gap-4">
-                    <button class="btn variant-filled" on:click={()=> checkout(isBilledMonthly ? product.id : product.annualId)}>GET STARTED</button>
+                    <button class="btn variant-filled"
+                            on:click={()=> checkout(isBilledMonthly ? product.id : product.annualId)}>GET STARTED
+                    </button>
                 </div>
 
             </div>

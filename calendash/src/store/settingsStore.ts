@@ -17,6 +17,7 @@ export const initialUserData = {
     },
     timezone: 'Pacific/Tahiti',
     isValid: true,
+    img : "",
     events: [],
 };
 

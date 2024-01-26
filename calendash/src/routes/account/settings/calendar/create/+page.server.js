@@ -20,23 +20,8 @@ export const actions = {
         const token_id = cookies.get('token_id')
         const email = cookies.get('email')
         const summary = data.get('summary')
-        console.log(summary)
         const clientCurrentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-        // const res= await fetch(`${import.meta.env.VITE_API_URL}/calendar/google/add`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${token_id}`
-        //     },
-        //     body: JSON.stringify({
-        //         email: email,
-        //         timeZone : clientCurrentTimeZone,
-        //         summary : summary
-        //     })
-        // });
-        //
-        // return await res.json()
     }
 }
 

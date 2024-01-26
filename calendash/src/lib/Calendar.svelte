@@ -158,12 +158,11 @@
     onMount(async () => {
         isLoading = true;
         freeTimes = await fetchFreeTimes()
-        console.log(freeTimes)
         isLoading = false;
     })
 </script>
 
-<div class="bg-gray-50 p-8 w-full ">
+<div class="bg-gray-50 p-8 w-full rounded-xl">
     <div class="grid md:grid-cols-2 md:divide-x md:divide-gray-200 gap-4">
         <div class="max-w-lg ">
             <div class="flex items-center">
@@ -194,8 +193,8 @@
 
                         {#if freeTimes && isTimeSlotAvailable(day) }
                             <button type="button" on:click={() => selectedDay = (day)} class={classNames(
-                                          isEqual(day, selectedDay) && 'text-white',
-                                          !isEqual(day, selectedDay) && isToday(day) && 'text-primary-500',
+                                          isEqual(day, selectedDay) && 'text-gray-50',
+                                          !isEqual(day, selectedDay) && isToday(day) && 'text-gray-50 bg-primary-500',
                                           !isEqual(day, selectedDay) &&
                                             !isToday(day) &&
                                             isSameMonth(day, firstDayCurrentMonth) &&
@@ -206,9 +205,9 @@
                                             'text-gray-400',
                                           isEqual(day, selectedDay) && isToday(day) && 'bg-primary-500',
                                           isEqual(day, selectedDay) && !isToday(day) && 'bg-surface-900',
-                                          !isEqual(day, selectedDay) && 'hover:bg-gray-200',
+                                          !isEqual(day, selectedDay) && ' hover:bg-gray-200  font-semibold',
                                           (isEqual(day, selectedDay) || isToday(day)) && 'font-semibold',
-                                          'mx-auto flex h-8 w-8 items-center justify-center rounded-full')}>
+                                          'mx-auto flex h-8 w-8 items-center justify-center rounded-xl')}>
                                 <time datetime={format(day, 'yyyy-MM-dd')}>
                                     {format(day, 'd')}
                                 </time>

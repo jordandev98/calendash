@@ -1,5 +1,7 @@
 <script>
 
+    import Icon from "@iconify/svelte";
+
     const statistics = [
 
         {
@@ -17,21 +19,23 @@
     ]
 </script>
 
-<div class="flex flex-col self-center w-11/12 min-h-screen">
-    <div class="flex flex-col items-center justify-center h-[35vh] gap-8">
-        <div class="flex flex-col justify-center  gap-2">
-            <div>
-                <p class="text-5xl font-bold text-center break-words">The easy solution manage appointments </p>
+<div class="flex flex-col self-center w-11/12 min-h-screen gap-8 items-center">
+    <div class="flex flex-col items-center justify-center pt-32 gap-8">
+        <div class="flex flex-col justify-center gap-8">
+                <p class="text-5xl font-bold break-words">The simple way to manage your online appointments </p>
+
+            <p class="text-lg text-gray-600 ">Stop wasting time with appointments. A smart scheduling app that allows you to book appointments online and sync them with Google Calendar for smooth management. </p>
+
+            <div class="flex flex-col items-center gap-4">
+                <p class="text-gray-600 text-center">Get your booking page for free !</p>
+                <button class="btn rounded-xl font-semibold border-2 flex items-center gap-2 hover:border-surface-900">Continue with Google
+                    <Icon icon="flat-color-icons:google" width="32"/>
+                </button>
+                <p>No credit card required.</p>
             </div>
-            <p class="text-2xl text-surface-800 text-center">You are 5 minutes away to start taking online appointements !</p>
-            <button class="button">Connect to your Google Calendar app & get started</button>
-
         </div>
-        <div class="flex flex-col gap-2 items-center">
-            <button class="btn-xl rounded-full variant-filled">Start for free !</button>
 
-            <p>No credit card required</p>
-        </div>
+
     </div>
 
     <div class="grid grid-cols-1 lg:gr w-full gap-4">

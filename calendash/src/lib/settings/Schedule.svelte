@@ -54,13 +54,13 @@
                         {#each hours as hour, i}
                             <div class="flex items-center">
                                 <div class="flex gap-1 items-center">
-                                    <select class={"select"} bind:value={hour.start} on:change={() => handleCalendar()}>
+                                    <select name={day+" start"} class={"select"} bind:value={hour.start} on:change={() => handleCalendar()}>
                                         {#each timeOptions as timeOption}
                                             <option value={timeOption.value}>{timeOption.label}</option>
                                         {/each}
                                     </select>
                                     <p>-</p>
-                                    <select class={"select"} bind:value={hour.end} on:change={() => handleCalendar()}>
+                                    <select name={day+" end"} class={"select"} bind:value={hour.end} on:change={() => handleCalendar()}>
                                         {#each timeOptions as timeOption}
                                             <option value={timeOption.value}>{timeOption.label}</option>
                                         {/each}

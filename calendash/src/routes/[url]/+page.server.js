@@ -1,5 +1,3 @@
-import {fetchPageByToken} from "../../service/page/PageService.js";
-
 export async function load({params}) {
     const {url} = params;
 
