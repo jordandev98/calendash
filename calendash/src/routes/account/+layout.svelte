@@ -57,7 +57,7 @@
             <ul class="flex flex-col gap-2 font-medium">
                 {#each accountNavItems as navItem , i}
                     <li class="rounded-xl">
-                        <a href={navItem.href}
+                        <a href={navItem.href} data-sveltekit-preload-data=""
                            class="">
                             <button class={navSelected === i ? "flex items-center p-2 bg-gray-200 w-full rounded-xl" : "flex items-center p-2 text-gray-900 rounded-lg  dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group w-full"}
                                 on:click={()=> navSelected = i}>

@@ -10,7 +10,6 @@
     export let data;
 
     const page = data.page
-    console.log(page)
 
     let currentEvent
 
@@ -56,10 +55,10 @@
             <svelte:fragment slot="header"><p>Choose a booking option!</p></svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
-                    <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center justify-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
-                    : "flex items-center justify-center p-8 border gap-8 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
-                            on:click={()=> currentEvent.calendarId = calendar.calendarId}>
-                        <Avatar width="w-20" src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}/>
+                    <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
+                    : "flex items-center p-8 border gap-8 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
+                            on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name}}>
+                        <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}/>
                             <span class="text-2xl font-semibold">{calendar.name}</span>
 
                     </button>
@@ -70,8 +69,8 @@
             <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.events as event , i}
-                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-4 shadow-md -translate-y-0.5 p-8 border rounded-xl"
-                    : "flex flex-col p-8 border gap-4 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md" }
+                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-2 shadow-md -translate-y-0.5 px-8 py-4 border rounded-xl"
+                    : "flex flex-col px-8 py-4 border gap-2 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md" }
                             on:click={()=> setSelectedEvent(event)}>
                         <span class="text-xl font-semibold">{event.name}</span>
 
@@ -91,7 +90,21 @@
             </div>
         </Step>
         <Step locked={!currentEvent.payload.start.dateTime}>
-            <div>
+            <div class="flex flex-col gap-4 p-4">
+                <div class="flex gap-2">
+                    <Avatar src={import.meta.env.VITE_AWS_BASE_URL+currentEvent.img}/>
+                    <div class="flex flex-col gap-2">
+                        <p class="text-2xl font-semibold">{currentEvent.name}</p>
+                        <div>
+                            <span class="chip bg-gray-200 w-fit">{currentEvent.payload.summary}</span>
+                            <span class="chip bg-gray-200 w-fit">{formatEventDuration(currentEvent.duration)}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p>Choose a date and time that works for you !</p>
                 <Calendar calendars={page.calendars}/>
             </div>
         </Step>
@@ -114,7 +127,7 @@
                             <span class="text-sm font-semibold">Complementary informations for the meeting</span>
                             <textarea
                                     class="textarea bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
-                                    type="text" bind:value={currentEvent.payload.description}/>
+                                    bind:value={currentEvent.payload.description}/>
                         </label>
                     </form>
                     <div class="flex flex-col py-8 px-16  gap-2 bg-gray-50 ">

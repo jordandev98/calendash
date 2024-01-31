@@ -30,7 +30,7 @@ export const GET = async ({url , cookies}) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.id_token}`
             },
-            body : JSON.stringify({refresh_token : user.refresh_token})
+            body : JSON.stringify({refresh_token : user.refresh_token , access_token : user.id_token})
         });
     }catch(error){
         console.log(error)

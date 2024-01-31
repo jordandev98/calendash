@@ -233,13 +233,11 @@
                 </div>
             {/if}
             {#if freeTimes}
-
-
                 <div class="grid grid-cols-1 gap-4">
                     <h2 class="font-semibold text-gray-900">
                         <time datetime={format(selectedDay, 'yyyy-MM-dd')}>{format(selectedDay, 'MMM dd, yyyy')}</time>
                     </h2>
-                    <div class="flex gap-4 flex-wrap">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         {#each freeTimes[format(selectedDay, 'yyyy-MM-dd')] as timeSlot}
 
                             {#each generateTimeSlots(timeSlot) as slots}
@@ -251,14 +249,12 @@
                                         <button class="btn variant-glass-surface rounded"
                                                 on:click={() => handleSelectSlot(slots)}>{format(slots.start, 'HH:mm')}</button>
                                     {/if}
-                                {/if   }
+                                {/if}
                             {/each}
                         {/each}
                     </div>
-
                 </div>
             {/if}
-
         </div>
     </div>
 </div>

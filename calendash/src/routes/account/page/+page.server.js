@@ -28,24 +28,5 @@ export const actions = {
 
         return await res.json()
 
-    },
-
-    update : async ({request , cookies}) =>  {
-        console.log("test")
-        // const data = await request.formData();
-        // const url = data.get('url');
-        // const token_id = cookies.get('token_id');
-        //
-        // const res =await fetch(`${import.meta.env.VITE_API_URL}/page`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${token_id}`
-        //     },
-        //     body : JSON.stringify({url : url})
-        // });
-        //
-        // return await res.json()
-
     }
 }

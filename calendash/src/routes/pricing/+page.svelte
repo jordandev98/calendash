@@ -3,13 +3,14 @@
     import {goto} from "$app/navigation";
     import {getCheckoutUrl} from "../../service/stripe/stripePayment.ts";
     import {authStore} from "../../store/store.js";
-    import {RadioGroup, RadioItem} from "@skeletonlabs/skeleton";
+    import {RadioGroup, RadioItem, RangeSlider} from "@skeletonlabs/skeleton";
 
     let isBilledMonthly = false;
+    let quantity = 1;
     const checkout = async (productId) => {
         let url = "/login"
         if ($authStore.user && productId) {
-            url = await getCheckoutUrl($authStore.user._id, productId)
+            url = await getCheckoutUrl($authStore.user._id, productId , quantity)
         }
 
 
@@ -30,7 +31,7 @@
     </div>
 
 
-    <div class="grid grid-cols-1 py-8 gap-4 lg:grid-cols-3">
+    <div class="grid grid-cols-1 py-8 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
 
         {#each products as product}
@@ -38,16 +39,14 @@
                 <div class="flex flex-col items-center gap-4">
                     <p class="text-2xl font-bold">{product.name}</p>
                     <p class="text-3xl font-extrabold">
+
                         {isBilledMonthly ? product.price : product.annualPrice}
                         {#if product.id}
-                            {#if product.name.includes("Teams")}
-                                <span class="text-surface-500 text-xl">/seat/mo</span>
-                            {:else}
-                                <span class="text-surface-500 text-xl">/mo</span>
-                            {/if}
+                            <span class="text-surface-500 text-xl">/user/mo</span>
                         {/if}
 
                     </p>
+
 
                     <div class="flex flex-col w-full gap-4">
                         {#each product.features as feature}
@@ -56,6 +55,16 @@
                         <div></div>
                     </div>
 
+                    {#if product.id}
+                        <div class="flex flex-col gap-2 w-full">
+                            <label>
+                                <span class="font-semibold">Users :</span>
+                                <input class="rounded-xl bg-transparent border-gray-400 w-20" bind:value={quantity}>
+                            </label>
+                            <RangeSlider name="range-slider" bind:value={quantity} step={1} >
+                            </RangeSlider>
+                        </div>
+                    {/if}
                 </div>
                 <div class="flex flex-col gap-4">
                     <button class="btn variant-filled"

@@ -1,10 +1,12 @@
 <script>
 
-    import EventList from "$lib/settings/EventList.svelte";
+    import {formatEventDuration} from "../../../service/date/TimeService.ts";
+    import Icon from "@iconify/svelte";
+    import EventCard from "$lib/event/EventCard.svelte";
 
     export let data;
 
-    const events = data.events;
+    const events = data.page.events;
 
 </script>
 
@@ -18,22 +20,10 @@
 
 
     {#if events}
-        <div class="flex flex-col gap-8">
-            <EventList></EventList>
-            <div class="grid grid-cols-1 lg:grid-cols-2 w-full md:w-2/3 self-center justify-center items-center ">
-
-                <div class="flex flex-col w-full justify-center gap-4 ">
-                    <p class="text-xl font-semibold">Create an event type</p>
-                    <p>You can utilize event types to establish meeting specifics for regular appointments, such as hair
-                        appointments, dental check-ups, medical consultations, tattoo sessions, and more.</p>
-                </div>
-                <div class="flex justify-end">
-                    <img src="/illustrations/event.png"
-                         alt="create multiples types of event to help your client book the correct duration">
-                </div>
-
-
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 flex-col justify-between gap-4 w-full">
+            {#each events as event}
+                <EventCard {event}/>
+            {/each}
         </div>
         {:else}
         <div class="flex flex-col gap-4 items-center pt-8">

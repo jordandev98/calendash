@@ -1,4 +1,4 @@
-export const fetchPageByToken = async(token_id) => {
+export const fetchPageByToken = async (token_id) => {
     if (token_id) {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/page`, {
             method: 'GET',
@@ -8,7 +8,7 @@ export const fetchPageByToken = async(token_id) => {
             }
         });
 
-        return {page: await res.json()}
+        return await res.json()
     }
 
     return null;

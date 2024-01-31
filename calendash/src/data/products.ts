@@ -16,9 +16,8 @@ export const products: ProductType[] = [
         annualPrice: "Always free",
         features : [
             "Unlimited Appointments Scheduling",
-            "Limited to 2 Appointment Type",
+            "Unlimited events type",
             "No Customization Options for Booking Forms",
-            "Limited to One Calendar per User",
             "No Shared Calendar"
         ] ,
     },
@@ -26,44 +25,17 @@ export const products: ProductType[] = [
         id: import.meta.env.VITE_STANDARD_PLAN_KEY,
         annualId :import.meta.env.VITE_ANNUAL_STANDARD_PLAN_KEY,
         name: "Pro",
-        price: "$6.99" ,
-        annualPrice : "$5.99",
+        price: "$9" ,
+        annualPrice : "$8",
         features : [
             "Unlimited Appointments Scheduling",
-            "Embedded scheduling on your site",
-            "Unlimited Appointments Type",
+            "Unlimited events type",
             "Basic Customization Options for Booking Forms",
-            "No shared calendar"
+            "Shared calendar"
         ] ,
-    },
-    // {
-    //     id: import.meta.env.VITE_STANDARD_PLAN_KEY,
-    //     name: "Small Team",
-    //     price: "$15.99" ,
-    //     annuallyPrice : "$9.99",
-    //     features : [
-    //         "Unlimited Appointments Scheduling",
-    //         "Embedded scheduling on your site",
-    //         "Unlimited Appointments Type",
-    //         "Advanced Customization Options for Booking Forms",
-    //         "3 Shared Calendar"
-    //     ] ,
-    // },
-    {
-        id: import.meta.env.VITE_TEAM_PLAN_KEY,
-        annualId :import.meta.env.VITE_ANNUAL_TEAM_PLAN_KEY,
-        name: "Teams",
-        price: "$59.99" ,
-        annualPrice: "$49.99" ,
-        features : [
-            "Everything in the Teams plan",
-            "Unlimited calendars",
-            "Unlimited shared Calendar",
-            "Advanced Customization Options for Booking Forms",
-        ] ,
-    },
+    }
 ]
 
 export const getProductById = (id: string): ProductType=> {
-    return products.find(product => product.id === id)
+    return products.find(product => product.id === id || product.annualId === id)
 }

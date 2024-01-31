@@ -1,15 +1,16 @@
 import {stripe} from "./stripe";
 import {goto} from "$app/navigation";
 
-export const getCheckoutUrl = async (userId: string, priceId: string): Promise<string> => {
+export const getCheckoutUrl = async (userId: string, priceId: string , quantity: number): Promise<string> => {
 
     if (!userId) throw new Error("User is not authenticated");
+    console.log(quantity)
 
     const res = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [{
             price: priceId,
-            quantity: 1,
+            quantity: quantity,
 
         }],
         mode: 'subscription',

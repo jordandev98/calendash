@@ -12,7 +12,7 @@ export async function load({cookies}) {
         }
 
         if (res.status === 401) {
-            const resTokens = await renewAccessToken(cookies.get('email'))
+            const resTokens = await renewAccessToken(token_id)
             if (resTokens.status === 200) {
                 const tokens = await resTokens.json();
                 cookies.set(
@@ -49,14 +49,14 @@ const fetchCurrentUser = async (token_id) => {
     });
 }
 
-const renewAccessToken = async (email) => {
+const renewAccessToken = async (token_id) => {
     return await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh_token`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token_id}`
         },
         body: JSON.stringify({
-            email: email,
             redirect_url: `${import.meta.env.VITE_API_URL}/user`
         })
     });
