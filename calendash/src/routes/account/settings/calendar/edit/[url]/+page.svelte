@@ -4,7 +4,6 @@
     import CalendarImageUpload from "$lib/settings/CalendarImageUpload.svelte";
 
     export let data;
-    console.log(data)
     let calendar = data?.calendar;
     settingsStore.set(calendar)
 
@@ -21,16 +20,25 @@
     }
 </script>
 
+<div class="flex flex-col p-8">
+    <ol class="breadcrumb">
+        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li class="crumb"><a class="anchor" href="/account/settings">Calendars</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li>Edit</li>
+    </ol>
+    <div class="flex flex-col h-fit w-11/12 mt-12 bg-gray-50 rounded-xl p-8">
+        <CalendarImageUpload data={data}/>
+        <div class="flex flex-col gap-8">
+            <label class="flex flex-col">
+                <span class="font-semibold">Calendar name</span>
+                <input name="name" class="border border-gray-300 rounded-xl bg-gray-50" bind:value={calendar.name}/>
+            </label>
+            <Schedule/>
 
-<div class="flex flex-col h-fit w-11/12 mt-12 bg-gray-50 p-8 rounded-xl">
-    <CalendarImageUpload data={data}/>
-    <div class="flex flex-col gap-8">
-        <label class="flex flex-col">
-            <span class="font-semibold">Calendar name</span>
-            <input name="name" class="border border-gray-300 rounded-xl bg-gray-50" bind:value={calendar.name}/>
-        </label>
-        <Schedule/>
-
-        <button class="btn variant-filled-primary" on:click={updateCalendar(calendar._id)}>Save</button>
+            <button class="btn variant-filled-primary" on:click={updateCalendar(calendar._id)}>Save</button>
+        </div>
     </div>
 </div>
+

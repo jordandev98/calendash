@@ -11,6 +11,13 @@
 </script>
 
 <div class="flex flex-col justify-start  w-11/12 pt-8 gap-8">
+    <ol class="breadcrumb">
+        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li class="crumb"><a class="anchor" href="/account/events">Events</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li>Edit</li>
+    </ol>
     <form class="flex rounded-md flex-col p-8 gap-6 bg-gray-50" method="post" action="?/saveEvent" use:enhance={() => {
         return async ({result}) => {
             if (result.type === "success") {

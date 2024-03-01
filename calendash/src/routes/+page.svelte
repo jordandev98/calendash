@@ -56,9 +56,9 @@
 
 </script>
 
-<div class="flex flex-col self-center w-11/12 min-h-screen gap-32 items-center py-20">
+<div class="flex flex-col self-center w-11/12 min-h-screen gap-32 items-center py-20 md:w-9/12">
     <div class="flex flex-col items-center justify-around gap-4">
-        <div class="flex justify-center flex-col  gap-8 w-9/12">
+        <div class="flex justify-center flex-col  gap-8 ">
             <p class="text-5xl xl:text-7xl font-bold break-words text-center">The easy online booking solution </p>
 
             <p class="text-lg text-gray-600 text-center">Stop wasting time with appointments. A smart scheduling app
@@ -76,40 +76,21 @@
         <img class="w-full xl:w-9/12 hidden lg:block" src="/landingPage/main.png" alt="calendar demonstration"/>
         <img class="w-full max-w-sm lg:hidden" src="/landingPage/mainMobile.png" alt="calendar demonstration"/>
     </div>
-    <div class="flex flex-col w-full gap-8">
+    <div class="flex flex-col w-full gap-32">
 
-        <h2 class="text-3xl font-semibold">Save time over phone booking</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-                <div class="flex flex-col gap-4 w-full">
-                    <p>Calendash is an online appointment tool that eliminates the need for lengthy phone calls or managing
-                        paper
-                        calendars. Clients can effortlessly schedule appointments online based on their availability and
-                        preferences. Our system seamlessly syncs with Google Calendar, preventing double bookings and
-                        oversights.
-                        Experience increased efficiency and peace of mind as you reclaim valuable time.</p>
-
-                    <button class="btn rounded-xl font-semibold bg-gray-50 border-2 flex items-center gap-2 hover:border-surface-900 break-words">
-                        Save time now
-                        <Icon icon="flat-color-icons:google" width="32"/>
-                    </button>
-                </div>
-
-                <div class="w-full">
-                    <img src="/landingPage/savetime.png" alt="save time by taking online appointment"/>
-                </div>
-            </div>
-        <h2 class="text-3xl font-semibold">Manage your schedule with simplicty</h2>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
             <div class="flex flex-col gap-4 w-full">
-                <p>Calendash is an online appointment tool that eliminates the need for lengthy phone calls or managing
-                    paper
-                    calendars. Clients can effortlessly schedule appointments online based on their availability and
-                    preferences. Our system seamlessly syncs with Google Calendar, preventing double bookings and
-                    oversights.
-                    Experience increased efficiency and peace of mind as you reclaim valuable time.</p>
+
+                <h2 class="text-4xl font-semibold">Save time and increase efficiency</h2>
+                <p class="text-xl">Say goodbye to the hassle of taking and canceling bookings over the phone.
+                    Automate the booking proces and save an average of <span
+                            class="font-bold">250 hours per year.</span>
+                    Your clients can effortlessly schedule, update, or cancel appointments <span
+                            class="font-bold">24/7</span> which can help increase customer satisfaction, reduce
+                    no-shows, and manage schedules more efficiently</p>
 
                 <button class="btn rounded-xl font-semibold bg-gray-50 border-2 flex items-center gap-2 hover:border-surface-900 break-words">
-                    Save time now
+                    Create your page for free
                     <Icon icon="flat-color-icons:google" width="32"/>
                 </button>
             </div>
@@ -118,19 +99,29 @@
                 <img src="/landingPage/savetime.png" alt="save time by taking online appointment"/>
             </div>
         </div>
-        <h2 class="text-3xl font-semibold">Versatile</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+
+        <div class="flex flex-col items-center md:flex-row md:items-start gap-8">
+            <div class="w-full max-w-sm">
+                <img src="/landingPage/gCal.png" alt="save time by taking online appointment"/>
+            </div>
             <div class="flex flex-col gap-4 w-full">
-                <p>Calendash is an online appointment tool that eliminates the need for lengthy phone calls or managing
-                    paper
-                    calendars. Clients can effortlessly schedule appointments online based on their availability and
-                    preferences. Our system seamlessly syncs with Google Calendar, preventing double bookings and
-                    oversights.
-                    Experience increased efficiency and peace of mind as you reclaim valuable time.</p>
+                <h2 class="text-4xl font-semibold">Manage your schedule with simplicty</h2>
+                <p class="text-xl">Calendash helps you manage your schedules more efficiently by integrating with your favorite calendar app, such as Google Calendar. This integration allows you to easily view and manage your appointments in one place, reducing the risk of double-booking</p>
 
                 <button class="btn rounded-xl font-semibold bg-gray-50 border-2 flex items-center gap-2 hover:border-surface-900 break-words">
                     Save time now
                     <Icon icon="flat-color-icons:google" width="32"/>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+            <div class="flex flex-col gap-4 w-full">
+                <h2 class="text-4xl font-semibold">Versatile</h2>
+                <p>Calendash is designed to cater to the needs of professionals from different industries, such as hairdressers, dentists, rental businesses, and employees who have appointments with their clients. And much more</p>
+
+                <button class="btn rounded-xl font-semibold bg-gray-50 border-2 flex items-center gap-2 hover:border-surface-900 break-words">
+                    See some examples
                 </button>
             </div>
 
@@ -138,28 +129,9 @@
                 <img src="/landingPage/savetime.png" alt="save time by taking online appointment"/>
             </div>
         </div>
-        <h2 class="text-3xl font-bold">How does it works ?</h2>
-        <div class="flex flex-col w-full">
-            <h4 class="text-lg font-semibold">Create your page for free</h4>
-            <h4 class="text-lg font-semibold">Create or link a new Google Agenda</h4>
-            <h4 class="text-lg font-semibold">Set up your work schedule</h4>
-            <h4 class="text-lg font-semibold">Create events types</h4>
-            <h4 class="text-lg font-semibold">Start taking online appointements</h4>
-        </div>
 
     </div>
-    <div class="flex flex-col gap-8">
-        <h2 class="text-3xl font-bold">Calendash benefits</h2>
-        <div class="self-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:w-2/3 lg:gr w-full gap-4 ">
-            {#each statistics as stat}
-                <div class="flex flex-col  items-center jus gap-4 border rounded-xl p-8 bg-gray-50">
-                    <p class="text-2xl font-semibold text-center">{stat.title}</p>
-                    <p class="text-lg ">{stat.description}</p>
-                </div>
-            {/each}
-            <button class="btn variant-glass">See more</button>
-        </div>
-    </div>
+
     <div class="block w-full">
         <h2 class="text-3xl font-bold mb-8">Frequently asked questions</h2>
         <div class=" bg-gray-50 rounded-xl border px-8 py-4 self-center">

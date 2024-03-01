@@ -9,8 +9,6 @@
     let currentCalendar: CalendarEntry;
     export let data;
 
-    console.log(data)
-
     let newGoogleCalendarName = "";
 
     const token_id: string = data.token_id
@@ -38,6 +36,7 @@
     let isLoading = false;
 
 </script>
+
 
 <div class="w-11/12 max-w-lg pt-12">
     {#if currentCalendar}

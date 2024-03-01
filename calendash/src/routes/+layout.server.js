@@ -6,7 +6,7 @@ export async function load({cookies}) {
         if (res.status === 200) {
             const user = await res.json()
             if (user.user.email) {
-                cookies.set("email", user.user.email)
+                cookies.set("email", user.user.email , {path: '/'})
             }
             return {user}
         }

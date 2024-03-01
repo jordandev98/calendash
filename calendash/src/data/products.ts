@@ -17,21 +17,31 @@ export const products: ProductType[] = [
         features : [
             "Unlimited Appointments Scheduling",
             "Unlimited events type",
-            "No Customization Options for Booking Forms",
-            "No Shared Calendar"
+            "One Calendar"
         ] ,
     },
     {
-        id: import.meta.env.VITE_STANDARD_PLAN_KEY,
-        annualId :import.meta.env.VITE_ANNUAL_STANDARD_PLAN_KEY,
+        id: import.meta.env.VITE_PRO_PLAN_KEY,
+        annualId :import.meta.env.VITE_ANNUAL_PRO_PLAN_KEY,
         name: "Pro",
-        price: "$9" ,
-        annualPrice : "$8",
+        price: "$24" ,
+        annualPrice : "$20",
         features : [
-            "Unlimited Appointments Scheduling",
-            "Unlimited events type",
-            "Basic Customization Options for Booking Forms",
-            "Shared calendar"
+            "Everything in free plan",
+            "5 calendars",
+            "Priority support",
+        ] ,
+    },
+    {
+        id: import.meta.env.VITE_ENTERPRISE_PLAN_KEY,
+        annualId :import.meta.env.VITE_ANNUAL_ENTERPRISE_PLAN_KEY,
+        name: "Enterprise",
+        price: "$60" ,
+        annualPrice : "$50",
+        features : [
+            "Everything in free plan",
+            "Unlimited calendars",
+            "Priority support",
         ] ,
     }
 ]

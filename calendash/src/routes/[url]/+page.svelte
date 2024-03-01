@@ -52,21 +52,24 @@
 <div class="flex flex-col w-11/12 self-center gap-8 py-12">
     <Stepper on:complete={handleComplete}>
         <Step locked={!currentEvent.calendarId}>
-            <svelte:fragment slot="header"><p>Choose a booking option!</p></svelte:fragment>
+            <svelte:fragment slot="header"><p>Welcome to {page.url}</p></svelte:fragment>
+            <p class="text-lg font-semibold">Choose a booking option!</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
-                    <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
+                    {#if calendar.isActive}
+                        <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
                     : "flex items-center p-8 border gap-8 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
-                            on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name}}>
-                        <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}/>
+                                on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name}}>
+                            <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img} initials={calendar.name}/>
                             <span class="text-2xl font-semibold">{calendar.name}</span>
 
-                    </button>
+                        </button>
+                    {/if}
                 {/each}
             </div>
         </Step>
         <Step locked={!currentEvent.payload.summary}>
-            <svelte:fragment slot="header"><p>Welcome to Calendash!</p></svelte:fragment>
+            <svelte:fragment slot="header"><p>Choose an event!</p></svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.events as event , i}
                     <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-2 shadow-md -translate-y-0.5 px-8 py-4 border rounded-xl"
@@ -127,7 +130,7 @@
                             <span class="text-sm font-semibold">Complementary informations for the meeting</span>
                             <textarea
                                     class="textarea bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
-                                    bind:value={currentEvent.payload.description}/>
+                                    bind:value={currentEvent.payload.description}></textarea>
                         </label>
                     </form>
                     <div class="flex flex-col py-8 px-16  gap-2 bg-gray-50 ">

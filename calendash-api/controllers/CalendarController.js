@@ -8,7 +8,12 @@ import {
     listGoogleCalendars,
     setUpWorkingHours
 } from "../service/Calendar/GoogleCalendarService.js";
-import {addCalendarToUser, getCalendarbyId, updateCalendarById} from "../service/Calendar/CalendarService.js";
+import {
+    addCalendarToUser,
+    getCalendarbyId,
+    updateCalendarById,
+    updateIsActiveById
+} from "../service/Calendar/CalendarService.js";
 import {deleteImage, uploadFile} from "../service/AwsS3/s3.js";
 import CalendarModel from "../model/CalendarModel.js";
 import multer from "multer";
@@ -21,8 +26,8 @@ calendarController.put("/workingHours/:calendarId", setUpWorkingHours)
 calendarController.post("/event/timeslots/:calendarId", getFreeTimes)
 calendarController.post("/add", decodeUser, addCalendarToUser)
 calendarController.post("/google/add", decodeUser, getGoogleAuth, addNewCalendarToGoogle)
-calendarController.put("/:calendarId", verifyCalendarOwnership, updateCalendarById)
-
+calendarController.put("/active/:calendarId", decodeUser, verifyCalendarOwnership, updateIsActiveById)
+calendarController.put("/:calendarId", decodeUser ,verifyCalendarOwnership, updateCalendarById)
 calendarController.get("/:calendarId", getCalendarbyId)
 calendarController.get("/google/list", decodeUser, getGoogleAuth, listGoogleCalendars)
 calendarController.post("/image/:calendarId", decodeUser, multer().single("file"), async function (req, res, newt) {

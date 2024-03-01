@@ -25,7 +25,7 @@
     <ol class="breadcrumb">
         <li class="crumb"><a class="anchor" href="/account">My account</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-        <li class="crumb"><a class="anchor" href="/account/plans">Plans & billing</a></li>
+        <li>Plans & Billing</li>
     </ol>
 
     <p class="text-2xl font-bold">Plans & Billing</p>

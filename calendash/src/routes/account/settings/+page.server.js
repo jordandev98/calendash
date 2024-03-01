@@ -1,5 +1,6 @@
 import {fetchPageByToken} from "../../../service/page/PageService.js";
-import {fetchActiveQuantitySubscriptions, fetchActiveSubscriptions} from "../../../service/stripe/getPaymentStatus.ts";
+// @ts-ignore
+import {fetchActiveQuantitySubscriptions} from "../../../service/stripe/getPaymentStatus.ts";
 
 export async function load({cookies}) {
     const token_id = cookies.get('token_id')
@@ -8,7 +9,6 @@ export async function load({cookies}) {
         const activeSubscriptionsRes = await fetchActiveQuantitySubscriptions(token_id)
 
 
-        return {page : pageRes, activeSubscriptions : activeSubscriptionsRes}
+        return {page: pageRes, activeSubscriptions: activeSubscriptionsRes}
     }
 }
-

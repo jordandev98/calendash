@@ -1,6 +1,10 @@
 import CalendarModel from "../../model/CalendarModel.js";
 import {getUserByDecodedUser} from "../Auth/AuthUtils.js";
 import PageModel from "../../model/PageModel.js";
+import {
+    findActiveSubscriptionsByUserId,
+    getMaxCalendarActiveFromSubscriptions
+} from "../Payment/SubscriptionService.js";
 
 
 export const addCalendarToUser = async (req, res) => {
@@ -9,7 +13,7 @@ export const addCalendarToUser = async (req, res) => {
 
         const newCalendar = new CalendarModel(req.body);
 
-        await newCalendar.save()
+        await newCalendar.save();
 
         const page = await PageModel.findByIdAndUpdate({_id: user.pageId}, {$push: {calendars: newCalendar._id}}, {new: true})
 
@@ -34,33 +38,79 @@ const createOrUpdateCalendar = async ({calendarId, name, img, schedule, timezone
 
     return updatedCalendar;
 };
-const addUserCalendar = async (user, calendarId) => {
-    if (!user.calendars.includes(calendarId)) {
-        user.calendars.push(calendarId);
-        await user.save();
-    }
-};
-
 
 export const updateCalendarById = async (req, res) => {
     const {calendarId} = req.params;
 
-    if (!req.page.calendars.find(calendar => calendar._id.toString() === calendarId)) {
-        return res.status(403).json({message : "You don't have access to this object"})
-    }
-
     try {
-        const newCalendar = await CalendarModel.findById(calendarId)
-
-        newCalendar.schedule = req.body.schedule;
-        newCalendar.name = req.body.name;
-
-        newCalendar.save();
+        const newCalendar = await CalendarModel.findByIdAndUpdate(calendarId, req.body);
 
         res.json({message: "Calendar saved successfully", newCalendar})
     } catch (error) {
         res.status(500).json({message: error})
     }
+}
+
+export const updateIsActiveById = async (req, res) => {
+    const {calendarId} = req.params;
+    try {
+        if (!req.body.isActive) {
+            const newCalendar = await CalendarModel.findByIdAndUpdate(calendarId, req.body);
+            res.json({message: "Calendar saved successfully", newCalendar})
+            return;
+        }
+        // Read user
+        const user = await getUserByDecodedUser(req.decodedUser)
+        // Read subscriptions
+        const activeSub = await findActiveSubscriptionsByUserId(user._id);
+
+        // count the number of calendar where isActive = true
+        const maxActiveCalendar = getMaxCalendarActiveFromSubscriptions(activeSub.subscriptionId);
+        // udpate or not isActive if the subscription permits or not
+        const isLimitReached = await isActiveCalendarReached(maxActiveCalendar, user._id);
+
+        if (isLimitReached) {
+            res.status(400).json({
+                message: "You have reached the maximum active calendar. Please upgrade your subscription"
+            });
+            return
+        }
+
+        const newCalendar = await CalendarModel.findByIdAndUpdate(calendarId, req.body);
+
+        res.json({message: "Calendar saved successfully", newCalendar})
+    } catch (error) {
+        res.status(500).json({message: error})
+    }
+}
+
+
+const isActiveCalendarReached = async (maxActiveCalendar, userId) => {
+    try {
+        if (maxActiveCalendar === -1) {
+            return false;
+        }
+
+        const pageModel = await PageModel.findOne({userId: userId}); // Fetch th
+        if (!pageModel) {
+            console.log("User not found or no PageModel associated with the user.");
+            return; // Handle the case where the user or PageModel doesn't exist
+        }
+
+        const calendarIds = pageModel.calendars;
+
+        const activeCalendars = await CalendarModel.find({
+            _id: {$in: calendarIds},
+            isActive: true,
+        }).exec();
+
+
+        return activeCalendars.length > maxActiveCalendar;
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 export const getCalendarbyId = async (req, res) => {

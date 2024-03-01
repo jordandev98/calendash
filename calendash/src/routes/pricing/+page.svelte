@@ -24,7 +24,7 @@
         <RadioGroup active="variant-filled" hover="hover:variant-soft" border="border-none" display="flex"
                     padding="py-1">
             <RadioItem bind:group={isBilledMonthly} name="captype" value={true}><span>Bill monthly</span></RadioItem>
-            <RadioItem bind:group={isBilledMonthly} name="captype" value={false}><span>Bill monthly <span class="badge">Save 20%</span></span>
+            <RadioItem bind:group={isBilledMonthly} name="captype" value={false}><span>Bill yearly <span class="badge ">Save 20%</span></span>
             </RadioItem>
         </RadioGroup>
 
@@ -42,7 +42,7 @@
 
                         {isBilledMonthly ? product.price : product.annualPrice}
                         {#if product.id}
-                            <span class="text-surface-500 text-xl">/user/mo</span>
+                            <span class="text-surface-500 text-xl">/mo</span>
                         {/if}
 
                     </p>
@@ -55,16 +55,6 @@
                         <div></div>
                     </div>
 
-                    {#if product.id}
-                        <div class="flex flex-col gap-2 w-full">
-                            <label>
-                                <span class="font-semibold">Users :</span>
-                                <input class="rounded-xl bg-transparent border-gray-400 w-20" bind:value={quantity}>
-                            </label>
-                            <RangeSlider name="range-slider" bind:value={quantity} step={1} >
-                            </RangeSlider>
-                        </div>
-                    {/if}
                 </div>
                 <div class="flex flex-col gap-4">
                     <button class="btn variant-filled"

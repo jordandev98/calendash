@@ -11,6 +11,11 @@
 </script>
 
 <div class="flex flex-col gap-4  w-11/12 pt-8">
+    <ol class="breadcrumb">
+        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li>Events</li>
+    </ol>
     <div class="flex items-center justify-between">
         <p class="text-2xl font-semibold">My events</p>
         <a href="/account/events/create">

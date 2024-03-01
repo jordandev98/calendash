@@ -29,12 +29,17 @@
 
 
 <div class="flex flex-col w-11/12 py-12 gap-8">
+    <ol class="breadcrumb">
+        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb-separator" aria-hidden>&rsaquo;</li>
+        <li>Calendars</li>
+    </ol>
     {#if activeSubscriptions.totalQuantity >= page.calendars.length }
         <a class="w-full" href="/account/settings/calendar/create">
             <button class="w-full btn variant-filled-primary">Add calendar</button>
         </a>
         {:else}
-        <button class="w-full btn variant-filled-primary" on:click={() => modalStore. trigger(upgradeModal)}>Add calendar</button>
+        <button class="w-full btn variant-filled-primary" on:click={() => modalStore.trigger(upgradeModal)}>Add calendar</button>
         <Modal />
     {/if}
     <h2 class="text-2xl font-semibold">My calendars</h2>

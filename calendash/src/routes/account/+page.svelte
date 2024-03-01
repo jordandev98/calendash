@@ -8,41 +8,43 @@
     let copyState = false;
 
     export let data;
-    console.log(data)
     const page = data.page
+    const token_id = data.token_id;
 
 </script>
 
 <div class="flex flex-col w-11/12 pt-12 gap-4">
     {#if data && data.page}
 
-        <h2 class="text-2xl font-semibold">My page</h2>
-        <div class="  rounded-xl ">
-            <div class="flex items-center gap-8">
-                <a class="text-blue-600 dark:text-blue-500 hover:underline"
-                   href={`${import.meta.env.VITE_BASE_URL}/${page.url}`}>{page.url ? import.meta.env.VITE_BASE_URL + "/" + page.url : "" }</a>
+        <div class="flex items-center gap-8 ">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-2xl font-semibold">My link</h2>
+                    <a class="text-blue-600 dark:text-blue-500 hover:underline"
+                       href={`${import.meta.env.VITE_BASE_URL}/${page.url}`}>{page.url ? import.meta.env.VITE_BASE_URL + "/" + page.url : "" }</a>
 
-                <button class="btn variant-filled-primary"
-                        use:clipboard={`${import.meta.env.VITE_BASE_URL}/${page.url}`}
-                        on:click={()=> {
+                    <button class="btn variant-filled-primary"
+                            use:clipboard={`${import.meta.env.VITE_BASE_URL}/${page.url}`}
+                            on:click={()=> {
                            copyState = true;
                            setTimeout(()=> {
                                copyState = false;
-                           } , 1000 )
-                }}>
-                    {#if copyState}
-                        <Icon icon="noto:thumbs-up"/>
-                    {:else }
-                        <Icon icon="mdi:content-copy"/>
-                    {/if}
+                           } , 1000 )}}>
+                        {#if copyState}
+                            <Icon icon="noto:thumbs-up"/>
+                        {:else }
+                            <Icon icon="mdi:content-copy"/>
+                        {/if}
 
-                </button>
+                    </button>
+                </div>
+
             </div>
         </div>
         <div class="flex justify-between items-center">
 
             <a href="/account/settings">
-            <h2 class="text-2xl font-semibold">My calendars</h2>
+                <h2 class="text-2xl font-semibold">My calendars</h2>
 
             </a>
 
@@ -50,7 +52,7 @@
 
         <div class="flex flex-col justify-between gap-4">
             {#if page.calendars && page.calendars.length > 0}
-                <CalendarCard {page}/>
+                <CalendarCard {page} {token_id}/>
             {:else}
                 <div class="flex flex-col gap-4 items-center">
                     <h3 class="text-xl font-semibold">Create your first calendar</h3>

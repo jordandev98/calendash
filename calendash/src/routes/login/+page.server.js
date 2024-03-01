@@ -26,7 +26,4 @@ export const actions = {
 
         throw redirect(302 , authorizedUrl)
     }
-
-
-
 }

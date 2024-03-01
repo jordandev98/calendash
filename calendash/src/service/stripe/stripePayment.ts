@@ -1,7 +1,6 @@
 import {stripe} from "./stripe";
-import {goto} from "$app/navigation";
 
-export const getCheckoutUrl = async (userId: string, priceId: string , quantity: number): Promise<string> => {
+export const getCheckoutUrl = async (userId: string, priceId: string, quantity: number): Promise<string> => {
 
     if (!userId) throw new Error("User is not authenticated");
     console.log(quantity)
@@ -28,7 +27,7 @@ export const getPortalUrl = async (customerId: string): Promise<string> => {
     try {
         const session = await stripe.billingPortal.sessions.create({
             customer: customerId,
-            return_url:`${import.meta.env.VITE_BASE_URL}/account/plans`
+            return_url: `${import.meta.env.VITE_BASE_URL}/account/plans`
         })
 
         return session.url
