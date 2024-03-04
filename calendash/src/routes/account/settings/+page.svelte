@@ -1,6 +1,6 @@
 <script>
     import CalendarCard from "$lib/settings/CalendarCard.svelte";
-    import {getModalStore, Modal} from "@skeletonlabs/skeleton";
+    import {getModalStore, Modal, Toast} from "@skeletonlabs/skeleton";
     import {goto} from "$app/navigation";
     import UpgradePlan from "$lib/modal/UpgradePlan.svelte";
 
@@ -34,16 +34,16 @@
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li>Calendars</li>
     </ol>
-    {#if activeSubscriptions.totalQuantity >= page.calendars.length }
-        <a class="w-full" href="/account/settings/calendar/create">
-            <button class="w-full btn variant-filled-primary">Add calendar</button>
+
+    <div class="flex w-full items-center justify-between">
+
+        <h2 class="text-2xl font-semibold">My calendars</h2>
+        <a href="/account/settings/calendar/create">
+            <button class="btn variant-filled-primary">Add calendar</button>
         </a>
-        {:else}
-        <button class="w-full btn variant-filled-primary" on:click={() => modalStore.trigger(upgradeModal)}>Add calendar</button>
-        <Modal />
-    {/if}
-    <h2 class="text-2xl font-semibold">My calendars</h2>
+    </div>
     <CalendarCard {page}/>
 
 
+    <Toast />
 </div>

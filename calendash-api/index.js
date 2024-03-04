@@ -13,6 +13,8 @@ import appointmentController from "./controllers/AppointmentController.js";
 import subscriptionController from "./controllers/SubscriptionController.js";
 import stripeController from "./controllers/StripeController.js";
 import pageController from "./controllers/PageController.js";
+import {desactivateCalendars} from "./service/Calendar/CalendarService.js";
+import {executeOnStartup} from "./service/Cron/CronService.js";
 
 const app = express();
 dotenv.config();
@@ -54,4 +56,6 @@ mongoose.connect(
     process.env.MONGO_URL, {}
 ).then(() => {
     app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+
+    executeOnStartup().then();
 })

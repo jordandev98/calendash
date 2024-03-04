@@ -74,7 +74,7 @@
 
 
                 <div class="flex flex-col gap-4 px-2">
-                    <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img}></Avatar>
+                    <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img} initials={calendar.name}></Avatar>
                 </div>
 
 

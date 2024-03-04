@@ -65,7 +65,8 @@ export const updateIsActiveById = async (req, res) => {
         const activeSub = await findActiveSubscriptionsByUserId(user._id);
 
         // count the number of calendar where isActive = true
-        const maxActiveCalendar = getMaxCalendarActiveFromSubscriptions(activeSub.subscriptionId);
+        const maxActiveCalendar = getMaxCalendarActiveFromSubscriptions(activeSub.planId);
+
         // udpate or not isActive if the subscription permits or not
         const isLimitReached = await isActiveCalendarReached(maxActiveCalendar, user._id);
 
@@ -120,5 +121,22 @@ export const getCalendarbyId = async (req, res) => {
         res.json(calendar)
     } catch (error) {
         res.status(500).json({message: error})
+    }
+}
+
+export const desactivateCalendars = async (userId , numberToKeep) => {
+
+    try {
+        const pageUserId = await PageModel.find({userId: userId}).findOne();
+
+        const calendarsByUserId = pageUserId.calendars;
+
+        for (let i = 0  ; i < calendarsByUserId.length - numberToKeep ; i++) {
+            console.log(calendarsByUserId[i]);
+            await CalendarModel.findByIdAndUpdate(calendarsByUserId[i] , {isActive: false});
+        }
+    }
+    catch (e) {
+        throw Error(e);
     }
 }

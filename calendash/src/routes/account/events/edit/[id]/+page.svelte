@@ -1,13 +1,35 @@
 <script>
     import {goto} from "$app/navigation";
     import {enhance} from "$app/forms";
-    import {ProgressRadial} from "@skeletonlabs/skeleton";
+    import {getModalStore, Modal, ProgressRadial} from "@skeletonlabs/skeleton";
 
     export let data;
 
     const currentEvent = data.event;
 
+    if (!currentEvent) {
+        goto("/account/events")
+    }
+
     const isLoading = false;
+    const modalStore = getModalStore();
+
+    let deleteForm;
+
+    const confirmModal = {
+        type: 'confirm',
+        // Data
+        title: 'Please Confirm',
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r) => {
+            if (r) {
+                deleteForm.submit();
+            } else {
+                modalStore.close();
+            }
+        },
+    };
 </script>
 
 <div class="flex flex-col justify-start  w-11/12 pt-8 gap-8">
@@ -18,10 +40,27 @@
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li>Edit</li>
     </ol>
+    <div>
+        <button class="btn variant-filled-primary" on:click={() =>modalStore.trigger(confirmModal)}>Delete event
+        </button>
+        <Modal/>
+    </div>
+
+    <form class="deleteForm" method="post" action="?/deleteEvent" bind:this={deleteForm} use:enhance={() => {
+        return async ({result}) => {
+            if (result.type === "success") {
+               console.log(result)
+                await goto("/account/events")
+            }
+        }
+    }}>
+        <input class="hidden" required name="_id" bind:value={currentEvent._id}/>
+    </form>
     <form class="flex rounded-md flex-col p-8 gap-6 bg-gray-50" method="post" action="?/saveEvent" use:enhance={() => {
         return async ({result}) => {
             if (result.type === "success") {
-                await goto("/account")
+                console.log(result)
+                await goto("/account/events")
             }
         }
     }}>

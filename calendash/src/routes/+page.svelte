@@ -59,9 +59,9 @@
 <div class="flex flex-col self-center w-11/12 min-h-screen gap-32 items-center py-20 md:w-9/12">
     <div class="flex flex-col items-center justify-around gap-4">
         <div class="flex justify-center flex-col  gap-8 ">
-            <p class="text-5xl xl:text-7xl font-bold break-words text-center">The easy online booking solution </p>
+            <p class="text-6xl sm:text-7xl xl:text-8xl font-extrabold break-words text-center">The easy online booking solution </p>
 
-            <p class="text-lg text-gray-600 text-center">Stop wasting time with appointments. A smart scheduling app
+            <p class="text-xl  text-center">Stop wasting time with appointments. A smart scheduling app
                 that allows you to book appointments online and sync them with Google Calendar for smooth
                 management. </p>
 

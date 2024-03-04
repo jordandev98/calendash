@@ -6,7 +6,6 @@
     import {addHours, deleteHours, settingsStore, updateIsValid} from "../../store/settingsStore";
 
     let currentCalendar: CalendarEntry;
-    const calendarNumber = 0
 
     settingsStore.subscribe(value => {
         currentCalendar = value
@@ -54,13 +53,13 @@
                         {#each hours as hour, i}
                             <div class="flex items-center">
                                 <div class="flex gap-1 items-center">
-                                    <select name={day+" start"} class={"select"} bind:value={hour.start} on:change={() => handleCalendar()}>
+                                    <select  name={day+" start"} class="rounded-xl bg-gray-50 border border-gray-400" bind:value={hour.start} on:change={() => handleCalendar()}>
                                         {#each timeOptions as timeOption}
                                             <option value={timeOption.value}>{timeOption.label}</option>
                                         {/each}
                                     </select>
                                     <p>-</p>
-                                    <select name={day+" end"} class={"select"} bind:value={hour.end} on:change={() => handleCalendar()}>
+                                    <select name={day+" end"} class="rounded-xl bg-gray-50 border border-gray-400" bind:value={hour.end} on:change={() => handleCalendar()}>
                                         {#each timeOptions as timeOption}
                                             <option value={timeOption.value}>{timeOption.label}</option>
                                         {/each}

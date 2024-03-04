@@ -46,6 +46,22 @@ export const actions = {
         });
         return await res.json()
 
+    },
+
+    deleteEvent: async ({request, cookies}) => {
+        const data = await request.formData();
+        const eventId = data.get("_id");
+
+        const token_id = cookies.get('token_id');
+
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/event/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token_id}`
+            },
+        });
+        return await res.json();
     }
 }
 

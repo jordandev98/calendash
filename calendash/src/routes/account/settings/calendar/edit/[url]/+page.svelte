@@ -2,11 +2,13 @@
     import Schedule from "$lib/settings/Schedule.svelte";
     import {settingsStore} from "../../../../../../store/settingsStore.ts";
     import CalendarImageUpload from "$lib/settings/CalendarImageUpload.svelte";
+    import {goto} from "$app/navigation";
+    import {getToastStore, Toast} from "@skeletonlabs/skeleton";
 
     export let data;
     let calendar = data?.calendar;
     settingsStore.set(calendar)
-
+    const toastStore = getToastStore();
 
     const updateCalendar = async (calendarId) => {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/calendar/${calendarId}`, {
@@ -17,6 +19,16 @@
             },
             body: JSON.stringify($settingsStore)
         });
+
+        if (res.status === 200) {
+            const t  = {
+                message: 'Calendar updated successfully',
+                background: 'variant-filled-success',
+            };
+            await goto("/account/settings");
+
+            toastStore.trigger(t);
+        }
     }
 </script>
 
