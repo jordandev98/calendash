@@ -17,7 +17,8 @@ export const products: ProductType[] = [
         features : [
             "Unlimited Appointments Scheduling",
             "Unlimited events type",
-            "One Calendar"
+            "One Calendar",
+            "Google agenda"
         ] ,
     },
     {
@@ -28,7 +29,8 @@ export const products: ProductType[] = [
         annualPrice : "$20",
         features : [
             "Everything in free plan",
-            "5 calendars",
+            "Teams",
+            "5 sharable calendars",
             "Priority support",
         ] ,
     },
@@ -39,9 +41,8 @@ export const products: ProductType[] = [
         price: "$60" ,
         annualPrice : "$50",
         features : [
-            "Everything in free plan",
-            "Unlimited calendars",
-            "Priority support",
+            "Everything in pro plan",
+            "Unlimited sharable calendars",
         ] ,
     }
 ]

@@ -1,8 +1,9 @@
 <script>
     import CalendarCard from "$lib/settings/CalendarCard.svelte";
-    import {getModalStore, Modal, Toast} from "@skeletonlabs/skeleton";
+    import {getModalStore, Toast} from "@skeletonlabs/skeleton";
     import {goto} from "$app/navigation";
     import UpgradePlan from "$lib/modal/UpgradePlan.svelte";
+    import AccountEmptyCard from "$lib/account/AccountEmptyCard.svelte";
 
     export let data;
 
@@ -18,7 +19,7 @@
     if (!page)
         handleAddNewCalendar()
 
-    const modalUpgradePlan = {ref : UpgradePlan}
+    const modalUpgradePlan = {ref: UpgradePlan}
     const upgradeModal = {
         type: 'component',
         component: modalUpgradePlan,
@@ -42,8 +43,14 @@
             <button class="btn variant-filled-primary">Add calendar</button>
         </a>
     </div>
-    <CalendarCard {page}/>
+    {#if page.calendars && page.calendars.length > 0}
+        <CalendarCard {page}/>
+    {:else}
+        <AccountEmptyCard title="Create your first calendar" description="Create your schedule, link it with Google Calendars, and start accepting
+                        bookings or appointments seamlessly."
+                          link="/account/settings/calendar/create" action="Create your first calendar"/>
+    {/if}
 
 
-    <Toast />
+    <Toast/>
 </div>

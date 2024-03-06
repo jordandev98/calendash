@@ -16,6 +16,7 @@ export const GET = async ({url , cookies}) => {
         const res = await oAuth2Client.getToken(code)
         oAuth2Client.setCredentials(res.tokens)
         const user = oAuth2Client.credentials;
+        console.log(oAuth2Client);
         cookies.set(
             'token_id', user.id_token,
             {

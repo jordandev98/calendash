@@ -10,9 +10,18 @@
 
     let currentEvent;
 
+    let durationMinutes = 30;
+    let durationHours = 0;
+
+
     eventStore.subscribe(value => {
         currentEvent = value
     })
+
+    const handleDurationChange = () => {
+        $eventStore.duration = durationMinutes + durationHours * 60
+    }
+
 
 </script>
 
@@ -38,10 +47,22 @@
             <span class="font-semibold">Event name *</span>
             <input class="rounded " required name="name" placeholder="Men's haircut" bind:value={currentEvent.name}/>
         </label>
-        <div class="flex flex-col gap-2">
-            <span class="font-semibold">Duration in minutes *</span>
+        <div>
 
-            <input class=" rounded" required name="duration" type="number" bind:value={currentEvent.duration}/>
+            <span class="font-semibold">Duration</span>
+            <div  class="grid grid-cols-2 gap-4">
+                <label class="flex flex-col">
+                    <span>Hours</span>
+                    <input class=" rounded" required name="hours" type="number" bind:value={durationHours} on:change={()=> handleDurationChange()}/>
+                </label>
+
+                <label class="flex flex-col">
+                    <span>Minutes</span>
+                    <input class=" rounded" required name="minutes" type="number" bind:value={durationMinutes} on:change={()=> handleDurationChange()}/>
+                </label>
+            </div>
+
+            <input class="hidden" required name="duration" type="number" bind:value={currentEvent.duration}/>
 
 
         </div>

@@ -50,7 +50,7 @@
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li>Page</li>
     </ol>
-    <form class="my-12 p-8 max-w-2xl bg-gray-50 h-fit rounded-xl border" method="post">
+    <form class="my-12 p-8 max-w-2xl bg-gray-50 h-fit border rounded" method="post">
         <div class="flex flex-col gap-8 ">
             <p class="text-2xl font-bold">Create your appointement page</p>
             <p>Let's walk through the configuration together, ensuring your preferences and needs are seamlessly

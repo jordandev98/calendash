@@ -4,15 +4,6 @@
     import Icon from "@iconify/svelte";
     import {getToastStore, Toast} from "@skeletonlabs/skeleton";
 
-    const handleAuthorizationError = () => {
-        toastStore.trigger({message: "Your account has not authorized to access your calendar! Please retry"})
-        authStore.set({
-            user: null,
-            loading: false,
-        })
-    }
-
-    const toastStore = getToastStore();
 
 </script>
 

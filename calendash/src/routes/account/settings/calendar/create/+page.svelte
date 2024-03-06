@@ -48,7 +48,7 @@
                     <p>When clients book on this calendar, the system creates events here.</p>
 
                     <p class="text-xl font-semibold">Select a calendar from your Google Agenda</p>
-                    {#if data.calendars}
+                    {#if data.calendars && data.calendars.length > 0}
                         <ListBox class="border p-2" rounded="rounded-xl">
                             {#each data.calendars as calendar}
                                 <ListBoxItem bind:group={$settingsStore.calendarId} name={calendar.summary}
