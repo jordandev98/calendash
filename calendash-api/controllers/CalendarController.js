@@ -6,7 +6,8 @@ import {
     getEvents,
     getFreeTimes,
     listGoogleCalendars,
-    setUpWorkingHours
+    setUpWorkingHours,
+    shareCalendar
 } from "../service/Calendar/GoogleCalendarService.js";
 import {
     addCalendarToUser,
@@ -22,12 +23,13 @@ const calendarController = express.Router();
 
 calendarController.get("/event/:calendarId", getEvents)
 calendarController.post("/authorize", authorizeServiceAccount)
+calendarController.post("/share/:calendarId", decodeUser, getGoogleAuth, shareCalendar)
 calendarController.put("/workingHours/:calendarId", setUpWorkingHours)
 calendarController.post("/event/timeslots/:calendarId", getFreeTimes)
 calendarController.post("/add", decodeUser, addCalendarToUser)
 calendarController.post("/google/add", decodeUser, getGoogleAuth, addNewCalendarToGoogle)
 calendarController.put("/active/:calendarId", decodeUser, verifyCalendarOwnership, updateIsActiveById)
-calendarController.put("/:calendarId", decodeUser ,verifyCalendarOwnership, updateCalendarById)
+calendarController.put("/:calendarId", decodeUser, verifyCalendarOwnership, updateCalendarById)
 calendarController.get("/:calendarId", getCalendarbyId)
 calendarController.get("/google/list", decodeUser, getGoogleAuth, listGoogleCalendars)
 calendarController.post("/image/:calendarId", decodeUser, multer().single("file"), async function (req, res, newt) {

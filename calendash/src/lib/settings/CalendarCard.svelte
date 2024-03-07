@@ -1,16 +1,17 @@
 <script>
-    import {Avatar, getModalStore, Modal, SlideToggle} from "@skeletonlabs/skeleton";
+    import {Avatar, getModalStore, Modal, SlideToggle, Toast} from "@skeletonlabs/skeleton";
     import Icon from "@iconify/svelte";
-    import {goto} from "$app/navigation";
     import UpgradePlan from "$lib/modal/UpgradePlan.svelte";
+    import ShareCalendarModal from "$lib/modal/ShareCalendarModal.svelte";
 
     const modalStore = getModalStore();
 
-    const modalUpgradePlan = {ref : UpgradePlan}
+    const modalUpgradePlan = {ref: UpgradePlan}
     const upgradeModal = {
         type: 'component',
         component: modalUpgradePlan,
     };
+
     export let page;
     export let token_id;
 
@@ -33,8 +34,7 @@
                 updateCalendarIsActive(calendarId);
                 modalStore.trigger(upgradeModal);
             }
-        }
-        else if (res.status > 404) {
+        } else if (res.status > 404) {
             updateCalendarIsActive(calendarId);
         }
     }
@@ -55,12 +55,23 @@
 </script>
 
 {#if page}
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {#each calendars as calendar , i}
             <div class={calendar.isActive ? "flex flex-col gap-4 border-primary-500 border-t-8 bg-gray-50  p-4 rounded" : "flex flex-col gap-4 border-t-8 bg-gray-50  p-4 rounded"}>
                 <div class="flex items-center justify-between ">
                     <p class="text-2xl font-semibold">{calendar.name}</p>
-                    <div class="flex  gap-2">
+                    <div class="flex  gap-4">
+                        <button on:click={() => {
+                            const modalshareCalendar = {ref : ShareCalendarModal , props: {calendarId : calendar.calendarId}}
+                            const shareModal = {
+                                type: 'component',
+                                component: modalshareCalendar,
+                            };
+                            modalStore.trigger(shareModal);
+                        }}>
+
+                            <Icon icon="material-symbols:share" width="20"/>
+                        </button>
                         <a class="self-end text-underline" href={`/account/settings/calendar/edit/${calendar._id}`}>
 
                             <Icon icon="ic:round-open-in-new" width="24"/>
@@ -83,10 +94,10 @@
                 <div class="pb-2"><p>Modifier</p></div>
                 <div class="pb-2"><p>Supprimer</p></div>
                 <div class="arrow bg-surface-100-800-token pb-2"/>
-
             </div>
         {/each}
     </div>
 {/if}
 
-<Modal />
+<Modal/>
+<Toast/>

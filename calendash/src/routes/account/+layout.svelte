@@ -126,7 +126,7 @@
     </aside>
 
 
-    <div class="flex flex-1 justify-center">
+    <div class="flex flex-1 justify-center pb-12">
         <slot></slot>
     </div>
 

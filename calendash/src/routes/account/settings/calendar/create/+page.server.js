@@ -23,16 +23,16 @@ export const actions = {
         const clientCurrentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 
-        const res= await fetch(`${import.meta.env.VITE_API_URL}/calendar/google/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token_id}`
-            },
-            body: JSON.stringify({
-                summary : summary
-            })
-        });
+        // const res= await fetch(`${import.meta.env.VITE_API_URL}/calendar/google/add`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${token_id}`
+        //     },
+        //     body: JSON.stringify({
+        //         summary : summary
+        //     })
+        // });
 
     }
 }
