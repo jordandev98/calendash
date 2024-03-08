@@ -13,6 +13,7 @@
 
     let currentEvent
 
+    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     payloadStore.subscribe(value => {
         currentEvent = value;
@@ -50,15 +51,26 @@
 
 
 <div class="flex flex-col w-11/12 self-center gap-8 py-12">
+
+
     <Stepper on:complete={handleComplete}>
         <Step locked={!currentEvent.calendarId}>
             <svelte:fragment slot="header"><p>Welcome to {page.url}</p></svelte:fragment>
+            <div class="flex items-center gap-4">
+                <p>Timezone :</p>
+                <select class="rounded border" bind:value={timezone}>
+                    <option>{Intl.DateTimeFormat().resolvedOptions().timeZone}</option>
+                    {#each Intl.supportedValuesOf('timeZone') as tz}
+                        <option>{tz}</option>
+                    {/each}
+                </select>
+            </div>
             <p class="text-lg font-semibold">Choose a booking option!</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
                     {#if calendar.isActive}
-                        <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 shadow-md -translate-y-0.5 p-8 border rounded-xl"
-                    : "flex items-center p-8 border gap-8 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md"}
+                        <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 p-8  rounded border"
+                    : "flex items-center p-8 border gap-8 rounded bg-gray-50 hover:cursor-pointer hover:shadow-md"}
                                 on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name}}>
                             <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img} initials={calendar.name}/>
                             <span class="text-2xl font-semibold">{calendar.name}</span>
@@ -72,8 +84,8 @@
             <svelte:fragment slot="header"><p>Choose an event!</p></svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.events as event , i}
-                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-2 shadow-md -translate-y-0.5 px-8 py-4 border rounded-xl"
-                    : "flex flex-col px-8 py-4 border gap-2 rounded-xl bg-gray-50 shadow hover:-translate-y-0.5 hover:cursor-pointer hover:shadow-md" }
+                    <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-2  px-8 py-4 border rounded"
+                    : "flex flex-col px-8 py-4 border gap-2 rounded bg-gray-50  hover:cursor-pointer" }
                             on:click={()=> setSelectedEvent(event)}>
                         <span class="text-xl font-semibold">{event.name}</span>
 
@@ -108,7 +120,7 @@
                 </div>
 
                 <p>Choose a date and time that works for you !</p>
-                <Calendar calendars={page.calendars}/>
+                <Calendar calendars={page.calendars} timeZone={timezone}/>
             </div>
         </Step>
         <Step locked={!currentEvent.payload.organizer.email || !currentEvent.payload.organizer.displayName}>

@@ -18,21 +18,21 @@ export const actions = {
     newGoogleCalendar: async ({request, cookies}) => {
         const data = await request.formData();
         const token_id = cookies.get('token_id')
-        const email = cookies.get('email')
         const summary = data.get('summary')
-        const clientCurrentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        const timeZone = data.get('timeZone')
 
 
-        // const res= await fetch(`${import.meta.env.VITE_API_URL}/calendar/google/add`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${token_id}`
-        //     },
-        //     body: JSON.stringify({
-        //         summary : summary
-        //     })
-        // });
+        const res= await fetch(`${import.meta.env.VITE_API_URL}/calendar/google/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token_id}`
+            },
+            body: JSON.stringify({
+                summary : summary,
+                timeZone : timeZone
+            })
+        });
 
     }
 }

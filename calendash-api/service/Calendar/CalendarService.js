@@ -54,6 +54,7 @@ export const updateCalendarById = async (req, res) => {
 export const updateIsActiveById = async (req, res) => {
     const {calendarId} = req.params;
     try {
+        console.log(req.body.isActive)
         if (!req.body.isActive) {
             const newCalendar = await CalendarModel.findByIdAndUpdate(calendarId, req.body);
             res.json({message: "Calendar saved successfully", newCalendar})

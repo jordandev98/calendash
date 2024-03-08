@@ -11,6 +11,8 @@
 
     let newGoogleCalendarName = "";
 
+    let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const token_id: string = data.token_id
 
     settingsStore.subscribe(value => {
@@ -76,9 +78,20 @@
                                     });
                                 }
                                 }}>
+
                         <p class="font-semibold text-xl">Create a new Google Calendar</p>
+                        <div class="flex items-center gap-4">
+                            <p>Timezone :</p>
+                            <select name="timeZone" class="rounded border" bind:value={timeZone}>
+                                <option>{Intl.DateTimeFormat().resolvedOptions().timeZone}</option>
+                                {#each Intl.supportedValuesOf('timeZone') as tz}
+                                    <option>{tz}</option>
+                                {/each}
+                            </select>
+                        </div>
                         <label class="flex flex-col">
                             <span class="font-medium text-gray-900">Calendar name</span>
+
                             <input class="rounded-xl bg-gray-50 border border-gray-400" name="summary"
                                    bind:value={newGoogleCalendarName}/>
                         </label>
@@ -102,7 +115,7 @@
                     <p>This is the name your clients will see when selecting a calendar.</p>
                     <div class="flex flex-col ">
                         <span class="font-semibold">Calendar name</span>
-                        <input class={"rounded-sm "} bind:value={currentCalendar.name}/>
+                        <input class={"rounded "} bind:value={currentCalendar.name}/>
                     </div>
                 </div>
 

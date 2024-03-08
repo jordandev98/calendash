@@ -7,7 +7,6 @@
     export let data;
 
     const page = data.page;
-    const activeSubscriptions = data.activeSubscriptions;
     const handleAddNewCalendar = () => {
         if (page.calendars.length === 0) {
             goto("/account/settings/calendar/create")

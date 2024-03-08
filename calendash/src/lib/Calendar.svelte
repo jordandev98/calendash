@@ -22,6 +22,7 @@
 
     let freeTimes;
     let currentEvent;
+    export let timeZone;
     let isLoading = true;
 
     payloadStore.subscribe(value => {
@@ -37,7 +38,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    timeZone: calendarBody.timezone,
+                    timeZone: timeZone,
                     workingHours: calendarBody.schedule
                 })
             });

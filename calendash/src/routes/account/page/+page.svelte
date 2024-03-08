@@ -1,7 +1,8 @@
 <script>
 
     import {authStore} from "../../../store/store.js";
-    import {ProgressRadial} from "@skeletonlabs/skeleton";
+    import {getToastStore, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
+    import {enhance} from '$app/forms';
 
     export let data;
 
@@ -15,9 +16,12 @@
         user.url = data.page.url
     }
 
+
+    const toastStore = getToastStore();
     let isUrlAvailable = false;
     let typingTimer;
     let isLoading = false;
+    let pageUpdating = false;
     let isTaken = false;
 
     const waitUserToEndTyping = () => {
@@ -50,7 +54,24 @@
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
         <li>Page</li>
     </ol>
-    <form class="my-12 p-8 max-w-2xl bg-gray-50 h-fit border rounded" method="post">
+    <form class="my-12 p-8 max-w-2xl bg-gray-50 h-fit border rounded" method="post" use:enhance={() => {
+        pageUpdating = true;
+        return async({result}) => {
+            pageUpdating = false;
+            if (result.type === "success") {
+                toastStore.trigger({
+                    background : "variant-filled-success",
+                    message : "Your page has been successfully created"
+                })
+            }
+            else {
+                toastStore.trigger({
+                    background : "variant-filled-error",
+                    message : "An errror has occurred. Please try again"
+                })
+            }
+        }
+    }}>
         <div class="flex flex-col gap-8 ">
             <p class="text-2xl font-bold">Create your appointement page</p>
             <p>Let's walk through the configuration together, ensuring your preferences and needs are seamlessly
@@ -62,7 +83,8 @@
                     short, descriptive, and memorable!</p>
                 <div class="flex justify-center items-center gap-0.5 relative">
                     <p class="font-bold">calendash.com/</p>
-                    <input class={isTaken ? "w-full rounded px-1 input-error": "w-full rounded px-1"} name="url" maxlength="28"
+                    <input class={isTaken ? "w-full rounded px-1 input-error": "w-full rounded px-1"} name="url"
+                           maxlength="28"
                            bind:value={user.url}
                            on:input={() => waitUserToEndTyping()}/>
                     <div class="absolute inset-y-0 right-2 pl-3 flex items-center pointer-events-none">
@@ -75,10 +97,20 @@
                     <p class=" text-error-500">This url already exists please choose another one</p>
                 {/if}
             </div>
-            <button class="btn variant-filled-primary" type="submit" disabled={!user.url || !isUrlAvailable || isLoading}>
-                {data.page?._id ? "Update url" : "Create page"}
-            </button>
+
+            {#if pageUpdating}
+                <button class="btn variant-filled-primary">
+                    <ProgressRadial width="w-6" meter="stroke-white"/>
+                </button>
+
+                {:else}
+                <button class="btn variant-filled-primary" type="submit"
+                        disabled={!user.url || !isUrlAvailable || isLoading}>
+                    {data.page?._id ? "Update url" : "Create page"}
+                </button>
+            {/if}
         </div>
     </form>
+    <Toast/>
 </div>
 
