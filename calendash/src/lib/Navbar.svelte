@@ -3,6 +3,9 @@
     import {Drawer, getDrawerStore} from "@skeletonlabs/skeleton";
     import AvatarMenu from "$lib/AvatarMenu.svelte";
     import {authStore} from "../store/store.js";
+    import {langStore, setNewLang} from "../store/langStore.js";
+    import {langValues} from "../data/langData.js";
+    import {langStrings} from "../text/langText.js";
 
     const drawerSettings = {
         id: 'example-3',
@@ -16,7 +19,18 @@
     const handleDrawerOpen = () => {
         drawerStore.open(drawerSettings)
     }
-    console.log($authStore)
+
+
+
+    let userLang = navigator.language;
+    let localLang = "en";
+    if (localStorage.getItem("lang")) {
+        localLang = localStorage.getItem("lang").replaceAll('\"' , "");
+    } else {
+        localLang = langValues.find(lang => userLang.includes(lang.value)).value
+    }
+
+    langStore.set(localLang)
 
 </script>
 
@@ -33,11 +47,19 @@
             </a>
         </div>
         <div class="font-bold text-lg items-center justify-center flex-1 gap-8 hidden md:flex ">
-            <a href="/product" class="hover:text-surface-500">Product</a>
-            <a href="/pricing" class="hover:text-surface-500">Pricing</a>
+            <a href="/product" class="hover:text-surface-500">{langStrings[$langStore]["productMenu"]}</a>
+            <a href="/pricing" class="hover:text-surface-500">{langStrings[$langStore]["pricingMenu"]}</a>
         </div>
 
-        <div class=" items-center justify-end gap-4">
+        <div class="flex items-center justify-end gap-8">
+            <select class="border bg-transparent rounded" bind:value={localLang}
+                    on:change={() => setNewLang(localLang)}>
+
+                {#each langValues as langValue}
+                        <option value={langValue.value}>{langValue.display}</option>
+                {/each}
+
+            </select>
             {#if $authStore.user}
                 <AvatarMenu/>
             {:else}
@@ -57,14 +79,11 @@
                                                                         class="aspect-square w-14">
                     <p class="text-4xl font-semibold">Calendash</p></a>
                 <div class="flex flex-col gap-6 w-full">
-                    <a href="/generate" class="hover:text-indigo-400">
-                        <button on:click={drawerStore.close}>Generate</button>
-                    </a>
-                    <a href="/showcase" class="hover:text-indigo-400">
-                        <button on:click={drawerStore.close}>Showcase</button>
+                    <a href="/product" class="hover:text-indigo-400">
+                        <button on:click={drawerStore.close}>{langStrings[$langStore]["productMenu"]}</button>
                     </a>
                     <a href="/pricing" class="hover:text-indigo-400">
-                        <button on:click={drawerStore.close}>Pricing</button>
+                        <button on:click={drawerStore.close}>{langStrings[$langStore]["pricingMenu"]}</button>
                     </a>
 
                 </div>

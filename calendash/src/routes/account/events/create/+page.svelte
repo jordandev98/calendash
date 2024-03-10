@@ -5,6 +5,8 @@
     import {formatEventDuration} from "../../../../service/date/TimeService.ts";
     import { enhance , applyAction} from "$app/forms";
     import {goto} from "$app/navigation";
+    import {langStrings} from "../../../../text/langText.js";
+    import {langStore} from "../../../../store/langStore.js";
 
     let isLoading = false;
 
@@ -42,22 +44,22 @@
             }
         }
     }}>
-        <p class="h4 font-semibold">New event type</p>
+        <p class="h4 font-semibold">{langStrings[$langStore]["createEventPageTitle"]}</p>
         <label class="flex flex-col gap-2">
-            <span class="font-semibold">Event name *</span>
-            <input class="rounded " required name="name" placeholder="Men's haircut" bind:value={currentEvent.name}/>
+            <span class="font-semibold">{langStrings[$langStore]["createEventLabelName"]}</span>
+            <input class="rounded " required name="name" placeholder={langStrings[$langStore]["createEventPlaceholderName"]} bind:value={currentEvent.name}/>
         </label>
         <div>
 
-            <span class="font-semibold">Duration</span>
+            <span class="font-semibold">{langStrings[$langStore]["createEventLabelDuration"]}</span>
             <div  class="grid grid-cols-2 gap-4">
                 <label class="flex flex-col">
-                    <span>Hours</span>
+                    <span>{langStrings[$langStore]["createEventLabelHeure"]}</span>
                     <input class=" rounded" required name="hours" type="number" bind:value={durationHours} on:change={()=> handleDurationChange()}/>
                 </label>
 
                 <label class="flex flex-col">
-                    <span>Minutes</span>
+                    <span>{langStrings[$langStore]["createEventLabelMinuites"]}</span>
                     <input class=" rounded" required name="minutes" type="number" bind:value={durationMinutes} on:change={()=> handleDurationChange()}/>
                 </label>
             </div>
@@ -67,11 +69,11 @@
 
         </div>
         <label class="flex flex-col gap-2">
-            <span class="font-semibold">Location (Optional)</span>
-            <input class=" rounded" name="location" placeholder="20 Queen street" bind:value={currentEvent.location}/>
+            <span class="font-semibold">{langStrings[$langStore]["createEventLabelLocation"]}</span>
+            <input class=" rounded" name="location" placeholder={langStrings[$langStore]["createEventPlaceholderLocation"]} bind:value={currentEvent.location}/>
         </label>
         <label class="flex flex-col gap-2">
-            <span class="font-semibold">Price (Optional)</span>
+            <span class="font-semibold">{langStrings[$langStore]["createEventLabelPrice"]}</span>
             <input class=" rounded" name="price" placeholder="$20" bind:value={currentEvent.price}/>
         </label>
         {#if isLoading}
@@ -79,13 +81,13 @@
                 <ProgressRadial width="w-6"/>
             </button>
         {:else}
-            <button class="btn variant-filled-primary" type="submit">Add new type event</button>
+            <button class="btn variant-filled-primary" type="submit">{langStrings[$langStore]["eventPageCreateAction"]}</button>
         {/if}
     </form>
 
     <div class="flex flex-col border p-4 gap-4 bg-gray-50">
         <div class="flex justify-between items-center">
-            <p class="h3 font-bold">{currentEvent.name ? currentEvent.name : "My event name"}</p>
+            <p class="h3 font-bold">{currentEvent.name ? currentEvent.name : langStrings[$langStore]["createEventMyEventTitle"]}</p>
             {#if currentEvent.price}
                 <div class="flex flex-row items-center gap-2">
                     <p class="h3">{currentEvent.price}</p>
@@ -99,7 +101,7 @@
         </div>
         <div class="flex flex-row items-center gap-2">
             <Icon icon="mdi:map-marker-outline" width="20"/>
-            <span>{currentEvent.location ? currentEvent.location : "My event location"}</span>
+            <span>{currentEvent.location ? currentEvent.location : langStrings[$langStore]["createEventMyEventLocationTitle"]}</span>
         </div>
     </div>
 </div>

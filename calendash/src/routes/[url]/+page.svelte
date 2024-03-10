@@ -6,6 +6,8 @@
     import Calendar from "$lib/Calendar.svelte";
     import {goto} from "$app/navigation";
     import {format} from "date-fns";
+    import {langStrings} from "../../text/langText.js";
+    import {langStore} from "../../store/langStore.js";
 
     export let data;
 
@@ -53,11 +55,14 @@
 <div class="flex flex-col w-11/12 self-center gap-8 py-12">
 
 
-    <Stepper on:complete={handleComplete}>
+    <Stepper on:complete={handleComplete} stepTerm={langStrings[$langStore]["step"]}
+             buttonNextLabel={langStrings[$langStore]["next"]}
+             buttonBackLabel={langStrings[$langStore]["back"]}
+             buttonCompleteLabel={langStrings[$langStore]["complete"]}>
         <Step locked={!currentEvent.calendarId}>
-            <svelte:fragment slot="header"><p>Welcome to {page.url}</p></svelte:fragment>
+            <svelte:fragment slot="header">{langStrings[$langStore]["chooseBookingOption"]}</svelte:fragment>
             <div class="flex items-center gap-4">
-                <p>Timezone :</p>
+                <p>{langStrings[$langStore]["timezoneLabel"]}</p>
                 <select class="rounded border" bind:value={timezone}>
                     <option>{Intl.DateTimeFormat().resolvedOptions().timeZone}</option>
                     {#each Intl.supportedValuesOf('timeZone') as tz}
@@ -65,7 +70,7 @@
                     {/each}
                 </select>
             </div>
-            <p class="text-lg font-semibold">Choose a booking option!</p>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
                     {#if calendar.isActive}
@@ -81,7 +86,7 @@
             </div>
         </Step>
         <Step locked={!currentEvent.payload.summary}>
-            <svelte:fragment slot="header"><p>Choose an event!</p></svelte:fragment>
+            <svelte:fragment slot="header">{langStrings[$langStore]["chooseEvent"]}</svelte:fragment>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.events as event , i}
                     <button class={currentEvent.payload.summary === event.name ? "flex flex-col bg-gray-200 gap-2  px-8 py-4 border rounded"
@@ -105,6 +110,7 @@
             </div>
         </Step>
         <Step locked={!currentEvent.payload.start.dateTime}>
+            <svelte:fragment slot="header">{langStrings[$langStore]["chooseTimeSlot"]}</svelte:fragment>
             <div class="flex flex-col gap-4 p-4">
                 <div class="flex gap-2">
                     <Avatar src={import.meta.env.VITE_AWS_BASE_URL+currentEvent.img}/>
@@ -118,28 +124,27 @@
                     </div>
 
                 </div>
-
-                <p>Choose a date and time that works for you !</p>
                 <Calendar calendars={page.calendars} timeZone={timezone}/>
             </div>
         </Step>
         <Step locked={!currentEvent.payload.organizer.email || !currentEvent.payload.organizer.displayName}>
+            <svelte:fragment slot="header">{langStrings[$langStore]["fillContact"]}</svelte:fragment>
             <div class="flex justify-center w-full">
                 <div class="grid grid-cols-1 md:grid-cols-2 max-w-5xl w-full">
                     <form class="flex flex-col gap-6 p-8 bg-gray-50 w-full">
-                        <p class="text-lg font-semibold">Please fill your contact information</p>
+                        <p class="text-lg font-semibold">{langStrings[$langStore]["contactInformation"]}</p>
                         <label class="flex flex-col">
-                            <span class="text-sm font-semibold">Email*</span>
+                            <span class="text-sm font-semibold">{langStrings[$langStore]["emailLabel"]}*</span>
                             <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
-                                   type="text" bind:value={currentEvent.payload.organizer.email}/>
+                                   type="email" bind:value={currentEvent.payload.organizer.email}/>
                         </label>
                         <label class="flex flex-col">
-                            <span class="text-sm font-semibold">Name *</span>
+                            <span class="text-sm font-semibold">{langStrings[$langStore]["nameLabel"]}*</span>
                             <input class="input bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
                                    type="text" bind:value={currentEvent.payload.organizer.displayName}/>
                         </label>
                         <label class="flex flex-col">
-                            <span class="text-sm font-semibold">Complementary informations for the meeting</span>
+                            <span class="text-sm font-semibold">{langStrings[$langStore]["complementaryInformation"]}</span>
                             <textarea
                                     class="textarea bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded focus:border-surface-600"
                                     bind:value={currentEvent.payload.description}></textarea>

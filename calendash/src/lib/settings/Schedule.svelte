@@ -4,6 +4,8 @@
     import type {CalendarEntry} from "../../data/userCalendar"
     import {WeekDays} from "../../data/userCalendar"
     import {addHours, deleteHours, settingsStore, updateIsValid} from "../../store/settingsStore";
+    import {langStrings} from "../../text/langText.js";
+    import {langStore} from "../../store/langStore.js";
 
     let currentCalendar: CalendarEntry;
 
@@ -42,12 +44,12 @@
 
 <div class="flex flex-col gap-4">
 
-    <p>Remember that the ending time is the last event you are taking not the end of your day.</p>
-    <p>You can update your calendar at any moment !</p>
+    <p>{langStrings[$langStore]["customizeScheduleParagraph1"]}</p>
+    <p>{langStrings[$langStore]["customizeScheduleParagraph2"]}</p>
     {#if currentCalendar}
         <div class="flex flex-col gap-1">
             {#each Object.entries(currentCalendar.schedule) as [day, hours]}
-                <span class="font-semibold">{day}</span>
+                <span class="font-semibold">{langStrings[$langStore][day]}</span>
                 <div class="flex justify-between">
                     <div class="flex flex-col gap-2">
                         {#each hours as hour, i}

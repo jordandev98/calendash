@@ -3,6 +3,8 @@
     import {authStore} from "../../../store/store.js";
     import {getToastStore, ProgressRadial, Toast} from "@skeletonlabs/skeleton";
     import {enhance} from '$app/forms';
+    import {langStrings} from "../../../text/langText.js";
+    import {langStore} from "../../../store/langStore.js";
 
     export let data;
 
@@ -50,9 +52,9 @@
 </script>
 <div class="p-8">
     <ol class="breadcrumb">
-        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb"><a class="anchor" href="/account">{langStrings[$langStore]["accountMenu"]}</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-        <li>Page</li>
+        <li>{langStrings[$langStore]["pageMenu"]}</li>
     </ol>
     <form class="my-12 p-8 max-w-2xl bg-gray-50 h-fit border rounded" method="post" use:enhance={() => {
         pageUpdating = true;
@@ -61,26 +63,23 @@
             if (result.type === "success") {
                 toastStore.trigger({
                     background : "variant-filled-success",
-                    message : "Your page has been successfully created"
+                    message : langStrings[$langStore]["accountCreateMessageSuccess"]
                 })
             }
             else {
                 toastStore.trigger({
                     background : "variant-filled-error",
-                    message : "An errror has occurred. Please try again"
+                    message : langStrings[$langStore]["accountCreateMessageError"]
                 })
             }
         }
     }}>
         <div class="flex flex-col gap-8 ">
-            <p class="text-2xl font-bold">Create your appointement page</p>
-            <p>Let's walk through the configuration together, ensuring your preferences and needs are seamlessly
-                integrated. Sit back, relax, and let's tailor this platform to suit you perfectly.</p>
+            <p class="text-2xl font-bold">{langStrings[$langStore]["accountCreatePageTitle"]}</p>
+            <p>{langStrings[$langStore]["accountCreatePageParagraph"]}</p>
             <div class="flex flex-col gap-4">
-                <p class="text-xl font-bold"> Create your link</p>
-                <p>Pick a URL that's easy for your clients to remember and share for booking appointments. Make
-                    it
-                    short, descriptive, and memorable!</p>
+                <p class="text-xl font-bold"> {langStrings[$langStore]["accountCreateLinkTitle"]}</p>
+                <p>{langStrings[$langStore]["accountCreateLinkParagraph"]}</p>
                 <div class="flex justify-center items-center gap-0.5 relative">
                     <p class="font-bold">calendash.com/</p>
                     <input class={isTaken ? "w-full rounded px-1 input-error": "w-full rounded px-1"} name="url"
@@ -94,7 +93,7 @@
                     </div>
                 </div>
                 {#if isTaken}
-                    <p class=" text-error-500">This url already exists please choose another one</p>
+                    <p class=" text-error-500">{langStrings[$langStore]["accountCreateError"]}</p>
                 {/if}
             </div>
 
@@ -105,8 +104,8 @@
 
                 {:else}
                 <button class="btn variant-filled-primary" type="submit"
-                        disabled={!user.url || !isUrlAvailable || isLoading}>
-                    {data.page?._id ? "Update url" : "Create page"}
+                        disabled={!user.url || !isUrlAvailable || isLoading  || isTaken}>
+                    {data.page?._id ? "Update url" : langStrings[$langStore]["accountCreateTitleAction"]}
                 </button>
             {/if}
         </div>

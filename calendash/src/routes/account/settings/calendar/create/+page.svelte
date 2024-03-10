@@ -5,6 +5,8 @@
     import {enhance} from "$app/forms";
     import Schedule from "$lib/settings/Schedule.svelte";
     import {goto} from "$app/navigation";
+    import {langStrings} from "../../../../../text/langText"
+    import {langStore} from "../../../../../store/langStore"
 
     let currentCalendar: CalendarEntry;
     export let data;
@@ -42,14 +44,18 @@
 
 <div class="w-11/12 max-w-lg pt-12">
     {#if currentCalendar}
-        <Stepper on:complete={handleComplete}>
+        <Stepper on:complete={handleComplete} stepTerm={langStrings[$langStore]["step"]}
+                 buttonNextLabel={langStrings[$langStore]["next"]}
+                 buttonBackLabel={langStrings[$langStore]["back"]}
+                 buttonCompleteLabel={langStrings[$langStore]["complete"]}>
             <Step locked={!$settingsStore.calendarId}>
-                <svelte:fragment slot="header"><p class="text-4xl">Choose the calendar to use!</p>
+                <svelte:fragment slot="header"><p
+                        class="text-4xl">{langStrings[$langStore]["pageCalendarCreateTitle"]}</p>
                 </svelte:fragment>
                 <div class="flex flex-col bg-gray-50 p-4 rounded-xl gap-4">
-                    <p>When clients book on this calendar, the system creates events here.</p>
+                    <p>{langStrings[$langStore]["pageCalendarCreateDescription"]}</p>
 
-                    <p class="text-xl font-semibold">Select a calendar from your Google Agenda</p>
+                    <p class="text-xl font-semibold">{langStrings[$langStore]["pageCalendarCreateSubtitle"]}</p>
                     {#if data.calendars && data.calendars.length > 0}
                         <ListBox class="border p-2" rounded="rounded-xl">
                             {#each data.calendars as calendar}
@@ -64,7 +70,7 @@
                 <div class="flex flex-col gap-6 pb-6">
                     <div class="relative flex py-5 items-center">
                         <div class="flex-grow border-t border-gray-400"></div>
-                        <span class="flex-shrink mx-4 text-gray-500">or</span>
+                        <span class="flex-shrink mx-4 text-gray-500">{langStrings[$langStore]["or"]}</span>
                         <div class="flex-grow border-t  border-gray-400"></div>
                     </div>
                     <form class="flex flex-col gap-4 p-8 border rounded-xl bg-gray-50" method="POST"
@@ -79,9 +85,9 @@
                                 }
                                 }}>
 
-                        <p class="font-semibold text-xl">Create a new Google Calendar</p>
+                        <p class="font-semibold text-xl">{langStrings[$langStore]["pageCalendarCreateGoogleTitle"]}</p>
                         <div class="flex items-center gap-4">
-                            <p>Timezone :</p>
+                            <p>{langStrings[$langStore]["timezoneLabel"]}</p>
                             <select name="timeZone" class="rounded border" bind:value={timeZone}>
                                 <option>{Intl.DateTimeFormat().resolvedOptions().timeZone}</option>
                                 {#each Intl.supportedValuesOf('timeZone') as tz}
@@ -90,7 +96,7 @@
                             </select>
                         </div>
                         <label class="flex flex-col">
-                            <span class="font-medium text-gray-900">Calendar name</span>
+                            <span>{langStrings[$langStore]["calendarNameLabel"]}</span>
 
                             <input class="rounded-xl bg-gray-50 border border-gray-400" name="summary"
                                    bind:value={newGoogleCalendarName}/>
@@ -101,7 +107,7 @@
                             </button>
                         {:else}
                             <button type="submit" class="btn variant-filled-primary" disabled={!newGoogleCalendarName}>
-                                Add new calendar
+                                {langStrings[$langStore]["addNewGoogleCalendar"]}
                             </button>
                         {/if}
 
@@ -110,18 +116,18 @@
                 </div>
             </Step>
             <Step locked={!currentCalendar.name}>
-                <svelte:fragment slot="header"><p>Choose a name!</p></svelte:fragment>
+                <svelte:fragment slot="header"><p>{langStrings[$langStore]["chooseCalendarNameTile"]}</p></svelte:fragment>
                 <div class="flex flex-col gap-8">
-                    <p>This is the name your clients will see when selecting a calendar.</p>
+                    <p>{langStrings[$langStore]["chooseCalendarNameDescription"]}</p>
                     <div class="flex flex-col ">
-                        <span class="font-semibold">Calendar name</span>
+                        <span class="font-semibold">{langStrings[$langStore]["calendarNameLabel"]}</span>
                         <input class={"rounded "} bind:value={currentCalendar.name}/>
                     </div>
                 </div>
 
             </Step>
             <Step locked={!currentCalendar.isValid}>
-                <svelte:fragment slot="header">Customize your schedule</svelte:fragment>
+                <svelte:fragment slot="header">{langStrings[$langStore]["customizeScheduleTitle"]}</svelte:fragment>
                 <Schedule/>
             </Step>
         </Stepper>

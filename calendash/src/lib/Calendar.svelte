@@ -17,6 +17,9 @@
     import {payloadStore} from "../store/payloadStore.js";
     import {onMount} from "svelte";
     import {ProgressRadial} from "@skeletonlabs/skeleton";
+    import {getDateFormatByValue} from "../data/langData.js";
+    import {langStore} from "../store/langStore.js";
+    import {langStrings} from "../text/langText.js";
 
     export let calendars
 
@@ -28,6 +31,8 @@
     payloadStore.subscribe(value => {
         currentEvent = value;
     })
+
+    const dateFormat = getDateFormatByValue($langStore)
 
     const fetchFreeTimes = async () => {
         try {
@@ -168,7 +173,7 @@
         <div class="max-w-lg ">
             <div class="flex items-center">
                 <h2 class="flex-auto font-semibold text-gray-900">
-                    {format(firstDayCurrentMonth, 'MMMM yyyy')}
+                    {format(firstDayCurrentMonth, 'MMMM yyyy' , {locale : dateFormat})}
                 </h2>
                 <button on:click={previousMonth}
                         class="-my-1.5 flex flex-none items-center justify-center p-1.5  hover:scale-110">
@@ -180,13 +185,13 @@
                 </button>
             </div>
             <div class="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
-                <div>S</div>
-                <div>M</div>
-                <div>T</div>
-                <div>W</div>
-                <div>T</div>
-                <div>F</div>
-                <div>S</div>
+                <div>{langStrings[$langStore]["MondayLetter"]}</div>
+                <div>{langStrings[$langStore]["TuesdayLetter"]}</div>
+                <div>{langStrings[$langStore]["WednesdayLetter"]}</div>
+                <div>{langStrings[$langStore]["ThursdayLetter"]}</div>
+                <div>{langStrings[$langStore]["FridayLetter"]}</div>
+                <div>{langStrings[$langStore]["SaturdayLetter"]}</div>
+                <div>{langStrings[$langStore]["SundayLetter"]}</div>
             </div>
             <div class="grid grid-cols-7 mt-2 text-sm">
                 {#each days as day, dayIdx}
@@ -236,7 +241,7 @@
             {#if freeTimes}
                 <div class="grid grid-cols-1 gap-4">
                     <h2 class="font-semibold text-gray-900">
-                        <time datetime={format(selectedDay, 'yyyy-MM-dd')}>{format(selectedDay, 'MMM dd, yyyy')}</time>
+                        <time datetime={format(selectedDay, 'yyyy-MM-dd')}>{format(selectedDay, 'MMM dd, yyyy' , {locale : dateFormat})}</time>
                     </h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         {#each freeTimes[format(selectedDay, 'yyyy-MM-dd')] as timeSlot}

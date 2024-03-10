@@ -6,7 +6,7 @@
     import {authStore} from "../store/store.js";
     import {onMount} from "svelte";
     import {page} from '$app/stores'
-    import Transition from "$lib/transition/Transition.svelte";
+    import {langStore} from "../store/langStore.js";
 
     export let data;
     if (data?.user?.user?._id) {
@@ -26,6 +26,8 @@
         }
 
     })
+
+
 </script>
 
 
@@ -35,7 +37,8 @@
         {#if !$page.url.pathname.includes("/account") }
             <Navbar/>
         {/if}
-            <slot/>
+
+        <slot/>
     </div>
 
 </main>

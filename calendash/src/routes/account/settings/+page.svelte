@@ -3,12 +3,19 @@
     import {Toast} from "@skeletonlabs/skeleton";
     import {goto} from "$app/navigation";
     import AccountEmptyCard from "$lib/account/AccountEmptyCard.svelte";
+    import {langStrings} from "../../../text/langText.js";
+    import {langStore} from "../../../store/langStore.js";
 
     export let data;
 
     const page = data.page;
     const handleAddNewCalendar = () => {
-        if (page.calendars.length === 0) {
+
+        if (!page) {
+            goto("/account/page")
+        }
+
+        else if (page.calendars.length === 0) {
             goto("/account/settings/calendar/create")
         }
 
@@ -17,30 +24,28 @@
     if (!page)
         handleAddNewCalendar()
 
-
 </script>
 
-{#if data}
+{#if data && data.page}
     <div class="flex flex-col w-11/12 py-12 gap-8">
         <ol class="breadcrumb">
-            <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+            <li class="crumb"><a class="anchor" href="/account">{langStrings[$langStore]["accountMenu"]}</a></li>
             <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-            <li>Calendars</li>
+            <li>{langStrings[$langStore]["calendarMenu"]}</li>
         </ol>
 
         <div class="flex w-full items-center justify-between">
 
-            <h2 class="text-2xl font-semibold">My calendars</h2>
+            <h2 class="text-2xl font-semibold">{langStrings[$langStore]["createCalendarPageTitle"]}</h2>
             <a href="/account/settings/calendar/create">
-                <button class="btn variant-filled-primary">Add calendar</button>
+                <button class="btn variant-filled-primary">{langStrings[$langStore]["createCalendarPageAction"]}</button>
             </a>
         </div>
         {#if page.calendars && page.calendars.length > 0}
             <CalendarCard {page}/>
         {:else}
-            <AccountEmptyCard title="Create your first calendar" description="Create your schedule, link it with Google Calendars, and start accepting
-                        bookings or appointments seamlessly."
-                              link="/account/settings/calendar/create" action="Create your first calendar"/>
+            <AccountEmptyCard title={langStrings[$langStore]["createEmptyCalendarPageTitle"]} description={langStrings[$langStore]["createEmptyCalendarPageDescription"]}
+                              link="/account/settings/calendar/create" action={langStrings[$langStore]["createEmptyCalendarPageAction"]}/>
         {/if}
 
 

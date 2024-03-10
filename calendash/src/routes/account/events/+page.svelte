@@ -4,23 +4,25 @@
     import Icon from "@iconify/svelte";
     import EventCard from "$lib/event/EventCard.svelte";
     import AccountEmptyCard from "$lib/account/AccountEmptyCard.svelte";
+    import {langStrings} from "../../../text/langText.js";
+    import {langStore} from "../../../store/langStore.js";
 
     export let data;
 
-    const events = data.page.events;
+    const events = data.page?.events;
 
 </script>
 
 <div class="flex flex-col gap-4  w-11/12 pt-8">
     <ol class="breadcrumb">
-        <li class="crumb"><a class="anchor" href="/account">Account</a></li>
+        <li class="crumb"><a class="anchor" href="/account">{langStrings[$langStore]["accountMenu"]}</a></li>
         <li class="crumb-separator" aria-hidden>&rsaquo;</li>
-        <li>Events</li>
+        <li>{langStrings[$langStore]["eventMenu"]}</li>
     </ol>
     <div class="flex items-center justify-between">
-        <p class="text-2xl font-semibold">My events</p>
+        <p class="text-2xl font-semibold">{langStrings[$langStore]["accountEventTitle"]}</p>
         <a href="/account/events/create">
-            <button class="btn variant-filled-primary w-fit">Add a new event types</button>
+            <button class="btn variant-filled-primary w-fit">{langStrings[$langStore]["eventPageCreateAction"]}</button>
         </a>
     </div>
 
@@ -32,10 +34,8 @@
             {/each}
         </div>
         {:else}
-        <AccountEmptyCard title="Create your first event type" description="The types of events they serve as a convenient tool for clients to book
-                    appointments
-                    with precise durations, streamlining the scheduling process for greater efficiency."
-                          link="/account/events/create" action="Create your first event"/>
+        <AccountEmptyCard title={langStrings[$langStore]["eventPageTitle"]} description={langStrings[$langStore]["eventPageDescription"]}
+                          link="/account/events/create" action={langStrings[$langStore]["eventPageAction"]}/>
     {/if}
 
 
