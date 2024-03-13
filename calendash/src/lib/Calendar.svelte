@@ -109,7 +109,6 @@
             });
             currentTime = addMinutes(currentTime, roundedDuration);
         }
-
         return timeSlots;
     }
 
@@ -127,19 +126,13 @@
         const formattedDay = format(day, dateFormat);
 
         const dayFreeTimes = freeTimes[formattedDay];
-        const isDayAvailable = dayFreeTimes && dayFreeTimes.length > 0;
+        console.log(dayFreeTimes)
 
-        return isDayAvailable && isEventAvailable(dayFreeTimes);
-    }
-
-    function isEventAvailable (timeSlot) {
-        if (timeSlot.length > 1) {
-            return true
+        if (!dayFreeTimes) {
+            return false;
         }
-        let start = parse(timeSlot[0].start , "MM/dd/yyyy HH:mm" , new Date());
-        const end =  parse(timeSlot[0].end , "MM/dd/yyyy HH:mm" , new Date());
-        start = addMinutes(start , currentEvent.duration)
-        return isAfter(end , start)
+
+        return dayFreeTimes.length > 0;
     }
 
     const handleSelectSlot = (slot) => {
