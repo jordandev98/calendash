@@ -25,26 +25,26 @@
 
     let freeTimes;
     let currentEvent;
-    export let timeZone;
-    let isLoading = true;
+    let isLoading = true
 
     payloadStore.subscribe(value => {
         currentEvent = value;
     })
 
+
+    console.log(currentEvent)
+
     const dateFormat = getDateFormatByValue($langStore)
 
     const fetchFreeTimes = async () => {
         try {
-            const calendarBody = calendars.find(calendar => calendar.calendarId === currentEvent.calendarId)
+
             const res = await fetch(`${import.meta.env.VITE_API_URL}/calendar/event/timeslots/${currentEvent.calendarId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    timeZone: timeZone,
-                    workingHours: calendarBody.schedule
                 })
             });
             if (!res.ok) { // res.ok checks if the HTTP response status is 200-299
@@ -126,7 +126,6 @@
         const formattedDay = format(day, dateFormat);
 
         const dayFreeTimes = freeTimes[formattedDay];
-        console.log(dayFreeTimes)
 
         if (!dayFreeTimes) {
             return false;
@@ -252,7 +251,10 @@
                             {/each}
                         {/each}
                     </div>
+
+                    <p>{langStrings[$langStore]["timezoneIndication"]} {currentEvent.timeZone} {langStrings[$langStore]["timezoneIndication2"]}</p>
                 </div>
+
             {/if}
         </div>
     </div>

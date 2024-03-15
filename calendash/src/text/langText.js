@@ -29,6 +29,9 @@ export const langStrings = {
         //MENU
         productMenu: "Product",
         pricingMenu: "Pricing",
+        helpMenu: "Help",
+        termsMenu: "Terms of service",
+        privacyMenu: "Privacy policy",
 
         //ACCOUNT
         accountMenu: "Account",
@@ -119,6 +122,8 @@ export const langStrings = {
         customizeScheduleTitle: "Customize your schedule",
         customizeScheduleParagraph1: "Remember that the ending time is the last event you are taking not the end of your day.",
         customizeScheduleParagraph2: "You can update your calendar at any moment !",
+        timezoneIndication: "All timeslots are in the",
+        timezoneIndication2: "timezone.",
 
         //LOGIN PAGE
         loginPageTitle: "Welcome to Calendash !",
@@ -183,6 +188,9 @@ export const langStrings = {
         //MENU
         productMenu: "Produit",
         pricingMenu: "Prix",
+        helpMenu: "Aide",
+        termsMenu: "Conditions générérales d'utilisation",
+        privacyMenu: "Politique de confidentialité",
 
         //ACCOUNT
         accountMenu: "Mon compte",
@@ -259,6 +267,8 @@ export const langStrings = {
         customizeScheduleTitle: "Personnalisez votre emploi du temps",
         customizeScheduleParagraph1: "N'oubliez pas que l'heure de fin est le dernier événement que vous prenez, pas la fin de votre journée.",
         customizeScheduleParagraph2: "Vous pouvez mettre à jour votre calendrier à tout moment !",
+        timezoneIndication: "Tous les créneaux horaires sont dans le fuseau horaire",
+        timezoneIndication2: ".",
 
         //PAGE URL
         chooseBookingOption: "Choisissez une option de réservation !",

@@ -11,6 +11,7 @@
 
     export let data;
     const page = data.page
+    console.log(data)
     const token_id = data.token_id;
 </script>
 
@@ -49,8 +50,17 @@
 
             </div>
         {/if}
-
-
+        {#if data.upcomingAppointments}
+            <h2 class="text-2xl font-semibold">Upcoming appointments</h2>
+            <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 w-full">
+                {#each data.upcomingAppointments as upcomingAppointment}
+                    <div class="flex flex-col gap-4 bg-gray-50 p-8 rounded border ">
+                        <h3 class="text-xl font-semibold">{upcomingAppointment.name}</h3>
+                        <p>{new Date(upcomingAppointment.startTime).toLocaleDateString()} {new Date(upcomingAppointment.startTime).toLocaleTimeString()}</p>
+                    </div>
+                {/each}
+            </div>
+        {/if}
     </div>
     <div class="flex justify-between items-center">
 
@@ -65,8 +75,10 @@
         {#if page && page.calendars && page.calendars.length > 0}
             <CalendarCard {page} {token_id}/>
         {:else}
-            <AccountEmptyCard title={langStrings[$langStore]["emptyCalendarCardTitle"]} description={langStrings[$langStore]["emptyCalendarCardDescription"]}
-                              link="/account/settings/calendar/create" action={langStrings[$langStore]["emptyCalendarCardAction"]}/>
+            <AccountEmptyCard title={langStrings[$langStore]["emptyCalendarCardTitle"]}
+                              description={langStrings[$langStore]["emptyCalendarCardDescription"]}
+                              link="/account/settings/calendar/create"
+                              action={langStrings[$langStore]["emptyCalendarCardAction"]}/>
 
         {/if}
     </div>

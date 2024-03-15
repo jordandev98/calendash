@@ -6,7 +6,7 @@
     import {authStore} from "../store/store.js";
     import {onMount} from "svelte";
     import {page} from '$app/stores'
-    import {langStore} from "../store/langStore.js";
+    import Footer from "$lib/Footer.svelte";
 
     export let data;
     if (data?.user?.user?._id) {
@@ -34,13 +34,15 @@
 <main class="mainContainer flex flex-col w-full h-full min-h-screen">
 
     <div class="flex flex-col flex-1 h-full bg-gray-100">
-        {#if !$page.url.pathname.includes("/account") }
-            <Navbar/>
-        {/if}
+        <div class="flex flex-col min-h-screen ">
 
-        <slot/>
+            {#if !$page.url.pathname.includes("/account") }
+                <Navbar/>
+            {/if}
+            <slot/>
+        </div>
+        <Footer/>
     </div>
-
 </main>
 
 <style>

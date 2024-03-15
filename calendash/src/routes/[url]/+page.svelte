@@ -13,9 +13,9 @@
 
     const page = data.page
 
-    let currentEvent
+    let isLoading = false;
 
-    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let currentEvent
 
     payloadStore.subscribe(value => {
         currentEvent = value;
@@ -23,6 +23,7 @@
 
 
     const setSelectedEvent = (eventSelected) => {
+        currentEvent.payload.pageId = page._id;
         currentEvent.payload._id = eventSelected._id
         currentEvent.duration = eventSelected.duration
         currentEvent.payload.summary = eventSelected.name
@@ -31,6 +32,7 @@
     }
     const handleComplete = async () => {
         try {
+            isLoading = true;
             const eventBody = currentEvent.payload
             const res = await fetch(`${import.meta.env.VITE_API_URL}/appointment/${currentEvent.calendarId}`, {
                 method: 'POST',
@@ -45,8 +47,10 @@
             // This line parses the response as JSON
             const data = await res.json();
             await goto(`/appointment/success/${data._id}`)
+            isLoading = false;
         } catch (error) {
             console.error(`There was a problem with the fetch operation: ${error.message}`);
+            isLoading = false;
         }
     }
 </script>
@@ -61,22 +65,13 @@
              buttonCompleteLabel={langStrings[$langStore]["complete"]}>
         <Step locked={!currentEvent.calendarId}>
             <svelte:fragment slot="header">{langStrings[$langStore]["chooseBookingOption"]}</svelte:fragment>
-            <div class="flex items-center gap-4">
-                <p>{langStrings[$langStore]["timezoneLabel"]}</p>
-                <select class="rounded border" bind:value={timezone}>
-                    <option>{Intl.DateTimeFormat().resolvedOptions().timeZone}</option>
-                    {#each Intl.supportedValuesOf('timeZone') as tz}
-                        <option>{tz}</option>
-                    {/each}
-                </select>
-            </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {#each page.calendars as calendar}
                     {#if calendar.isActive}
                         <button class={calendar.calendarId === currentEvent.calendarId ? "flex bg-gray-200 items-center gap-8 p-8  rounded border"
                     : "flex items-center p-8 border gap-8 rounded bg-gray-50 hover:cursor-pointer hover:shadow-md"}
-                                on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name}}>
+                                on:click={()=> {currentEvent.calendarId = calendar.calendarId; currentEvent.img = calendar.img; currentEvent.name = calendar.name; currentEvent.timeZone = calendar.timezone}}>
                             <Avatar src={import.meta.env.VITE_AWS_BASE_URL+calendar.img} initials={calendar.name}/>
                             <span class="text-2xl font-semibold">{calendar.name}</span>
 
@@ -124,10 +119,10 @@
                     </div>
 
                 </div>
-                <Calendar calendars={page.calendars} timeZone={timezone}/>
+                <Calendar calendars={page.calendars} />
             </div>
         </Step>
-        <Step locked={!currentEvent.payload.organizer.email || !currentEvent.payload.organizer.displayName}>
+        <Step locked={!currentEvent.payload.organizer.email || !currentEvent.payload.organizer.displayName || isLoading}>
             <svelte:fragment slot="header">{langStrings[$langStore]["fillContact"]}</svelte:fragment>
             <div class="flex justify-center w-full">
                 <div class="grid grid-cols-1 md:grid-cols-2 max-w-5xl w-full">
